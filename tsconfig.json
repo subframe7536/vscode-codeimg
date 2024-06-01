@@ -1,0 +1,10 @@
+{
+  "extends": "@subframe7536/type-utils/tsconfig.json",
+  "compilerOptions": {
+    "jsxImportSource": "solid-js",
+    "types": [
+      "vite/client",
+      "@types/vscode-webview"
+    ]
+  }
+}

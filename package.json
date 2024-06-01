@@ -1,0 +1,120 @@
+{
+  "publisher": "subframe7536",
+  "name": "vscode-codeimg",
+  "version": "0.0.1",
+  "author": "subframe7536",
+  "main": "dist/extension/index.js",
+  "engines": {
+    "node": ">=18",
+    "vscode": "^1.75.0"
+  },
+  "activationEvents": [],
+  "contributes": {
+    "commands": [
+      {
+        "command": "codeimg.generate",
+        "title": "codeimg: generate📷"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "codeimg.generate"
+        }
+      ]
+    },
+    "configuration": {
+      "type": "object",
+      "title": "CodeImg",
+      "properties": {
+        "codeimg.background": {
+          "scope": "resource",
+          "type": "string",
+          "default": "linear-gradient(345deg, rgb(180 218 255) 0%, rgb(232 209 255) 100%)",
+          "description": "The background of the snippet's container"
+        },
+        "codeimg.boxShadow": {
+          "scope": "resource",
+          "type": "string",
+          "default": "medium",
+          "enum": [
+            "small",
+            "medium",
+            "large"
+          ],
+          "description": "The CSS box-shadow for the snippet"
+        },
+        "codeimg.containerPadding": {
+          "scope": "resource",
+          "type": "string",
+          "default": "3rem",
+          "description": "The padding for the snippet's container"
+        },
+        "codeimg.roundedCorners": {
+          "scope": "resource",
+          "type": "string",
+          "default": "1rem",
+          "description": "Use rounded corners for the window"
+        },
+        "codeimg.scale": {
+          "scope": "resource",
+          "type": "integer",
+          "default": 2,
+          "description": "The scale of the screenshot"
+        },
+        "codeimg.showWindowControls": {
+          "scope": "resource",
+          "type": "boolean",
+          "default": true,
+          "description": "Display OS X style window controls"
+        },
+        "codeimg.showWindowTitle": {
+          "scope": "resource",
+          "type": "boolean",
+          "default": true,
+          "description": "Display window title with open folder / file name"
+        },
+        "codeimg.showLineNumbers": {
+          "scope": "resource",
+          "type": "boolean",
+          "default": true,
+          "description": "Display line numbers"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "dev": "vite build --watch",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "@iconify-json/lucide": "1.1.188",
+    "@kobalte/core": "^0.13.2",
+    "@solid-hooks/core": "^0.2.7",
+    "@solid-primitives/media": "^2.2.9",
+    "@solid-primitives/utils": "^6.2.3",
+    "@subframe7536/eslint-config": "^0.6.4",
+    "@subframe7536/type-utils": "^0.1.6",
+    "@tomjs/vite-plugin-vscode": "^2.2.0",
+    "@tomjs/vscode-extension-webview": "^1.2.0",
+    "@types/node": "^20.12.13",
+    "@types/vscode": "^1.89.0",
+    "@types/vscode-webview": "^1.57.5",
+    "@unocss/reset": "^0.60.3",
+    "@vscode/webview-ui-toolkit": "^1.4.0",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
+    "eslint": "^9.3.0",
+    "eslint-plugin-solid": "^0.14.0",
+    "modern-screenshot": "^4.4.39",
+    "solid-js": "1.8.17",
+    "typescript": "^5.4.5",
+    "unocss": "^0.60.3",
+    "unocss-preset-animations": "^1.0.2",
+    "unocss-preset-shadcn": "^0.3.0",
+    "vite": "^5.2.12",
+    "vite-plugin-clean-css": "0.0.3",
+    "vite-plugin-solid": "^2.10.2"
+  }
+}

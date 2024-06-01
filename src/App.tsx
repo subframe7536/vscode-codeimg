@@ -23,7 +23,7 @@ export function App() {
 
   return (
     <>
-      <div max-w="full" overflow-x="scroll">
+      <div class="max-w-full overflow-x-scroll">
         <div ref={codeBlock} class="w-fit m-(y-0 x-auto b-6)">
           <CodeBlock />
         </div>

@@ -98,7 +98,7 @@ export default function CodeBlock() {
           <Show when={config.showWindowTitle || config.showWindowControls}>
             <div class="w-full text-center title-size">{title()}</div>
           </Show>
-          <div class="m-t-2" un-children="flex-(~ row)">
+          <div class="m-t-2 *:flex-(~ row)">
             <For each={lines()}>
               {(line, idx) => <CodeLine line={line} index={idx()} />}
             </For>

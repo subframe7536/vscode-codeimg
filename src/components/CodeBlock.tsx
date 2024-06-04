@@ -1,5 +1,6 @@
-import { For, Show, createMemo, createSignal } from 'solid-js'
+import { For, Show, createMemo } from 'solid-js'
 import { useWindowListener } from '@solid-hooks/core/web'
+import { createRef } from '@solid-hooks/core'
 import { vscode } from '../utils/vscode'
 import { useConfig } from '../state/editorSettings'
 
@@ -12,48 +13,6 @@ function getClipboardHtml(transfer: DataTransfer | null) {
       return template.content
     }
   }
-}
-
-function useSelectionCode() {
-  const [lines, setLines] = createSignal<Element[]>([])
-  const [style, setStyle] = createSignal('')
-  const [title, setTitle] = createSignal('')
-
-  const config = useConfig()
-
-  let hasPermission = false
-  vscode.listen('update-code', async (t) => {
-    document.execCommand('paste')
-    setTitle(t)
-
-    try {
-      if (!hasPermission) {
-        await navigator.permissions.query({ name: 'clipboard-write' as any })
-        hasPermission = true
-      }
-      await navigator.clipboard.writeText('')
-    } catch (ignore) { }
-  })
-  useWindowListener('paste', (e) => {
-    e.preventDefault()
-    const data = getClipboardHtml(e.clipboardData)
-    if (data) {
-      const root = data.querySelector('div')
-      if (root) {
-        setStyle(root.style.cssText)
-        setLines(Array.from(root.querySelectorAll(':scope > *')))
-      }
-    }
-  })
-
-  return [
-    // eslint-disable-next-line solid/reactivity
-    createMemo(() => lines()),
-    // eslint-disable-next-line solid/reactivity
-    createMemo(() => style()),
-    // eslint-disable-next-line solid/reactivity
-    createMemo(() => config.showWindowTitle ? title() : ' '),
-  ] as const
 }
 
 function CodeLine(props: { line: Element, index: number }) {
@@ -71,8 +30,36 @@ function CodeLine(props: { line: Element, index: number }) {
 }
 
 export default function CodeBlock() {
-  const [lines, style, title] = useSelectionCode()
+  const lines = createRef<Element[]>([])
+  const style = createRef('')
+  const title = createRef('')
+
   const config = useConfig()
+
+  let hasPermission = false
+  vscode.listen('update-code', async (t) => {
+    document.execCommand('paste')
+    title(t)
+
+    try {
+      if (!hasPermission) {
+        await navigator.permissions.query({ name: 'clipboard-write' as any })
+        hasPermission = true
+      }
+      await navigator.clipboard.writeText('')
+    } catch (ignore) { }
+  })
+  useWindowListener('paste', (e) => {
+    e.preventDefault()
+    const data = getClipboardHtml(e.clipboardData)
+    if (data) {
+      const root = data.querySelector('div')
+      if (root) {
+        style(root.style.cssText)
+        lines(Array.from(root.querySelectorAll(':scope > *')))
+      }
+    }
+  })
   const boxShadow = createMemo(() => {
     switch (config.boxShadow) {
       case 'small':
@@ -96,7 +83,7 @@ export default function CodeBlock() {
             />
           </Show>
           <Show when={config.showWindowTitle || config.showWindowControls}>
-            <div class="w-full text-center title-size">{title()}</div>
+            <div class="w-full text-center title-size">{config.showWindowTitle ? title() : ' '}</div>
           </Show>
           <div class="m-t-2 *:flex-(~ row)">
             <For each={lines()}>

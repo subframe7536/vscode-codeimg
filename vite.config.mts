@@ -9,20 +9,8 @@ export default defineConfig({
     uno(),
     solid(),
     vscode({
-      extension: {
-        plugins: [
-          {
-            name: 'fix-image-csp',
-            renderChunk(code) {
-              return {
-                code: code.replace(
-                  'default-src \'none\';',
-                  'default-src \'none\'; img-src {{cspSource}} data: https:;',
-                ),
-              }
-            },
-          },
-        ],
+      webview: {
+        csp: `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src {{cspSource}} data: https: ; style-src {{cspSource}} 'unsafe-inline'; script-src 'nonce-{{nonce}}' 'unsafe-eval';">`,
       },
     }),
     cleanCss({ level: 2 }),

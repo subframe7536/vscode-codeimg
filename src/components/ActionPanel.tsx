@@ -1,16 +1,15 @@
-import { type defineEmits, useEmits } from '@solid-hooks/core'
-import { For, createSignal } from 'solid-js'
+import { createRef, type defineEmits, useEmits } from '@solid-hooks/core'
+import { For } from 'solid-js'
 import type { ParseFunction } from '@subframe7536/type-utils'
-import { Dialog } from '@kobalte/core/dialog'
 import type { PicFormat } from '../utils/image'
 import { cn } from '../utils/base'
-import { DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog'
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from './ui/dialog'
 
 function TextWithPrefixIcon(props: { icon: string, text: string }) {
   return (
     <div class="flex-(~ row content-center)">
       <i class={`${props.icon} mr-1.5`} />
-      <span line-height-relaxed inline-block>{props.text}</span>
+      <span class="line-height-relaxed inline-block">{props.text}</span>
     </div>
   )
 }
@@ -21,7 +20,7 @@ type ActionPanelProps = defineEmits<{
 }>
 
 export default function ActionPanel(props: ActionPanelProps) {
-  const [format, setFormat] = createSignal<PicFormat>('png')
+  const format = createRef<PicFormat>('png')
 
   const emit = useEmits(props)
 
@@ -46,9 +45,9 @@ export default function ActionPanel(props: ActionPanelProps) {
                   ? 'b-$vscode-focusBorder bg-$vscode-editor-inactiveSelectionBackground'
                   : 'b-transparent bg-transparent',
                 'b-(2 solid) rounded-2 p-(x-2 y-1) m-y-.5',
-                'hover-b-$vscode-focusBorder',
+                'hover:(b-$vscode-focusBorder)',
               )}
-              onClick={() => setFormat(item[0])}
+              onClick={() => format(item[0])}
             >
               <TextWithPrefixIcon icon={item[1]} text={item[0].toUpperCase()} />
             </div>
@@ -69,7 +68,7 @@ export default function ActionPanel(props: ActionPanelProps) {
           <TextWithPrefixIcon icon="i-lucide-download" text="Save" />
         </button>
       </div>
-      {/* <Dialog>
+      <Dialog>
         <DialogTrigger>Open</DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -80,7 +79,7 @@ export default function ActionPanel(props: ActionPanelProps) {
             </DialogDescription>
           </DialogHeader>
         </DialogContent>
-      </Dialog> */}
+      </Dialog>
     </div>
   )
 }

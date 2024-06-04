@@ -4,9 +4,10 @@ import type { Config } from '../types/config'
 import type { BasicSettings } from '../types/msg'
 import { EXTENSION_NAME_LOWER } from './constant'
 
+export const DEV_SERVER = process.env.VITE_DEV_SERVER_URL
 export function setupHtml(webview: Webview, context: ExtensionContext) {
-  return process.env.VITE_DEV_SERVER_URL
-    ? __getWebviewHtml__(process.env.VITE_DEV_SERVER_URL)
+  return DEV_SERVER
+    ? __getWebviewHtml__(DEV_SERVER)
     : __getWebviewHtml__(webview, context)
 }
 

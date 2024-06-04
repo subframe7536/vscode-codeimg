@@ -1,7 +1,7 @@
 import type { Disposable, ExtensionContext, Selection, WebviewPanel } from 'vscode'
 import { ColorThemeKind, ViewColumn, commands, window, workspace } from 'vscode'
 import type { MsgMain2Renderer, MsgRenderer2Main } from '../types/msg'
-import { getConfig, saveImage, setupHtml, updateSettings } from './utils'
+import { DEV_SERVER, getConfig, saveImage, setupHtml, updateSettings } from './utils'
 import { EXTENSION_NAME, EXTENSION_NAME_LOWER } from './constant'
 
 let webviewPanel: WebviewPanel | undefined
@@ -95,6 +95,7 @@ function bindThemeChange() {
 }
 function bindSelectionEvents() {
   handleSelection()
+  DEV_SERVER && setImmediate(() => setTimeout(() => handleSelection(), 1000))
   return window.onDidChangeTextEditorSelection(
     e => handleSelection(e.selections),
   )

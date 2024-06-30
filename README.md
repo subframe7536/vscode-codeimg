@@ -1,4 +1,7 @@
-# CodeImg
+<p align="center">
+  <img height="128" src="./resources/icon.png"></img>
+  <h1 align="center">CodeImg</h1>
+</p>
 
 VSCode plugin that generate beautiful image for you code with your favorite font and theme
 

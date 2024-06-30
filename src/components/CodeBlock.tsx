@@ -43,7 +43,10 @@ export default function CodeBlock() {
         const root = parseHTML(data as string)?.querySelector('div')
         if (root) {
           style(root.style.cssText.replace(/background-color:[^;]*;/g, ''))
-          lines(Array.from(root.querySelectorAll(':scope > *')))
+          const els = Array.from(root.querySelectorAll(':scope > *'))
+          if (els.length) {
+            lines(els)
+          }
         }
       }
     },
@@ -80,7 +83,7 @@ export default function CodeBlock() {
           <Show when={config.showWindowTitle || config.showWindowControls}>
             <div class="w-full text-center title-size select-none">{config.showWindowTitle ? title() : ' '}</div>
           </Show>
-          <div class="m-t-2 *:flex-(~ row)">
+          <div class={`mt-2 *:flex-(~ row) ${lines().length === 0 ? 'mt-6' : ''}`}>
             <For each={lines()}>
               {(line, idx) => <CodeLine line={line} index={idx()} />}
             </For>

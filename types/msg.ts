@@ -22,10 +22,18 @@ export type Recordify<T extends Record<'type' | 'data', any>> = {
   [K in T['type']]: Extract<T, { type: K }>['data']
 }
 
+export type SaveImgMsgData = {
+  format: string
+  base64: string
+}
+
 export type MsgRenderer2Main = {
   type: 'save-img'
-  data: string
+  data: SaveImgMsgData
 } | {
   type: 'set-config'
   data: Partial<Config>
+} | {
+  type: 'show-settings'
+  data?: undefined
 }

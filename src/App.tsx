@@ -1,12 +1,11 @@
-import { useColorMode, useCssVar } from '@solid-hooks/core/web'
+import { useColorMode } from '@solid-hooks/core/web'
+import { createRef } from '@solid-hooks/core'
 import CodeBlock from './components/CodeBlock'
 import ActionPanel from './components/ActionPanel'
-import { copyToClipboard, saveToLocal } from './utils/image'
-import { useConfig } from './state/editorSettings'
 import { vscode } from './utils/vscode'
 
 export function App() {
-  let codeBlock: HTMLDivElement | undefined
+  const codeblock = createRef<HTMLDivElement>()
   const [, setMode] = useColorMode({
     initialMode: document.body.getAttribute('data-vscode-theme-kind') === 'vscode-dark' ? 'dark' : 'light',
   })
@@ -14,16 +13,11 @@ export function App() {
     setMode(data)
   })
 
-  const config = useConfig()
-
   return (
     <>
-      <ActionPanel
-        $save={() => saveToLocal(config.format, codeBlock, config.scale)}
-        $copy={() => copyToClipboard(config.format, codeBlock, config.scale)}
-      />
+      <ActionPanel codeblockRef={codeblock} />
       <div class="max-w-full overflow-x-scroll">
-        <div ref={codeBlock} class="w-fit m-(y-0 x-auto b-6)">
+        <div ref={codeblock} class="w-fit m-(y-0 x-auto b-6)">
           <CodeBlock />
         </div>
       </div>

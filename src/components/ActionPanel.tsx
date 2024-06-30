@@ -1,4 +1,8 @@
-import { type defineEmits, useEmits } from '@solid-hooks/core'
+import { type Accessor, Show } from 'solid-js'
+import { useCopy } from '@solid-hooks/core/web'
+import { generateBlob, saveToLocal } from '../utils/image'
+import { useConfig } from '../state/editorSettings'
+import { vscode } from '../utils/vscode'
 
 function TextWithPrefixIcon(props: { icon: string, text: string }) {
   return (
@@ -8,14 +12,18 @@ function TextWithPrefixIcon(props: { icon: string, text: string }) {
     </div>
   )
 }
-
-type ActionPanelProps = defineEmits<{
-  save: VoidFunction
-  copy: VoidFunction
-}>
-
-export default function ActionPanel(props: ActionPanelProps) {
-  const emit = useEmits(props)
+function generate(part: any, mime: string): ClipboardItem {
+  return new ClipboardItem({ [mime]: new Blob([part], { type: mime }) })
+}
+export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivElement | undefined> }) {
+  const config = useConfig()
+  const { copy, isCopied } = useCopy()
+  const saveFn = () => saveToLocal(config.format, props.codeblockRef()!, config.scale)
+  const copyFn = async () => {
+    const blob = await generateBlob(config.format, props.codeblockRef()!, config.scale)
+    await copy(generate(blob, blob.type))
+  }
+  const showSettingsFn = () => vscode.sendToMain({ type: 'show-settings' })
 
   return (
     <div
@@ -23,15 +31,23 @@ export default function ActionPanel(props: ActionPanelProps) {
     >
       <button
         class="bg-gray-1 b-(2 solid gray-3) p-(x-3 y-2) m-(x-2 y-4) c-gray-7 rounded-2 hover:bg-gray-2 dark:(bg-gray-8 c-gray-1 hover:bg-gray-6 b-gray-5)"
-        onClick={() => emit('copy')}
+        onClick={copyFn}
       >
-        <TextWithPrefixIcon icon="i-lucide-copy" text="Copy" />
+        <Show when={!isCopied()} fallback={<TextWithPrefixIcon icon="i-lucide-check" text="Copied" />}>
+          <TextWithPrefixIcon icon="i-lucide-copy" text="Copy" />
+        </Show>
       </button>
       <button
         class="bg-gray-2 b-(2 solid gray-3) p-(x-3 y-2) m-(x-2 y-4) c-gray-8 rounded-2 hover:bg-gray-3 dark:(bg-gray-9 c-gray-2 hover:bg-gray-7 b-gray-6)"
-        onClick={() => emit('save')}
+        onClick={saveFn}
       >
         <TextWithPrefixIcon icon="i-lucide-download" text="Save" />
+      </button>
+      <button
+        class="bg-gray-2 b-(2 solid gray-3) p-(x-3 y-2) m-(x-2 y-4) c-gray-8 rounded-2 hover:bg-gray-3 dark:(bg-gray-9 c-gray-2 hover:bg-gray-7 b-gray-6)"
+        onClick={showSettingsFn}
+      >
+        <TextWithPrefixIcon icon="i-lucide-settings" text="Settings" />
       </button>
     </div>
   )

@@ -4,9 +4,12 @@ export type Config = {
   background: string
   boxShadow: 'small' | 'medium' | 'large'
   containerPadding: string
+  debounce: boolean
   roundedCorners: string
   scale: number
+  format: 'jpg' | 'png' | 'svg' | 'webp'
   showWindowControls: boolean
+  windowControlsColor: boolean
   showWindowTitle: boolean
   showLineNumbers: boolean
 }

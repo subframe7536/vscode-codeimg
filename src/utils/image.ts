@@ -16,12 +16,11 @@ function getFunctionByFormat(format: PicFormat) {
   }
 }
 
-export async function saveToLocal(format: PicFormat, el: HTMLElement = document.body, scale: number = 2) {
+export async function saveToLocal(format: PicFormat, el: HTMLElement, scale: number = 2) {
   const data = await getFunctionByFormat(format)(el, { scale })
   vscode.sendToMain({ type: 'save-img', data: { base64: data.substring(data.indexOf(',') + 1), format } })
 }
 
-export async function copyToClipboard(format: PicFormat, el: HTMLElement = document.body, scale: number = 2) {
-  const data = await domToBlob(el, { scale, type: format })
-  await navigator.clipboard.write([new ClipboardItem({ [data.type]: data })])
+export async function generateBlob(format: PicFormat, el: HTMLElement, scale: number = 2) {
+  return await domToBlob(el, { scale, type: format })
 }

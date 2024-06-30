@@ -2,7 +2,7 @@ import type { Disposable, ExtensionContext, Selection, WebviewPanel } from 'vsco
 import { ColorThemeKind, ViewColumn, commands, window, workspace } from 'vscode'
 import type { MsgMain2Renderer, MsgRenderer2Main } from '../types/msg'
 import { debounce, getConfig, saveImage, setupHtml, updateSettings } from './utils'
-import { EXTENSION_NAME, EXTENSION_NAME_LOWER } from './constant'
+import { EXTENSION_NAME, EXTENSION_NAME_LOWER, EXTENSION_SETTING_NAME } from './constant'
 
 let webviewPanel: WebviewPanel | undefined
 const _disposables: Disposable[] = []
@@ -63,6 +63,8 @@ export async function render(context: ExtensionContext): Promise<VoidFunction> {
                 selectionDispose = await bindSelectionEvents(message.data.debounce)
               }
               break
+            case 'show-settings':
+              await commands.executeCommand('workbench.action.openSettings', `@ext:${EXTENSION_SETTING_NAME}`)
           }
         },
         undefined,

@@ -12,6 +12,10 @@ Powered by `Solid.js`
 - Font: [Maple Mono](https://github.com/subframe7536/maple-font/tree/variable)
 - Theme: [Maple](https://github.com/subframe7536/vscode-theme-maple)
 
+## Why another one?
+
+The popular existing extensions lack maintenance and have limited customization options. I spent some weekend time creating this extension, hoping to add a more modern UI and additional configuration options.
+
 ## Settings
 
 The CodeImg extension allows you to customize various aspects of the code snippet's appearance and behavior. Here are the available settings:

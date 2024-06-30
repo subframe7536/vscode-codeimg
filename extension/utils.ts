@@ -1,7 +1,8 @@
 import type { ExtensionContext, Uri, Webview } from 'vscode'
 import { window, workspace } from 'vscode'
+import type { Promisable } from '@subframe7536/type-utils'
 import type { Config } from '../types/config'
-import type { BasicSettings } from '../types/msg'
+import type { BasicSettings, SaveImgMsgData } from '../types/msg'
 import { EXTENSION_NAME_LOWER } from './constant'
 
 export const DEV_SERVER = process.env.VITE_DEV_SERVER_URL
@@ -22,19 +23,19 @@ function getSettings(section: string, keys: string[]) {
 export async function updateSettings(settings: Partial<Config>) {
   const config = workspace.getConfiguration()
   for (const [key, value] of Object.entries(settings)) {
-    await config.update(key, value)
+    await config.update(`${EXTENSION_NAME_LOWER}.${key}`, value)
   }
 }
 
 let lastUsedImageUri: Uri | undefined
 
-export async function saveImage(data: string) {
+export async function saveImage(data: SaveImgMsgData) {
   const uri = await window.showSaveDialog({
-    filters: { Images: ['png'] },
+    filters: { Images: [data.format] },
     defaultUri: lastUsedImageUri,
   })
   lastUsedImageUri = uri
-  uri && await workspace.fs.writeFile(uri, Uint8Array.from(atob(data), c => c.charCodeAt(0)))
+  uri && await workspace.fs.writeFile(uri, Uint8Array.from(atob(data.base64), c => c.charCodeAt(0)))
 }
 
 export function getConfig() {
@@ -46,16 +47,22 @@ export function getConfig() {
     editorSettings.tabSize = tabSize as number
   }
 
-  const extensionSettings = getSettings(EXTENSION_NAME_LOWER, [
+  /// keep-sorted
+  const items: (keyof Config)[] = [
     'background',
     'boxShadow',
     'containerPadding',
+    'debounce',
+    'format',
     'roundedCorners',
-    'showWindowControls',
-    'showWindowTitle',
     'scale',
     'showLineNumbers',
-  ] satisfies (keyof Config)[]) as Config
+    'showWindowControls',
+    'showWindowTitle',
+    'windowControlsColor',
+  ]
+
+  const extensionSettings = getSettings(EXTENSION_NAME_LOWER, items) as Config
 
   let windowTitle = ''
   if (editor && extensionSettings.showWindowTitle) {
@@ -67,5 +74,13 @@ export function getConfig() {
     ...editorSettings,
     ...extensionSettings,
     windowTitle,
+  }
+}
+
+export function debounce(fn: (...args: any[]) => Promisable<void>, delay: number) {
+  let timer: NodeJS.Timeout | null
+  return (...args: any[]) => {
+    timer && clearTimeout(timer)
+    timer = setTimeout(() => fn(...args), delay)
   }
 }

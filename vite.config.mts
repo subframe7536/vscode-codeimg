@@ -13,6 +13,13 @@ export default defineConfig({
         csp: `<meta http-equiv="Content-Security-Policy" content="default-src 'none'; img-src {{cspSource}} data: https: ; style-src {{cspSource}} 'unsafe-inline'; script-src 'nonce-{{nonce}}' 'unsafe-eval';">`,
       },
     }),
-    cleanCss({ level: 2 }),
+    cleanCss({
+      level: {
+        2: {
+          restructureRules: true,
+          mergeSemantically: true,
+        },
+      },
+    }),
   ],
 })

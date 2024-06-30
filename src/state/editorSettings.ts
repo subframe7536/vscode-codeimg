@@ -15,6 +15,9 @@ export const [ConfigProvider, useConfig] = createContextProvider(() => {
     showWindowControls: true,
     showWindowTitle: true,
     tabSize: 2,
+    debounce: true,
+    windowControlsColor: true,
+    format: 'png',
   })
   vscode.listen('get-config', data => setConfig(reconcile(data)))
   return config

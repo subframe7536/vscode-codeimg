@@ -1,15 +1,9 @@
 import { defineConfig } from 'unocss/vite'
-import { presetAttributify, presetIcons, presetUno, transformerVariantGroup } from 'unocss'
-import presetAnimations from 'unocss-preset-animations'
-import { presetShadcn } from 'unocss-preset-shadcn'
+import { presetIcons, presetUno, transformerVariantGroup } from 'unocss'
 
 export default defineConfig({
   presets: [
-    presetUno({
-      dark: {
-        dark: '[data-kb-theme="dark"]',
-      },
-    }),
+    presetUno(),
     presetIcons({
       scale: 1.2,
       unit: 'rem',
@@ -18,10 +12,12 @@ export default defineConfig({
         'vertical-align': 'middle',
       },
     }),
-    presetAnimations(),
-    presetShadcn({
-      color: 'slate',
-    }),
+  ],
+  shortcuts: [
+    {
+      'ui-outline': 'outline-none ring-(2 ring offset-2)',
+    },
+    [/ui-disable(-\d+)?$/, ([, num]) => `cursor-not-allowed opacity-${num ? num.substring(1) : 50} pointer-events-none`],
   ],
   rules: [
     [/^config-style-padding$/, () => ({ padding: 'var(--padding)' })],
@@ -30,7 +26,9 @@ export default defineConfig({
     [/^config-style-liga$/, () => ({ 'font-feature-settings': 'var(--liga)' })],
     [/^config-style-tab$/, () => ({ 'tab-size': 'var(--tab,2)' })],
     [/^title-size$/, () => ({ 'font-size': 'calc(var(--vscode-editor-font-size) * 0.75)' })],
-    [/^glass-border$/, () => ({ 'box-shadow': 'rgba(0 0 0 / 0.1) 0px 0px 0px 1px, rgba(0 0 0 / 0.9) 0px 0px 0px 1px, rgba(255 255 255 / 0.4) 0px 0px 0px 1.5px inset, rgba(0 0 0 / 0.4) 0px 30px 55px 0px' })],
+    [/^glass-border-dark$/, () => ({ 'box-shadow': '0 0 0 1px rgba(0 0 0 / 0.1), 0 0 0 1px rgba(0 0 0 / 0.9), inset 0 0 0 1.5px rgba(255 255 255 / 0.4), 0 30px 55px 0 rgba(0 0 0 / 0.4)' })],
+    [/^glass-border-light$/, () => (({ 'box-shadow': '0 0 15px rgba(0 0 0 / .2), 0 0 0 1px rgba(0 0 0 / .1), 0 0 0 1px rgb(0 0 0 / .05), inset 0 0 0 1px rgba(255 255 255 / .15), rgba(0 0 0 / 0.45) 0 25px 20px -20px' })),
+    ],
   ],
   transformers: [
     transformerVariantGroup(),

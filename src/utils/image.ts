@@ -18,7 +18,7 @@ function getFunctionByFormat(format: PicFormat) {
 
 export async function saveToLocal(format: PicFormat, el: HTMLElement = document.body, scale: number = 2) {
   const data = await getFunctionByFormat(format)(el, { scale })
-  vscode.sendToMain({ type: 'save-img', data: data.substring(data.indexOf(',') + 1) })
+  vscode.sendToMain({ type: 'save-img', data: { base64: data.substring(data.indexOf(',') + 1), format } })
 }
 
 export async function copyToClipboard(format: PicFormat, el: HTMLElement = document.body, scale: number = 2) {

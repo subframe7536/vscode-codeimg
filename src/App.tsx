@@ -15,23 +15,18 @@ export function App() {
   })
 
   const config = useConfig()
-  useCssVar('bg', () => config.background)
-  useCssVar('padding', () => config.containerPadding)
-  useCssVar('radius', () => config.roundedCorners)
-  useCssVar('liga', () => config.fontLigatures)
-  useCssVar('tab', () => `${config.tabSize}`)
 
   return (
     <>
+      <ActionPanel
+        $save={() => saveToLocal(config.format, codeBlock, config.scale)}
+        $copy={() => copyToClipboard(config.format, codeBlock, config.scale)}
+      />
       <div class="max-w-full overflow-x-scroll">
         <div ref={codeBlock} class="w-fit m-(y-0 x-auto b-6)">
           <CodeBlock />
         </div>
       </div>
-      <ActionPanel
-        $save={format => saveToLocal(format, codeBlock, config.scale)}
-        $copy={format => copyToClipboard(format, codeBlock, config.scale)}
-      />
     </>
   )
 }

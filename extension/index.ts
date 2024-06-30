@@ -7,7 +7,7 @@ let dispose: VoidFunction | undefined
 export function activate(context: ExtensionContext) {
   context.subscriptions.push(
     commands.registerCommand(contributes.commands[0].command, async () => {
-      dispose = render(context)
+      dispose = await render(context)
     }),
   )
 }

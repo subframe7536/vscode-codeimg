@@ -1,7 +1,7 @@
 import type { Disposable, ExtensionContext, Selection, WebviewPanel } from 'vscode'
 import { ColorThemeKind, ViewColumn, commands, window, workspace } from 'vscode'
 import type { MsgMain2Renderer, MsgRenderer2Main } from '../types/msg'
-import { DEV_SERVER, getConfig, saveImage, setupHtml, updateSettings } from './utils'
+import { debounce, getConfig, saveImage, setupHtml, updateSettings } from './utils'
 import { EXTENSION_NAME, EXTENSION_NAME_LOWER } from './constant'
 
 let webviewPanel: WebviewPanel | undefined
@@ -11,7 +11,7 @@ export async function sendToWebview(message: MsgMain2Renderer) {
   await webviewPanel?.webview.postMessage(message)
 }
 
-async function handleSelection(selections: readonly Selection[] | undefined = window.activeTextEditor?.selections) {
+async function copySelectionCode(selections: readonly Selection[] | undefined = window.activeTextEditor?.selections) {
   if (selections?.length === 1 && !selections[0].isEmpty) {
     await commands.executeCommand('editor.action.clipboardCopyWithSyntaxHighlightingAction')
     await sendToWebview({
@@ -21,7 +21,9 @@ async function handleSelection(selections: readonly Selection[] | undefined = wi
   }
 }
 
-export function render(context: ExtensionContext): VoidFunction {
+export async function render(context: ExtensionContext): Promise<VoidFunction> {
+  let selectionDispose: Disposable
+
   if (webviewPanel) {
     webviewPanel.reveal(ViewColumn.Beside)
   } else {
@@ -36,6 +38,7 @@ export function render(context: ExtensionContext): VoidFunction {
       webviewPanel?.dispose()
       webviewPanel = undefined
 
+      selectionDispose.dispose()
       // Dispose of all disposables (i.e. commands) for the current webview panel
       while (_disposables.length) {
         const disposable = _disposables.pop()
@@ -55,6 +58,10 @@ export function render(context: ExtensionContext): VoidFunction {
               break
             case 'set-config':
               await updateSettings(message.data)
+              if (message.data.debounce !== undefined) {
+                selectionDispose.dispose()
+                selectionDispose = await bindSelectionEvents(message.data.debounce)
+              }
               break
           }
         },
@@ -62,12 +69,13 @@ export function render(context: ExtensionContext): VoidFunction {
         _disposables,
       ),
     )
-    sendToWebview({ type: 'get-config', data: getConfig() })
   }
+
+  await sendToWebview({ type: 'get-config', data: getConfig() })
+  selectionDispose = await bindSelectionEvents()
 
   _disposables.push(
     bindThemeChange(),
-    bindSelectionEvents(),
     bindConfigurationEvents(),
   )
 
@@ -76,7 +84,7 @@ export function render(context: ExtensionContext): VoidFunction {
 
 function bindThemeChange() {
   return window.onDidChangeActiveColorTheme(
-    ({ kind }) => {
+    async ({ kind }) => {
       let data: 'dark' | 'light'
       switch (kind) {
         case ColorThemeKind.HighContrast:
@@ -88,23 +96,24 @@ function bindThemeChange() {
           data = 'light'
           break
       }
-      // handleSelection()
-      sendToWebview({ type: 'change-theme', data })
+      await sendToWebview({ type: 'change-theme', data })
     },
   )
 }
-function bindSelectionEvents() {
-  handleSelection()
-  DEV_SERVER && setImmediate(() => setTimeout(() => handleSelection(), 1000))
+
+async function bindSelectionEvents(useDebounce = true) {
+  await copySelectionCode()
   return window.onDidChangeTextEditorSelection(
-    e => handleSelection(e.selections),
+    useDebounce
+      ? debounce(async e => await copySelectionCode(e.selections), 250)
+      : e => copySelectionCode(e.selections),
   )
 }
 
 function bindConfigurationEvents() {
-  return workspace.onDidChangeConfiguration((e) => {
+  return workspace.onDidChangeConfiguration(async (e) => {
     if (e.affectsConfiguration(EXTENSION_NAME_LOWER) || e.affectsConfiguration('editor')) {
-      sendToWebview({ type: 'get-config', data: getConfig() })
+      await sendToWebview({ type: 'get-config', data: getConfig() })
     }
   })
 }

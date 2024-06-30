@@ -1,9 +1,16 @@
 {
   "publisher": "subframe7536",
-  "name": "vscode-codeimg",
+  "name": "codeimg",
+  "displayName": "CodeImg",
   "version": "0.0.1",
+  "description": "Generate beautiful image for you code with your favorite font and theme",
   "author": "subframe7536",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/subframe7536/vscode-codeimg"
+  },
   "main": "dist/extension/index.js",
+  "icon": "./resources/icon.png",
   "engines": {
     "node": ">=18",
     "vscode": "^1.75.0"
@@ -13,7 +20,7 @@
     "commands": [
       {
         "command": "codeimg.generate",
-        "title": "codeimg: generate📷"
+        "title": "CodeImg: generate📷"
       }
     ],
     "menus": {
@@ -50,6 +57,12 @@
           "default": "3rem",
           "description": "The padding for the snippet's container"
         },
+        "codeimg.debounce": {
+          "scope": "resource",
+          "type": "boolean",
+          "default": "true",
+          "description": "Whether to update the code snippet with debounce when selection changes"
+        },
         "codeimg.roundedCorners": {
           "scope": "resource",
           "type": "string",
@@ -62,11 +75,29 @@
           "default": 2,
           "description": "The scale of the screenshot"
         },
+        "codeimg.format": {
+          "scope": "resource",
+          "type": "string",
+          "default": "png",
+          "enum": [
+            "jpg",
+            "png",
+            "svg",
+            "webp"
+          ],
+          "description": "The CSS box-shadow for the snippet"
+        },
         "codeimg.showWindowControls": {
           "scope": "resource",
           "type": "boolean",
           "default": true,
           "description": "Display OS X style window controls"
+        },
+        "codeimg.windowControlsColor": {
+          "scope": "resource",
+          "type": "boolean",
+          "default": true,
+          "description": "Add color in window controls"
         },
         "codeimg.showWindowTitle": {
           "scope": "resource",
@@ -85,35 +116,32 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:ui": "vite serve dev",
     "build": "tsc && vite build",
-    "preview": "vite preview"
+    "update-config": "node config.mjs",
+    "preview": "pnpm run build && vsce package --no-dependencies",
+    "release": "pnpm run build && bumpp --all && vsce publish --no-dependencies"
   },
   "devDependencies": {
-    "@iconify-json/lucide": "1.1.188",
-    "@kobalte/core": "^0.13.2",
-    "@solid-hooks/core": "^0.3.0",
-    "@solid-primitives/media": "^2.2.9",
-    "@solid-primitives/utils": "^6.2.3",
-    "@subframe7536/eslint-config": "^0.6.5",
+    "@iconify-json/lucide": "^1.1.196",
+    "@solid-hooks/core": "^0.3.4",
+    "@subframe7536/eslint-config": "^0.6.6",
     "@subframe7536/type-utils": "^0.1.6",
-    "@tomjs/vite-plugin-vscode": "^2.3.0",
-    "@tomjs/vscode-extension-webview": "^1.2.0",
-    "@types/node": "^20.13.0",
-    "@types/vscode": "^1.89.0",
+    "@tomjs/vite-plugin-vscode": "^2.5.3",
+    "@tomjs/vscode-extension-webview": "^1.3.3",
+    "@types/node": "^20.14.9",
+    "@types/vscode": "^1.75.0",
     "@types/vscode-webview": "^1.57.5",
-    "@unocss/reset": "^0.60.4",
-    "@vscode/webview-ui-toolkit": "^1.4.0",
-    "class-variance-authority": "^0.7.0",
-    "clsx": "^2.1.1",
-    "eslint": "^9.4.0",
-    "eslint-plugin-solid": "^0.14.0",
+    "@unocss/reset": "^0.61.0",
+    "@vscode/vsce": "^2.29.0",
+    "bumpp": "^9.4.1",
+    "eslint": "^9.6.0",
+    "eslint-plugin-solid": "^0.14.1",
     "modern-screenshot": "^4.4.39",
     "solid-js": "1.8.17",
-    "typescript": "^5.4.5",
-    "unocss": "^0.60.4",
-    "unocss-preset-animations": "^1.0.2",
-    "unocss-preset-shadcn": "^0.3.0",
-    "vite": "^5.2.12",
+    "typescript": "^5.5.2",
+    "unocss": "^0.61.0",
+    "vite": "^5.3.2",
     "vite-plugin-clean-css": "0.0.3",
     "vite-plugin-solid": "^2.10.2"
   }

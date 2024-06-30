@@ -12,16 +12,14 @@ function TextWithPrefixIcon(props: { icon: string, text: string }) {
     </div>
   )
 }
-function generate(part: any, mime: string): ClipboardItem {
-  return new ClipboardItem({ [mime]: new Blob([part], { type: mime }) })
-}
+
 export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivElement | undefined> }) {
   const config = useConfig()
   const { copy, isCopied } = useCopy()
   const saveFn = () => saveToLocal(config.format, props.codeblockRef()!, config.scale)
   const copyFn = async () => {
     const blob = await generateBlob(config.format, props.codeblockRef()!, config.scale)
-    await copy(generate(blob, blob.type))
+    await copy(new ClipboardItem({ [blob.type]: blob }))
   }
   const showSettingsFn = () => vscode.sendToMain({ type: 'show-settings' })
 

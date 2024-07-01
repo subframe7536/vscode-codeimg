@@ -18,6 +18,7 @@ export const [ConfigProvider, useConfig] = createContextProvider(() => {
     debounce: true,
     windowControlsColor: true,
     format: 'png',
+    border: true,
   })
   vscode.listen('get-config', data => setConfig(reconcile(data)))
   return config

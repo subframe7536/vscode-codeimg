@@ -60,6 +60,8 @@ export default function CodeBlock() {
 
   const boxShadow = createMemo(() => {
     switch (config.boxShadow) {
+      case 'none':
+        return 'none'
       case 'small':
         return 'sm'
       case 'medium':
@@ -73,7 +75,7 @@ export default function CodeBlock() {
       <div class={`shadow-${boxShadow()} shadow-(gray-600 op-50) config-style-radius`}>
         <div
           style={style()}
-          class="w-fit min-w-80 p-(t-2 r-7 b-4 l-3) bg-$vscode-editor-background relative config-style-radius glass-border-light dark:glass-border-dark"
+          class={`w-fit min-w-80 p-(t-2 r-7 b-4 l-3) bg-$vscode-editor-background relative config-style-radius ${config.border ? 'glass-border-light dark:glass-border-dark' : ''}`}
         >
           <Show when={config.showWindowControls}>
             <div

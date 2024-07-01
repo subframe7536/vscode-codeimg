@@ -50,6 +50,7 @@ export function getConfig() {
   /// keep-sorted
   const items: (keyof Config)[] = [
     'background',
+    'border',
     'boxShadow',
     'containerPadding',
     'debounce',

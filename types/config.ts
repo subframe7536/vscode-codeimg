@@ -2,8 +2,9 @@
 
 export type Config = {
   background: string
-  boxShadow: 'small' | 'medium' | 'large'
+  boxShadow: 'none' | 'small' | 'medium' | 'large'
   containerPadding: string
+  border: boolean
   debounce: boolean
   roundedCorners: string
   scale: number

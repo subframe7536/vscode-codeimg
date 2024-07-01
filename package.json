@@ -38,24 +38,31 @@
           "scope": "resource",
           "type": "string",
           "default": "linear-gradient(345deg, rgb(180 218 255) 0%, rgb(232 209 255) 100%)",
-          "description": "The background of the snippet's container"
+          "description": "The CSS background of the snippet's container. If you don't want to it, set it `none`"
         },
         "codeimg.boxShadow": {
           "scope": "resource",
           "type": "string",
           "default": "medium",
           "enum": [
+            "none",
             "small",
             "medium",
             "large"
           ],
-          "description": "The CSS box-shadow for the snippet"
+          "description": "The CSS box-shadow for the snippet's container. If you don't want to it, set it `none`"
         },
         "codeimg.containerPadding": {
           "scope": "resource",
           "type": "string",
           "default": "3rem",
-          "description": "The padding for the snippet's container"
+          "description": "The CSS padding for the snippet's container. If you don't want to it, set it `none`"
+        },
+        "codeimg.border": {
+          "scope": "resource",
+          "type": "boolean",
+          "default": true,
+          "description": "Border for the snippet's container. Only in dark theme"
         },
         "codeimg.debounce": {
           "scope": "resource",
@@ -67,7 +74,7 @@
           "scope": "resource",
           "type": "string",
           "default": "1rem",
-          "description": "Use rounded corners for the window"
+          "description": "The CSS rounded corners for the snippet's container. If you don't want to it, set it `none`"
         },
         "codeimg.scale": {
           "scope": "resource",
@@ -85,7 +92,7 @@
             "svg",
             "webp"
           ],
-          "description": "The CSS box-shadow for the snippet"
+          "description": "The format of the screenshot"
         },
         "codeimg.showWindowControls": {
           "scope": "resource",

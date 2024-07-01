@@ -47,6 +47,7 @@ export default defineConfig({
     },
   ],
   safelist: [
+    'shadow-none',
     'shadow-sm',
     'shadow-lg',
     'shadow-2xl',

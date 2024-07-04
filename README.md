@@ -19,57 +19,57 @@ The popular existing extensions lack maintenance and have limited customization 
 ## Settings
 
 The CodeImg extension allows you to customize various aspects of the code snippet's appearance and behavior. Here are the available settings:
-
 ### `codeimg.background`
 
-The background of the snippet's container.
-
+The CSS background style for the snippet's container. Set it to `"none"` if you do not want a background.
 - **Type:** `string`
-- **Default:** `"linear-gradient(345deg, rgb(180 218 255) 0%, rgb(232 209 255) 100%)"`
+- **Default:** `"linear-gradient(345deg, rgb(180, 218, 255) 0%, rgb(232, 209, 255) 100%)"`
 
 ### `codeimg.boxShadow`
 
-The CSS box-shadow for the snippet.
-
+The CSS box-shadow style for the snippet's container. Set it to `"none"` if you do not want a box-shadow.
 - **Type:** `string`
 - **Default:** `"medium"`
-- **Possible Values:** `"small"`, `"medium"`, `"large"`
+- **Options:** `"none"`, `"small"`, `"medium"`, `"large"`
 
 ### `codeimg.containerPadding`
 
 The padding for the snippet's container.
-
 - **Type:** `string`
 - **Default:** `"3rem"`
 
+### `codeimg.border`
+
+Border for the snippet's container, which is only visible in the dark theme.
+- **Type:** `boolean`
+- **Default:** `true`
+
 ### `codeimg.debounce`
 
-Whether to update the code snippet with debounce when the selection changes.
+Whether to update the code snippet with debounce when selection changes.
 
 - **Type:** `boolean`
 - **Default:** `true`
 
 ### `codeimg.roundedCorners`
 
-Use rounded corners for the window.
-
+The CSS rounded corners style for the snippet's container. Set it to `"none"` if you do not want rounded corners.
 - **Type:** `string`
 - **Default:** `"1rem"`
 
 ### `codeimg.scale`
 
 The scale of the screenshot.
-
 - **Type:** `integer`
 - **Default:** `2`
 
 ### `codeimg.format`
 
-The image format for the code snippet.
+The format of the screenshot.
 
 - **Type:** `string`
 - **Default:** `"png"`
-- **Possible Values:** `"jpg"`, `"png"`, `"svg"`, `"webp"`
+- **Options:** `"jpg"`, `"png"`, `"svg"`, `"webp"`
 
 ### `codeimg.showWindowControls`
 

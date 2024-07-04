@@ -3,6 +3,7 @@ import { useCssVar, usePaste } from '@solid-hooks/core/web'
 import { createRef } from '@solid-hooks/core'
 import { vscode } from '../utils/vscode'
 import { useConfig } from '../state/editorSettings'
+import { useAction } from '../state/action'
 
 function parseHTML(html: string) {
   const template = document.createElement('template')
@@ -27,9 +28,9 @@ function CodeLine(props: { line: Element, index: number }) {
 export default function CodeBlock() {
   const lines = createRef<Element[]>([])
   const style = createRef('')
-  const title = createRef('')
 
   const config = useConfig()
+  const { title, isFlashing: isCoping } = useAction()
 
   useCssVar('bg', () => config.background)
   useCssVar('padding', () => config.containerPadding)
@@ -71,7 +72,7 @@ export default function CodeBlock() {
     }
   })
   return (
-    <div class="config-style-(bg padding liga tab) w-fit">
+    <div class={`config-style-(bg padding liga tab radius) w-fit ${isCoping() ? 'flash' : ''}`}>
       <div class={`shadow-${boxShadow()} shadow-(gray-600 op-50) config-style-radius`}>
         <div
           style={style()}

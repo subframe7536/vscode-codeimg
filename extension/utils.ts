@@ -1,4 +1,4 @@
-import type { ExtensionContext, Uri, Webview } from 'vscode'
+import { type ExtensionContext, Uri, type Webview } from 'vscode'
 import { window, workspace } from 'vscode'
 import type { Promisable } from '@subframe7536/type-utils'
 import type { Config } from '../types/config'
@@ -30,6 +30,10 @@ export async function updateSettings(settings: Partial<Config>) {
 let lastUsedImageUri: Uri | undefined
 
 export async function saveImage(data: SaveImgMsgData) {
+  if (!lastUsedImageUri) {
+    const dir = workspace.workspaceFolders?.[0]?.uri.fsPath ?? ''
+    lastUsedImageUri = Uri.file(`${dir}/${data.fileName}`)
+  }
   const uri = await window.showSaveDialog({
     filters: { Images: [data.format] },
     defaultUri: lastUsedImageUri,
@@ -84,4 +88,8 @@ export function debounce(fn: (...args: any[]) => Promisable<void>, delay: number
     timer && clearTimeout(timer)
     timer = setTimeout(() => fn(...args), delay)
   }
+}
+
+export function getEditorTitle(): string {
+  return window.activeTextEditor?.document.uri.path.split('/').pop() ?? ''
 }

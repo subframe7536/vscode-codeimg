@@ -1,7 +1,7 @@
 import type { Disposable, ExtensionContext, Selection, WebviewPanel } from 'vscode'
 import { ColorThemeKind, ViewColumn, commands, window, workspace } from 'vscode'
 import type { MsgMain2Renderer, MsgRenderer2Main } from '../types/msg'
-import { debounce, getConfig, saveImage, setupHtml, updateSettings } from './utils'
+import { debounce, getConfig, getEditorTitle, saveImage, setupHtml, updateSettings } from './utils'
 import { EXTENSION_NAME, EXTENSION_NAME_LOWER, EXTENSION_SETTING_NAME } from './constant'
 
 let webviewPanel: WebviewPanel | undefined
@@ -16,7 +16,7 @@ async function copySelectionCode(selections: readonly Selection[] | undefined = 
     await commands.executeCommand('editor.action.clipboardCopyWithSyntaxHighlightingAction')
     await sendToWebview({
       type: 'update-code',
-      data: window.activeTextEditor?.document.uri.path.split('/').pop() ?? '',
+      data: getEditorTitle(),
     })
   }
 }

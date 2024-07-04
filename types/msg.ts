@@ -23,6 +23,7 @@ export type Recordify<T extends Record<'type' | 'data', any>> = {
 }
 
 export type SaveImgMsgData = {
+  fileName: string
   format: string
   base64: string
 }

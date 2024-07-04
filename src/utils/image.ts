@@ -16,9 +16,16 @@ function getFunctionByFormat(format: PicFormat) {
   }
 }
 
-export async function saveToLocal(format: PicFormat, el: HTMLElement, scale: number = 2) {
+export async function saveToLocal(format: PicFormat, el: HTMLElement, title: string, scale: number = 2) {
   const data = await getFunctionByFormat(format)(el, { scale })
-  vscode.sendToMain({ type: 'save-img', data: { base64: data.substring(data.indexOf(',') + 1), format } })
+  vscode.sendToMain({
+    type: 'save-img',
+    data: {
+      base64: data.substring(data.indexOf(',') + 1),
+      format,
+      fileName: `${title.split('.')[0] ?? 'code'}.${format}`,
+    },
+  })
 }
 
 export async function generateBlob(format: PicFormat, el: HTMLElement, scale: number = 2) {

@@ -3,6 +3,7 @@ import { createRef } from '@solid-hooks/core'
 import CodeBlock from './components/CodeBlock'
 import ActionPanel from './components/ActionPanel'
 import { vscode } from './utils/vscode'
+import { useAction } from './state/action'
 
 export function App() {
   const codeblock = createRef<HTMLDivElement>()

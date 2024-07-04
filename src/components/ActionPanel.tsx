@@ -1,8 +1,8 @@
 import { type Accessor, Show } from 'solid-js'
-import { useCopy } from '@solid-hooks/core/web'
 import { generateBlob, saveToLocal } from '../utils/image'
 import { useConfig } from '../state/editorSettings'
 import { vscode } from '../utils/vscode'
+import { useAction } from '../state/action'
 
 function TextWithPrefixIcon(props: { icon: string, text: string }) {
   return (
@@ -15,12 +15,17 @@ function TextWithPrefixIcon(props: { icon: string, text: string }) {
 
 export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivElement | undefined> }) {
   const config = useConfig()
-  const { copy, isCopied } = useCopy()
-  const saveFn = () => saveToLocal(config.format, props.codeblockRef()!, config.scale)
-  const copyFn = async () => {
-    const blob = await generateBlob(config.format, props.codeblockRef()!, config.scale)
-    await copy(new ClipboardItem({ [blob.type]: blob }))
+  const { copy, isCopied, title, showFlashing } = useAction()
+  const saveFn = () => {
+    showFlashing()
+    saveToLocal(config.format, props.codeblockRef()!, title(), config.scale)
   }
+  // eslint-disable-next-line solid/reactivity
+  const copyFn = () => copy(() => {
+    showFlashing()
+    return generateBlob(config.format, props.codeblockRef()!, config.scale)
+  })
+
   const showSettingsFn = () => vscode.sendToMain({ type: 'show-settings' })
 
   return (

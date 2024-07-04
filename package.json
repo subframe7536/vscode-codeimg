@@ -137,7 +137,7 @@
     "@tomjs/vite-plugin-vscode": "^2.5.5",
     "@tomjs/vscode-extension-webview": "^1.3.3",
     "@types/node": "^20.14.9",
-    "@types/vscode": "^1.90.0",
+    "@types/vscode": "1.75.0",
     "@types/vscode-webview": "^1.57.5",
     "@unocss/reset": "^0.61.0",
     "@vscode/vsce": "^2.29.0",

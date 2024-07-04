@@ -16,7 +16,7 @@ export default defineConfig({
   shortcuts: [
     {
       'ui-outline': 'outline-none ring-(2 ring offset-2)',
-      'flash': 'overflow-hidden pos-relative after:(animate-[move_.75s_ease-in-out] content-empty absolute -translate-x-100% bg-[linear-gradient(45deg,#fff0_40%,#fff9,#fff0_60%)] -inset-10%)',
+      'flash': 'overflow-hidden pos-relative after:(animate-[move_.75s_ease-in-out] content-empty absolute -translate-x-100% bg-[linear-gradient(45deg,#fff0_40%,#fff9,#fff0_60%)] -inset-50%)',
     },
     [/ui-disable(-\d+)?$/, ([, num]) => `cursor-not-allowed opacity-${num ? num.substring(1) : 50} pointer-events-none`],
   ],

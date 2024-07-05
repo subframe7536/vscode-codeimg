@@ -20,6 +20,9 @@ export const [ConfigProvider, useConfig] = createContextProvider(() => {
     format: 'png',
     border: true,
   })
-  vscode.listen('get-config', data => setConfig(reconcile(data)))
+  vscode.listen('get-config', (data) => {
+    console.log(data)
+    setConfig(reconcile(data))
+  })
   return config
 })

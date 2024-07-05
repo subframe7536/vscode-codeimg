@@ -1,8 +1,8 @@
 import type { Config } from './config'
 
 export type BasicSettings = {
-  fontLigatures: string
-  tabSize: number
+  fontLigatures: boolean | string
+  tabSize: number | string
 }
 
 export type AppConfig = Config & BasicSettings

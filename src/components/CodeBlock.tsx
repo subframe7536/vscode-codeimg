@@ -35,7 +35,14 @@ export default function CodeBlock() {
   useCssVar('bg', () => config.background)
   useCssVar('padding', () => config.containerPadding)
   useCssVar('radius', () => config.roundedCorners)
-  useCssVar('liga', () => config.fontLigatures)
+  useCssVar(
+    'liga',
+    () => typeof config.fontLigatures === 'string'
+      ? config.fontLigatures
+      : config.fontLigatures
+        ? '"calt", "liga"'
+        : 'none',
+  )
   useCssVar('tab', () => `${config.tabSize}`)
 
   const paste = usePaste({

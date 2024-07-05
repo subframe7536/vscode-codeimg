@@ -27,19 +27,23 @@ export async function updateSettings(settings: Partial<Config>) {
   }
 }
 
-let lastUsedImageUri: Uri | undefined
+let lastDir: string | undefined
 
 export async function saveImage(data: SaveImgMsgData) {
-  if (!lastUsedImageUri) {
-    const dir = workspace.workspaceFolders?.[0]?.uri.fsPath ?? ''
-    lastUsedImageUri = Uri.file(`${dir}/${data.fileName}`)
+  if (!lastDir) {
+    lastDir = workspace.workspaceFolders?.[0]?.uri.fsPath ?? ''
   }
   const uri = await window.showSaveDialog({
     filters: { Images: [data.format] },
-    defaultUri: lastUsedImageUri,
+    defaultUri: Uri.file(`${lastDir}/${data.fileName}`),
   })
-  lastUsedImageUri = uri
-  uri && await workspace.fs.writeFile(uri, Uint8Array.from(atob(data.base64), c => c.charCodeAt(0)))
+  if (uri) {
+    await workspace.fs.writeFile(
+      uri,
+      Uint8Array.from(atob(data.base64), c => c.charCodeAt(0)),
+    )
+    lastDir = uri.fsPath.split('/').slice(0, -1).join('/')
+  }
 }
 
 export function getConfig() {

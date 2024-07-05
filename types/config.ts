@@ -8,7 +8,7 @@ export type Config = {
   debounce: boolean
   roundedCorners: string
   scale: number
-  format: 'jpg' | 'png' | 'svg' | 'webp'
+  format: 'jpg' | 'png' | 'webp'
   showWindowControls: boolean
   windowControlsColor: boolean
   showWindowTitle: boolean

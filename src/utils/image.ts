@@ -1,7 +1,7 @@
-import { domToBlob, domToJpeg, domToPng, domToSvg, domToWebp } from 'modern-screenshot'
+import { domToBlob, domToJpeg, domToPng, domToWebp } from 'modern-screenshot'
 import { vscode } from './vscode'
 
-export type PicFormat = 'png' | 'jpg' | 'svg' | 'webp'
+export type PicFormat = 'png' | 'jpg' | 'webp'
 
 function getFunctionByFormat(format: PicFormat) {
   switch (format) {
@@ -9,14 +9,12 @@ function getFunctionByFormat(format: PicFormat) {
       return domToPng
     case 'jpg':
       return domToJpeg
-    case 'svg':
-      return domToSvg
     case 'webp':
       return domToWebp
   }
 }
 
-export async function saveToLocal(format: PicFormat, el: HTMLElement, title: string, scale: number = 2) {
+export async function saveToLocal(format: PicFormat, el: HTMLElement, title: string, scale: number) {
   const data = await getFunctionByFormat(format)(el, { scale })
   vscode.sendToMain({
     type: 'save-img',
@@ -28,6 +26,6 @@ export async function saveToLocal(format: PicFormat, el: HTMLElement, title: str
   })
 }
 
-export async function generateBlob(format: PicFormat, el: HTMLElement, scale: number = 2) {
+export async function generateBlob(format: PicFormat, el: HTMLElement, scale: number) {
   return await domToBlob(el, { scale, type: format })
 }

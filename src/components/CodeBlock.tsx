@@ -79,7 +79,7 @@ export default function CodeBlock() {
     }
   })
   return (
-    <div class={`config-style-(bg padding liga tab radius) w-fit ${isCoping() ? 'flash' : ''}`}>
+    <div class={`config-style-(bg padding liga tab) w-fit ${isCoping() ? 'flash' : ''}`}>
       <div class={`shadow-${boxShadow()} shadow-(gray-600 op-50) config-style-radius`}>
         <div
           style={style()}

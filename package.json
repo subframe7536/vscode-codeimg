@@ -89,7 +89,6 @@
           "enum": [
             "jpg",
             "png",
-            "svg",
             "webp"
           ],
           "description": "The format of the screenshot"

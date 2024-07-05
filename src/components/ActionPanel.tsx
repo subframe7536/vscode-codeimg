@@ -30,7 +30,7 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
 
   return (
     <div
-      class="rounded-2 w-fit m-(x-auto y-0) font-$vscode-editor-font-family select-none transition-(all ease-out duration-200) b-20 hover:border-$vscode-focusBorder"
+      class="rounded-2 w-fit m-(x-auto y-0) font-$vscode-editor-font-family select-none hover:border-$vscode-focusBorder *:transition"
     >
       <button
         class="bg-gray-1 b-(2 solid gray-3) p-(x-3 y-2) m-(x-2 y-4) c-gray-7 rounded-2 hover:bg-gray-2 dark:(bg-gray-8 c-gray-1 hover:bg-gray-6 b-gray-5)"

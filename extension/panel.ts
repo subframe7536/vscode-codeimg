@@ -25,7 +25,7 @@ export async function render(context: ExtensionContext): Promise<VoidFunction> {
   let selectionDispose: Disposable
 
   if (webviewPanel) {
-    webviewPanel.reveal(ViewColumn.Beside)
+    webviewPanel.reveal(ViewColumn.Beside, true)
   } else {
     webviewPanel = window.createWebviewPanel(
       EXTENSION_NAME,
@@ -50,6 +50,11 @@ export async function render(context: ExtensionContext): Promise<VoidFunction> {
 
     webviewPanel.webview.html = setupHtml(webviewPanel.webview, context)
     _disposables.push(
+      webviewPanel.onDidChangeViewState(async () => {
+        if (webviewPanel?.visible) {
+          await sendToWebview({ type: 'get-config', data: getConfig() })
+        }
+      }),
       webviewPanel.webview.onDidReceiveMessage(
         async (message: MsgRenderer2Main) => {
           switch (message.type) {

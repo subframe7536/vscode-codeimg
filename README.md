@@ -69,7 +69,7 @@ The format of the screenshot.
 
 - **Type:** `string`
 - **Default:** `"png"`
-- **Options:** `"jpg"`, `"png"`, `"svg"`, `"webp"`
+- **Options:** `"jpg"`, `"png"`, `"webp"`
 
 ### `codeimg.showWindowControls`
 

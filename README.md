@@ -16,6 +16,12 @@ Powered by `Solid.js`
 
 The popular existing extensions lack maintenance and have limited customization options. I spent some weekend time creating this extension, hoping to add a more modern UI and additional configuration options.
 
+## Features
+
+- Generate beautiful image
+- Copy or save image in `PNG` / `JPG` / `WEBP` format
+- Click line number to highlight lines in 3 styles
+
 ## Settings
 
 The CodeImg extension allows you to customize various aspects of the code snippet's appearance and behavior. Here are the available settings:

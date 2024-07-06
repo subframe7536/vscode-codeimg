@@ -81,11 +81,21 @@ export default function CodeBlock() {
           return ''
       }
     })
+    const lineNumber = createMemo(() => {
+      switch (bgStatus()) {
+        case 2:
+          return '+'
+        case 3:
+          return '-'
+        default:
+          return props.index
+      }
+    })
     const roundBottom = createMemo(() => bgStatus() && highlightArray()[props.index + 1] ? 'rounded-b-0' : 'rounded-b-2')
     const roundTop = createMemo(() => bgStatus() && highlightArray()[props.index - 1] ? 'rounded-t-0' : 'rounded-t-2')
     const lineNumberColor = createMemo(() => bgStatus() && highlightArray()[props.index]
       ? 'color-$vscode-editorLineNumber-activeForeground'
-      : 'color-$vscode-editorLineNumber-foreground',
+      : 'color-$vscode-editorLineNumber-foreground hover:color-$vscode-editorLineNumber-activeForeground',
     )
 
     return (
@@ -98,7 +108,7 @@ export default function CodeBlock() {
               arr[props.index] = ((arr[props.index] ?? 0) + 1) % 4 as 0 | 1 | 2 | 3
             })}
           >
-            {props.index}
+            {lineNumber()}
           </div>
         </Show>
         {props.line}

@@ -30,7 +30,7 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
 
   return (
     <div
-      class="rounded-2 w-fit m-(x-auto y-0) font-$vscode-editor-font-family select-none hover:border-$vscode-focusBorder *:transition"
+      class="rounded-2 w-fit m-(x-auto y-0) relative font-$vscode-editor-font-family select-none hover:border-$vscode-focusBorder *:transition"
     >
       <button
         class="bg-gray-1 b-(2 solid gray-3) p-(x-3 y-2) m-(x-2 y-4) c-gray-7 rounded-2 hover:bg-gray-2 dark:(bg-gray-8 c-gray-1 hover:bg-gray-6 b-gray-5)"
@@ -47,7 +47,7 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
         <TextWithPrefixIcon icon="i-lucide-download" text="Save" />
       </button>
       <button
-        class="bg-gray-2 b-(2 solid gray-3) p-(x-3 y-2) m-(x-2 y-4) c-gray-8 rounded-2 hover:bg-gray-3 dark:(bg-gray-9 c-gray-2 hover:bg-gray-7 b-gray-6)"
+        class="bg-gray-2 b-(2 solid gray-3) p-(x-3 y-2) m-(x-2 y-4) c-gray-8 rounded-2 hover:bg-gray-3 dark:(bg-gray-9 c-gray-2 hover:bg-gray-7 b-gray-6) hidden mini:inline-block"
         onClick={showSettingsFn}
       >
         <TextWithPrefixIcon icon="i-lucide-settings" text="Settings" />

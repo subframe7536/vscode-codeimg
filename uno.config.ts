@@ -38,6 +38,11 @@ export default defineConfig<Theme>({
   transformers: [
     transformerVariantGroup(),
   ],
+  theme: {
+    breakpoints: {
+      mini: '540px',
+    },
+  },
   preflights: [
     {
       getCSS: () => `

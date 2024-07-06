@@ -1,6 +1,6 @@
 import { For, Show, createMemo } from 'solid-js'
 import { useCssVar, usePaste } from '@solid-hooks/core/web'
-import { createRef } from '@solid-hooks/core'
+import { createArray, createRef } from '@solid-hooks/core'
 import { vscode } from '../utils/vscode'
 import { useConfig } from '../state/editorSettings'
 import { useAction } from '../state/action'
@@ -11,23 +11,10 @@ function parseHTML(html: string) {
   return template.content
 }
 
-function CodeLine(props: { line: Element, index: number }) {
-  const config = useConfig()
-  return (
-    <div class={!config.showLineNumbers ? 'ml-2.5' : ''}>
-      <Show when={config.showLineNumbers}>
-        <div class="text-right m-r-5 w-6 color-$vscode-editorLineNumber-foreground whitespace-nowrap select-none">
-          {props.index + 1}
-        </div>
-      </Show>
-      {props.line}
-    </div>
-  )
-}
-
 export default function CodeBlock() {
   const lines = createRef<Element[]>([])
   const style = createRef('')
+  const highlightArray = createRef(createArray([] as (0 | 1 | 2 | 3)[]))
 
   const config = useConfig()
   const { title, isFlashing: isCoping } = useAction()
@@ -61,9 +48,10 @@ export default function CodeBlock() {
     legacy: true,
   })
 
-  vscode.listen('update-code', (t) => {
+  vscode.listen('update-code', async (t) => {
     title(t || ' ')
-    void paste()
+    await paste()
+    highlightArray([])
   })
 
   const boxShadow = createMemo(() => {
@@ -78,12 +66,52 @@ export default function CodeBlock() {
         return '2xl'
     }
   })
+
+  function CodeLine(props: { index: number, line: Element }) {
+    const bgStatus = createMemo(() => highlightArray()[props.index])
+    const bg = createMemo(() => {
+      switch (bgStatus()) {
+        case 1:
+          return 'bg-$vscode-editor-wordHighlightStrongBackground'
+        case 2:
+          return 'bg-$vscode-inlineChatDiff-inserted'
+        case 3:
+          return 'bg-$vscode-inlineChatDiff-removed'
+        default:
+          return ''
+      }
+    })
+    const roundBottom = createMemo(() => bgStatus() && highlightArray()[props.index + 1] ? 'rounded-b-0' : 'rounded-b-2')
+    const roundTop = createMemo(() => bgStatus() && highlightArray()[props.index - 1] ? 'rounded-t-0' : 'rounded-t-2')
+    const lineNumberColor = createMemo(() => bgStatus() && highlightArray()[props.index]
+      ? 'color-$vscode-editorLineNumber-activeForeground'
+      : 'color-$vscode-editorLineNumber-foreground',
+    )
+
+    return (
+      <div class={`flex-(~ row) p-r-3 ${!config.showLineNumbers ? 'm-l-2.5' : ''} ${bg()} ${roundTop()} ${roundBottom()}`}>
+        <Show when={config.showLineNumbers}>
+          <div
+            class={`text-right p-r-4 m-r-1 w-6 cursor-pointer whitespace-nowrap select-none ${lineNumberColor()}`}
+            // eslint-disable-next-line solid/reactivity
+            onClick={() => highlightArray((arr) => {
+              arr[props.index] = ((arr[props.index] ?? 0) + 1) % 4 as 0 | 1 | 2 | 3
+            })}
+          >
+            {props.index}
+          </div>
+        </Show>
+        {props.line}
+      </div>
+    )
+  }
+
   return (
     <div class={`config-style-(bg padding liga tab) w-fit ${isCoping() ? 'flash' : ''}`}>
       <div class={`shadow-${boxShadow()} shadow-(gray-600 op-50) config-style-radius`}>
         <div
           style={style()}
-          class={`w-fit min-w-80 p-(t-2 r-7 b-4 l-3) bg-$vscode-editor-background relative config-style-radius ${config.border ? 'glass-border-light dark:glass-border-dark' : ''}`}
+          class={`w-fit min-w-80 p-(t-2 b-4 inline-3) bg-$vscode-editor-background relative config-style-radius ${config.border ? 'glass-border' : ''}`}
         >
           <Show when={config.showWindowControls}>
             <div
@@ -93,9 +121,9 @@ export default function CodeBlock() {
           <Show when={config.showWindowTitle || config.showWindowControls}>
             <div class="w-full text-center title-size select-none">{config.showWindowTitle ? title() : ' '}</div>
           </Show>
-          <div class={`mt-2 *:flex-(~ row) ${lines().length === 0 ? 'mt-6' : ''}`}>
+          <div class={`mt-2 ${lines().length === 0 ? 'mt-5' : ''}`}>
             <For each={lines()}>
-              {(line, idx) => <CodeLine line={line} index={idx()} />}
+              {(line, idx) => <CodeLine index={idx() + 1} line={line} />}
             </For>
           </div>
         </div>

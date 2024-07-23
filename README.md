@@ -16,11 +16,20 @@ Powered by `Solid.js`
 
 The popular existing extensions lack maintenance and have limited customization options. I spent some weekend time creating this extension, hoping to add a more modern UI and additional configuration options.
 
+### How it works?
+
+Call built-in command `editor.action.clipboardCopyWithSyntaxHighlightingAction` and parse the clipboard content to HTML.
+
+### Limitation
+
+- no effect about `editor.bracketPairColorization`
+- "pollute" your clipboard
+
 ## Features
 
 - Generate beautiful image
 - Copy or save image in `PNG` / `JPG` / `WEBP` format
-- Click line number to highlight lines in 3 styles
+- **Click line number to highlight lines in 3 styles**
 
 ## Settings
 

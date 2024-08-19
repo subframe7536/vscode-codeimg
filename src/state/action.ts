@@ -8,7 +8,9 @@ export const [ActionProvider, useAction] = createContextProvider(() => {
   let timer: ReturnType<typeof setTimeout>
   const showFlashing = () => {
     isFlashing(true)
-    timer && clearTimeout(timer)
+    if (timer) {
+      clearTimeout(timer)
+    }
     timer = setTimeout(() => isFlashing(false), 750)
   }
   return {

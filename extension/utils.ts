@@ -1,4 +1,4 @@
-import { type ExtensionContext, Uri, type Webview, commands, env } from 'vscode'
+import { type ExtensionContext, Uri, type Webview, env } from 'vscode'
 import { window, workspace } from 'vscode'
 import type { Promisable } from '@subframe7536/type-utils'
 import type { Config } from '../types/config'
@@ -91,7 +91,9 @@ export function getConfig() {
 export function debounce(fn: (...args: any[]) => Promisable<void>, delay: number) {
   let timer: NodeJS.Timeout | null
   return (...args: any[]) => {
-    timer && clearTimeout(timer)
+    if (timer) {
+      clearTimeout(timer)
+    }
     timer = setTimeout(() => fn(...args), delay)
   }
 }

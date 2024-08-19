@@ -4,6 +4,7 @@ import { generateBlob, saveToLocal } from '../utils/image'
 import { useConfig } from '../state/editorSettings'
 import { vscode } from '../utils/vscode'
 import { useAction } from '../state/action'
+import { debounce } from '../../extension/debounce'
 
 function TextWithPrefixIcon(props: { icon: string, text: string }) {
   return (
@@ -19,17 +20,12 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
   const isCopying = createRef(false)
   const isSaving = createRef(false)
   const { copy, isCopied, title, showFlashing } = useAction()
-  let saveTimer: ReturnType<typeof setTimeout>
+  const debounceOffSaving = debounce(() => isSaving(false), 750)
   const saveFn = async () => {
     isSaving(true)
     showFlashing()
     await saveToLocal(config.format, props.codeblockRef()!, title(), config.scale)
-    if (saveTimer) {
-      clearTimeout(saveTimer)
-    }
-    saveTimer = setTimeout(() => {
-      isSaving(false)
-    }, 750)
+    debounceOffSaving()
   }
 
   const copyFn = async () => {

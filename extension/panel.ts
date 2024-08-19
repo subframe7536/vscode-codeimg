@@ -1,7 +1,8 @@
 import type { Disposable, ExtensionContext, Selection, WebviewPanel } from 'vscode'
 import { ColorThemeKind, ViewColumn, commands, window, workspace } from 'vscode'
 import type { MsgMain2Renderer, MsgRenderer2Main } from '../types/msg'
-import { debounce, getConfig, getEditorTitle, saveImage, setupHtml, updateSettings } from './utils'
+import { getConfig, getEditorTitle, saveImage, setupHtml, updateSettings } from './utils'
+import { debounce } from './debounce'
 import { EXTENSION_NAME, EXTENSION_NAME_LOWER, EXTENSION_SETTING_NAME } from './constant'
 
 let webviewPanel: WebviewPanel | undefined

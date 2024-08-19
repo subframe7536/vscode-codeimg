@@ -1,6 +1,5 @@
 import { type ExtensionContext, Uri, type Webview, env } from 'vscode'
 import { window, workspace } from 'vscode'
-import type { Promisable } from '@subframe7536/type-utils'
 import type { Config } from '../types/config'
 import type { BasicSettings, SaveImgMsgData } from '../types/msg'
 import { EXTENSION_NAME_LOWER } from './constant'
@@ -85,16 +84,6 @@ export function getConfig() {
     ...editorSettings,
     ...extensionSettings,
     windowTitle,
-  }
-}
-
-export function debounce(fn: (...args: any[]) => Promisable<void>, delay: number) {
-  let timer: NodeJS.Timeout | null
-  return (...args: any[]) => {
-    if (timer) {
-      clearTimeout(timer)
-    }
-    timer = setTimeout(() => fn(...args), delay)
   }
 }
 

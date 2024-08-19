@@ -17,7 +17,7 @@ export default function CodeBlock() {
   const highlightArray = createRef(createArray([] as (0 | 1 | 2 | 3)[]))
 
   const config = useConfig()
-  const { title, isFlashing: isCoping } = useAction()
+  const { title, isFlashing } = useAction()
 
   useCssVar('bg', () => config.background)
   useCssVar('padding', () => config.containerPadding)
@@ -117,7 +117,7 @@ export default function CodeBlock() {
   }
 
   return (
-    <div class={`config-style-(bg padding liga tab) w-fit ${isCoping() ? 'flash' : ''}`}>
+    <div class={`config-style-(bg padding liga tab) w-fit ${isFlashing() ? 'flash' : ''}`}>
       <div class={`shadow-${boxShadow()} shadow-(gray-600 op-50) config-style-radius`}>
         <div
           style={style()}

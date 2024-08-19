@@ -1,4 +1,4 @@
-import { type ExtensionContext, Uri, type Webview } from 'vscode'
+import { type ExtensionContext, Uri, type Webview, commands, env } from 'vscode'
 import { window, workspace } from 'vscode'
 import type { Promisable } from '@subframe7536/type-utils'
 import type { Config } from '../types/config'
@@ -43,6 +43,8 @@ export async function saveImage(data: SaveImgMsgData) {
       Uint8Array.from(atob(data.base64), c => c.charCodeAt(0)),
     )
     lastDir = uri.fsPath.split('/').slice(0, -1).join('/')
+    window.showInformationMessage('Image saved successfully 🚀', 'Open')
+      .then(value => value === 'Open' && env.openExternal(uri))
   }
 }
 

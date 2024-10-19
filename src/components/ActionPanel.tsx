@@ -1,4 +1,5 @@
 import { createRef } from '@solid-hooks/core'
+import { cls } from '@solid-hooks/core/web'
 import { type Accessor, Show } from 'solid-js'
 import { debounce } from '../../extension/debounce'
 import { useAction } from '../state/action'
@@ -9,7 +10,7 @@ import { vscode } from '../utils/vscode'
 function TextWithPrefixIcon(props: { icon: string, text: string }) {
   return (
     <div class="flex-(~ row content-center)">
-      <i class={`${props.icon} mr-1.2`} />
+      <i class={cls(props.icon, 'mr-1.2')} />
       <span class="leading-4.8 inline-block">{props.text}</span>
     </div>
   )

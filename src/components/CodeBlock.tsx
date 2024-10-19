@@ -1,5 +1,5 @@
 import { createArray, createRef } from '@solid-hooks/core'
-import { useCssVar, usePaste } from '@solid-hooks/core/web'
+import { cls, useCssVar, usePaste } from '@solid-hooks/core/web'
 import { createMemo, For, Show } from 'solid-js'
 import { useAction } from '../state/action'
 import { useConfig } from '../state/editorSettings'
@@ -99,10 +99,21 @@ export default function CodeBlock() {
     )
 
     return (
-      <div class={`flex-(~ row) p-r-3 ${!config.showLineNumbers ? 'm-l-2.5' : ''} ${bg()} ${roundTop()} ${roundBottom()}`}>
+      <div
+        class={cls(
+          `flex-(~ row) p-r-3`,
+          !config.showLineNumbers && 'm-l-2.5',
+          bg(),
+          roundTop(),
+          roundBottom(),
+        )}
+      >
         <Show when={config.showLineNumbers}>
           <div
-            class={`text-right p-r-4 m-r-1 w-6 cursor-pointer whitespace-nowrap select-none ${lineNumberColor()}`}
+            class={cls(
+              'text-right p-r-4 m-r-1 w-6 cursor-pointer whitespace-nowrap select-none',
+              lineNumberColor(),
+            )}
             // eslint-disable-next-line solid/reactivity
             onClick={() => highlightArray((arr) => {
               arr[props.index] = ((arr[props.index] ?? 0) + 1) % 4 as 0 | 1 | 2 | 3
@@ -117,21 +128,31 @@ export default function CodeBlock() {
   }
 
   return (
-    <div class={`config-style-(bg padding liga tab) w-fit ${isFlashing() ? 'flash' : ''}`}>
+    <div class={cls('config-style-(bg padding liga tab) w-fit', isFlashing() && 'flash')}>
       <div class={`shadow-${boxShadow()} shadow-(gray-600 op-50) config-style-radius`}>
         <div
           style={style()}
-          class={`w-fit min-w-80 p-(t-2 b-4 inline-3) bg-$vscode-editor-background relative config-style-radius ${config.border ? 'glass-border' : ''}`}
+          class={cls(
+            'w-fit min-w-80 p-(t-2 b-4 inline-3) bg-$vscode-editor-background relative config-style-radius',
+            config.border && 'glass-border',
+          )}
         >
           <Show when={config.showWindowControls}>
             <div
-              class={`size-3.5 m-(l-8 block-2) absolute rounded-full before:(content-empty size-3.5 right-6 pos-absolute rounded-full) after:(content-empty size-3.5 left-6 pos-absolute rounded-full) ${config.windowControlsColor ? 'bg-#ffbd2e before:bg-#ff544d after:bg-#28c93f' : 'bg-$vscode-editor-inactiveSelectionBackground before:bg-$vscode-editor-inactiveSelectionBackground after:bg-$vscode-editor-inactiveSelectionBackground'}`}
+              class={cls(
+                'size-3.5 m-(l-8 block-2) absolute rounded-full before:(content-empty size-3.5 right-6 pos-absolute rounded-full) after:(content-empty size-3.5 left-6 pos-absolute rounded-full)',
+                config.windowControlsColor
+                  ? 'bg-#ffbd2e before:bg-#ff544d after:bg-#28c93f'
+                  : 'bg-$vscode-editor-inactiveSelectionBackground before:bg-$vscode-editor-inactiveSelectionBackground after:bg-$vscode-editor-inactiveSelectionBackground',
+              )}
             />
           </Show>
           <Show when={config.showWindowTitle || config.showWindowControls}>
-            <div class="w-full text-center title-size select-none">{config.showWindowTitle ? title() : ' '}</div>
+            <div class="w-full text-center title-size select-none">
+              {config.showWindowTitle ? title() : ' '}
+            </div>
           </Show>
-          <div class={`mt-2 ${lines().length === 0 ? 'mt-5' : ''}`}>
+          <div class={cls('mt-2', lines().length === 0 && 'mt-5')}>
             <For each={lines()}>
               {(line, idx) => <CodeLine index={idx() + 1} line={line} />}
             </For>

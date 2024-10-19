@@ -67,7 +67,7 @@
         "codeimg.debounce": {
           "scope": "resource",
           "type": "boolean",
-          "default": "true",
+          "default": true,
           "description": "Whether to update the code snippet with debounce when selection changes"
         },
         "codeimg.roundedCorners": {

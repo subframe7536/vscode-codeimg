@@ -1,8 +1,8 @@
-import { defineConfig } from 'vite'
-import solid from 'vite-plugin-solid'
 import vscode from '@tomjs/vite-plugin-vscode'
 import uno from 'unocss/vite'
+import { defineConfig } from 'vite'
 import cleanCss from 'vite-plugin-clean-css'
+import solid from 'vite-plugin-solid'
 
 export default defineConfig({
   plugins: [

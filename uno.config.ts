@@ -1,6 +1,6 @@
-import { defineConfig } from 'unocss/vite'
-import { presetIcons, presetUno, transformerVariantGroup } from 'unocss'
 import type { Theme } from 'unocss/preset-mini'
+import { presetIcons, presetUno, transformerVariantGroup } from 'unocss'
+import { defineConfig } from 'unocss/vite'
 
 export default defineConfig<Theme>({
   presets: [

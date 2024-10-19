@@ -1,9 +1,9 @@
-import { useColorMode } from '@solid-hooks/core/web'
 import { createRef } from '@solid-hooks/core'
-import CodeBlock from './components/CodeBlock'
+import { useColorMode } from '@solid-hooks/core/web'
 import ActionPanel from './components/ActionPanel'
-import { vscode } from './utils/vscode'
+import CodeBlock from './components/CodeBlock'
 import { useAction } from './state/action'
+import { vscode } from './utils/vscode'
 
 export function App() {
   const codeblock = createRef<HTMLDivElement>()

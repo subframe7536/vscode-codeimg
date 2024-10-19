@@ -1,10 +1,10 @@
-import { type Accessor, Show } from 'solid-js'
 import { createRef } from '@solid-hooks/core'
-import { generateBlob, saveToLocal } from '../utils/image'
-import { useConfig } from '../state/editorSettings'
-import { vscode } from '../utils/vscode'
-import { useAction } from '../state/action'
+import { type Accessor, Show } from 'solid-js'
 import { debounce } from '../../extension/debounce'
+import { useAction } from '../state/action'
+import { useConfig } from '../state/editorSettings'
+import { generateBlob, saveToLocal } from '../utils/image'
+import { vscode } from '../utils/vscode'
 
 function TextWithPrefixIcon(props: { icon: string, text: string }) {
   return (

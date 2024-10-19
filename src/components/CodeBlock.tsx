@@ -1,9 +1,9 @@
-import { For, Show, createMemo } from 'solid-js'
-import { useCssVar, usePaste } from '@solid-hooks/core/web'
 import { createArray, createRef } from '@solid-hooks/core'
-import { vscode } from '../utils/vscode'
-import { useConfig } from '../state/editorSettings'
+import { useCssVar, usePaste } from '@solid-hooks/core/web'
+import { createMemo, For, Show } from 'solid-js'
 import { useAction } from '../state/action'
+import { useConfig } from '../state/editorSettings'
+import { vscode } from '../utils/vscode'
 
 function parseHTML(html: string) {
   const template = document.createElement('template')

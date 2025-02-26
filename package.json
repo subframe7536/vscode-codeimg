@@ -19,14 +19,18 @@
   "contributes": {
     "commands": [
       {
-        "command": "codeimg.generate",
-        "title": "CodeImg: generate📷"
+        "command": "codeimg.generate.code",
+        "title": "CodeImg: generate code 📷"
+      },
+      {
+        "command": "codeimg.generate.terminal",
+        "title": "CodeImg: generate terminal 🛠️"
       }
     ],
     "menus": {
       "editor/context": [
         {
-          "command": "codeimg.generate"
+          "command": "codeimg.generate.code"
         }
       ]
     },

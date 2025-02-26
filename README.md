@@ -3,6 +3,8 @@
   <h1 align="center">CodeImg</h1>
 </p>
 
+
+
 VSCode plugin that generate beautiful image for you code with your favorite font and theme
 
 Powered by `Solid.js`
@@ -58,9 +60,10 @@ The CodeImg extension allows you to customize various aspects of the code snippe
 
 <!-- commands -->
 
-| Command            | Title               |
-| ------------------ | ------------------- |
-| `codeimg.generate` | CodeImg: generate📷 |
+| Command                     | Title                          |
+| --------------------------- | ------------------------------ |
+| `codeimg.generate.code`     | CodeImg: generate code 📷      |
+| `codeimg.generate.terminal` | CodeImg: generate terminal 🛠️ |
 
 <!-- commands -->
 

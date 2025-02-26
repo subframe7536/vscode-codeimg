@@ -31,88 +31,38 @@ Call built-in command `editor.action.clipboardCopyWithSyntaxHighlightingAction` 
 - no effect about `editor.bracketPairColorization`
 - "pollute" your clipboard
 
-## Settings
+## Configurations
 
 The CodeImg extension allows you to customize various aspects of the code snippet's appearance and behavior. Here are the available settings:
-### `codeimg.background`
 
-The CSS background style for the snippet's container. Set it to `"none"` if you do not want a background.
-- **Type:** `string`
-- **Default:** `"linear-gradient(345deg, rgb(180, 218, 255) 0%, rgb(232, 209, 255) 100%)"`
+<!-- configs -->
 
-### `codeimg.boxShadow`
+| Key                           | Description                                                                                 | Type      | Default                                                                 |
+| ----------------------------- | ------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------- |
+| `codeimg.background`          | The CSS background of the snippet's container. If you don't want to it, set it `none`       | `string`  | `"linear-gradient(345deg, rgb(180 218 255) 0%, rgb(232 209 255) 100%)"` |
+| `codeimg.boxShadow`           | The CSS box-shadow for the snippet's container. If you don't want to it, set it `none`      | `string`  | `"medium"`                                                              |
+| `codeimg.containerPadding`    | The CSS padding for the snippet's container. If you don't want to it, set it `none`         | `string`  | `"3rem"`                                                                |
+| `codeimg.border`              | Border for the snippet's container. Only in dark theme                                      | `boolean` | `true`                                                                  |
+| `codeimg.debounce`            | Whether to update the code snippet with debounce when selection changes                     | `boolean` | `true`                                                                  |
+| `codeimg.roundedCorners`      | The CSS rounded corners for the snippet's container. If you don't want to it, set it `none` | `string`  | `"1rem"`                                                                |
+| `codeimg.scale`               | The scale of the screenshot                                                                 | `integer` | `2`                                                                     |
+| `codeimg.format`              | The format of the screenshot                                                                | `string`  | `"png"`                                                                 |
+| `codeimg.showWindowControls`  | Display OS X style window controls                                                          | `boolean` | `true`                                                                  |
+| `codeimg.windowControlsColor` | Add color in window controls                                                                | `boolean` | `true`                                                                  |
+| `codeimg.showWindowTitle`     | Display window title with open folder / file name                                           | `boolean` | `true`                                                                  |
+| `codeimg.showLineNumbers`     | Display line numbers                                                                        | `boolean` | `true`                                                                  |
 
-The CSS box-shadow style for the snippet's container. Set it to `"none"` if you do not want a box-shadow.
-- **Type:** `string`
-- **Default:** `"medium"`
-- **Options:** `"none"`, `"small"`, `"medium"`, `"large"`
+<!-- configs -->
 
-### `codeimg.containerPadding`
+## Commands
 
-The padding for the snippet's container.
-- **Type:** `string`
-- **Default:** `"3rem"`
+<!-- commands -->
 
-### `codeimg.border`
+| Command            | Title               |
+| ------------------ | ------------------- |
+| `codeimg.generate` | CodeImg: generate📷 |
 
-Border for the snippet's container, which is only visible in the dark theme.
-- **Type:** `boolean`
-- **Default:** `true`
-
-### `codeimg.debounce`
-
-Whether to update the code snippet with debounce when selection changes.
-
-- **Type:** `boolean`
-- **Default:** `true`
-
-### `codeimg.roundedCorners`
-
-The CSS rounded corners style for the snippet's container. Set it to `"none"` if you do not want rounded corners.
-- **Type:** `string`
-- **Default:** `"1rem"`
-
-### `codeimg.scale`
-
-The scale of the screenshot.
-- **Type:** `integer`
-- **Default:** `2`
-
-### `codeimg.format`
-
-The format of the screenshot.
-
-- **Type:** `string`
-- **Default:** `"png"`
-- **Options:** `"jpg"`, `"png"`, `"webp"`
-
-### `codeimg.showWindowControls`
-
-Display OS X style window controls.
-
-- **Type:** `boolean`
-- **Default:** `true`
-
-### `codeimg.windowControlsColor`
-
-Add color to the window controls.
-
-- **Type:** `boolean`
-- **Default:** `true`
-
-### `codeimg.showWindowTitle`
-
-Display the window title with the open folder or file name.
-
-- **Type:** `boolean`
-- **Default:** `true`
-
-### `codeimg.showLineNumbers`
-
-Display line numbers in the code snippet.
-
-- **Type:** `boolean`
-- **Default:** `true`
+<!-- commands -->
 
 ## credit
 

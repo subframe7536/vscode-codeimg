@@ -1,11 +1,11 @@
-import type { Config } from './config'
+import type { ScopedConfigKeyTypeMap } from './generated/meta'
 
 export type BasicSettings = {
   fontLigatures: boolean | string
   tabSize: number | string
 }
 
-export type AppConfig = Config & BasicSettings
+export type AppConfig = ScopedConfigKeyTypeMap & BasicSettings
 
 export type MsgMain2Renderer = {
   type: 'update-code'
@@ -33,7 +33,7 @@ export type MsgRenderer2Main = {
   data: SaveImgMsgData
 } | {
   type: 'set-config'
-  data: Partial<Config>
+  data: Partial<ScopedConfigKeyTypeMap>
 } | {
   type: 'show-settings'
   data?: undefined

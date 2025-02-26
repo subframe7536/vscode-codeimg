@@ -1,10 +1,10 @@
-import type { Config } from '../types/config'
-import type { BasicSettings, SaveImgMsgData } from '../types/msg'
+import type { ConfigShorthandTypeMap } from '../config/generated/meta'
+import type { BasicSettings, SaveImgMsgData } from '../config/msg'
 import type { ExtensionContext, Webview } from 'vscode'
 
 import { env, Uri, window, workspace } from 'vscode'
 
-import { EXTENSION_NAME_LOWER } from './constant'
+import { scopedConfigs } from '../config/generated/meta'
 
 export const DEV_SERVER = process.env.VITE_DEV_SERVER_URL
 export function setupHtml(webview: Webview, context: ExtensionContext) {
@@ -13,18 +13,18 @@ export function setupHtml(webview: Webview, context: ExtensionContext) {
     : __getWebviewHtml__(webview, context)
 }
 
-function getSettings(section: string, keys: string[]) {
-  const settings = workspace.getConfiguration(section)
+function getSettings(scope: string, keys: string[]) {
+  const settings = workspace.getConfiguration(scope)
   return keys.reduce((acc, k) => {
     acc[k] = settings.get(k)
     return acc
   }, {} as any)
 }
 
-export async function updateSettings(settings: Partial<Config>) {
+export async function updateSettings(settings: Partial<ConfigShorthandTypeMap>) {
   const config = workspace.getConfiguration()
   for (const [key, value] of Object.entries(settings)) {
-    await config.update(`${EXTENSION_NAME_LOWER}.${key}`, value)
+    await config.update(`${scopedConfigs.scope}.${key}`, value)
   }
 }
 
@@ -58,23 +58,7 @@ export function getConfig() {
     editorSettings.tabSize = tabSize as number
   }
 
-  /// keep-sorted
-  const items: (keyof Config)[] = [
-    'background',
-    'border',
-    'boxShadow',
-    'containerPadding',
-    'debounce',
-    'format',
-    'roundedCorners',
-    'scale',
-    'showLineNumbers',
-    'showWindowControls',
-    'showWindowTitle',
-    'windowControlsColor',
-  ]
-
-  const extensionSettings = getSettings(EXTENSION_NAME_LOWER, items) as Config
+  const extensionSettings = getSettings(scopedConfigs.scope, Object.keys(scopedConfigs.defaults))
 
   let windowTitle = ''
   if (editor && extensionSettings.showWindowTitle) {

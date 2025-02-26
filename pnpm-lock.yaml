@@ -71,6 +71,9 @@ importers:
       vite-plugin-solid:
         specifier: ^2.11.2
         version: 2.11.2(solid-js@1.9.5)(vite@6.2.0(@types/node@20.17.19)(jiti@2.4.2)(yaml@2.7.0))
+      vscode-ext-gen:
+        specifier: ^1.0.2
+        version: 1.0.2
 
 packages:
 
@@ -3173,6 +3176,10 @@ packages:
     peerDependenciesMeta:
       vite:
         optional: true
+
+  vscode-ext-gen@1.0.2:
+    resolution: {integrity: sha512-CgKGhGvO4Zpz87v3LRmDLtM1FaMVilJCy7fwKzxvrRnhUPTBgj9zkjlPM8lcVAq5vm87v9V8HzVer9COtU5bNA==}
+    hasBin: true
 
   vue-flow-layout@0.1.1:
     resolution: {integrity: sha512-JdgRRUVrN0Y2GosA0M68DEbKlXMqJ7FQgsK8CjQD2vxvNSqAU6PZEpi4cfcTVtfM2GVOMjHo7GKKLbXxOBqDqA==}
@@ -6703,6 +6710,10 @@ snapshots:
   vitefu@1.0.6(vite@6.2.0(@types/node@20.17.19)(jiti@2.4.2)(yaml@2.7.0)):
     optionalDependencies:
       vite: 6.2.0(@types/node@20.17.19)(jiti@2.4.2)(yaml@2.7.0)
+
+  vscode-ext-gen@1.0.2:
+    dependencies:
+      cac: 6.7.14
 
   vue-flow-layout@0.1.1(vue@3.5.13(typescript@5.7.3)):
     dependencies:

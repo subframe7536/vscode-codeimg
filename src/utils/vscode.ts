@@ -1,4 +1,4 @@
-import type { MsgMain2Renderer, MsgRenderer2Main, Recordify } from '../../types/msg'
+import type { MsgMain2Renderer, MsgRenderer2Main, Recordify } from '../../config/msg'
 import type { WebviewApi } from 'vscode-webview'
 
 class VSCodeAPIWrapper {

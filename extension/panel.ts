@@ -1,9 +1,9 @@
-import type { MsgMain2Renderer, MsgRenderer2Main } from '../types/msg'
+import type { MsgMain2Renderer, MsgRenderer2Main } from '../config/msg'
 import type { Disposable, ExtensionContext, Selection, WebviewPanel } from 'vscode'
 
 import { ColorThemeKind, commands, ViewColumn, window, workspace } from 'vscode'
 
-import { EXTENSION_NAME, EXTENSION_NAME_LOWER, EXTENSION_SETTING_NAME } from './constant'
+import { displayName, extensionId } from '../config/generated/meta'
 import { debounce } from './debounce'
 import { getConfig, getEditorTitle, saveImage, setupHtml, updateSettings } from './utils'
 
@@ -12,6 +12,17 @@ const _disposables: Disposable[] = []
 
 export async function sendToWebview(message: MsgMain2Renderer) {
   await webviewPanel?.webview.postMessage(message)
+}
+
+export async function copyTerminalSelectionCode() {
+  const terminal = window.activeTerminal
+  if (terminal) {
+    await commands.executeCommand('workbench.action.terminal.copySelectionAsHtml')
+    await sendToWebview({
+      type: 'update-code',
+      data: terminal.name,
+    })
+  }
 }
 
 async function copyEditorSelectionCode(selections: readonly Selection[] | undefined = window.activeTextEditor?.selections) {
@@ -31,8 +42,8 @@ export async function render(context: ExtensionContext): Promise<VoidFunction> {
     webviewPanel.reveal(ViewColumn.Beside, true)
   } else {
     webviewPanel = window.createWebviewPanel(
-      EXTENSION_NAME,
-      EXTENSION_NAME,
+      displayName,
+      displayName,
       { viewColumn: ViewColumn.Beside, preserveFocus: true },
       { enableScripts: true },
     )
@@ -72,7 +83,7 @@ export async function render(context: ExtensionContext): Promise<VoidFunction> {
               }
               break
             case 'show-settings':
-              await commands.executeCommand('workbench.action.openSettings', `@ext:${EXTENSION_SETTING_NAME}`)
+              await commands.executeCommand('workbench.action.openSettings', `@ext:${extensionId}`)
           }
         },
         undefined,
@@ -124,7 +135,7 @@ async function bindSelectionEvents(useDebounce = true) {
 
 function bindConfigurationEvents() {
   return workspace.onDidChangeConfiguration(async (e) => {
-    if (e.affectsConfiguration(EXTENSION_NAME_LOWER) || e.affectsConfiguration('editor')) {
+    if (e.affectsConfiguration(displayName) || e.affectsConfiguration('editor')) {
       await sendToWebview({ type: 'get-config', data: getConfig() })
     }
   })

@@ -124,7 +124,7 @@
     "dev": "vite",
     "dev:ui": "vite serve dev",
     "build": "tsc && vite build",
-    "update-config": "node config.mjs",
+    "update": "vscode-ext-gen --output config/generated/meta.ts",
     "preview": "pnpm run build && vsce package --no-dependencies",
     "release": "pnpm run build && bumpp --all && vsce publish --no-dependencies",
     "format": "eslint --fix"
@@ -150,6 +150,7 @@
     "unocss": "^65.5.0",
     "vite": "^6.2.0",
     "vite-plugin-clean-css": "0.0.3",
-    "vite-plugin-solid": "^2.11.2"
+    "vite-plugin-solid": "^2.11.2",
+    "vscode-ext-gen": "^1.0.2"
   }
 }

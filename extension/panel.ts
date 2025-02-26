@@ -1,6 +1,8 @@
-import type { Disposable, ExtensionContext, Selection, WebviewPanel } from 'vscode'
 import type { MsgMain2Renderer, MsgRenderer2Main } from '../types/msg'
+import type { Disposable, ExtensionContext, Selection, WebviewPanel } from 'vscode'
+
 import { ColorThemeKind, commands, ViewColumn, window, workspace } from 'vscode'
+
 import { EXTENSION_NAME, EXTENSION_NAME_LOWER, EXTENSION_SETTING_NAME } from './constant'
 import { debounce } from './debounce'
 import { getConfig, getEditorTitle, saveImage, setupHtml, updateSettings } from './utils'
@@ -12,7 +14,7 @@ export async function sendToWebview(message: MsgMain2Renderer) {
   await webviewPanel?.webview.postMessage(message)
 }
 
-async function copySelectionCode(selections: readonly Selection[] | undefined = window.activeTextEditor?.selections) {
+async function copyEditorSelectionCode(selections: readonly Selection[] | undefined = window.activeTextEditor?.selections) {
   if (selections?.length === 1 && !selections[0].isEmpty) {
     await commands.executeCommand('editor.action.clipboardCopyWithSyntaxHighlightingAction')
     await sendToWebview({
@@ -110,11 +112,13 @@ function bindThemeChange() {
 }
 
 async function bindSelectionEvents(useDebounce = true) {
-  await copySelectionCode()
+  if (!arguments.length) {
+    await copyEditorSelectionCode()
+  }
   return window.onDidChangeTextEditorSelection(
     useDebounce
-      ? debounce(async e => await copySelectionCode(e.selections), 250)
-      : e => copySelectionCode(e.selections),
+      ? debounce(async e => await copyEditorSelectionCode(e.selections), 250)
+      : e => copyEditorSelectionCode(e.selections),
   )
 }
 

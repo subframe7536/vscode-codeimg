@@ -1,5 +1,5 @@
-import type { WebviewApi } from 'vscode-webview'
 import type { MsgMain2Renderer, MsgRenderer2Main, Recordify } from '../../types/msg'
+import type { WebviewApi } from 'vscode-webview'
 
 class VSCodeAPIWrapper {
   private readonly vsCodeApi: WebviewApi<unknown> | undefined

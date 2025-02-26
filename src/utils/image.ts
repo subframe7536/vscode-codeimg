@@ -1,4 +1,5 @@
 import { domToBlob, domToJpeg, domToPng, domToWebp } from 'modern-screenshot'
+
 import { vscode } from './vscode'
 
 export type PicFormat = 'png' | 'jpg' | 'webp'

@@ -1,7 +1,9 @@
 import type { Config } from '../types/config'
 import type { BasicSettings, SaveImgMsgData } from '../types/msg'
-import { env, type ExtensionContext, Uri, type Webview } from 'vscode'
-import { window, workspace } from 'vscode'
+import type { ExtensionContext, Webview } from 'vscode'
+
+import { env, Uri, window, workspace } from 'vscode'
+
 import { EXTENSION_NAME_LOWER } from './constant'
 
 export const DEV_SERVER = process.env.VITE_DEV_SERVER_URL

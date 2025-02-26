@@ -1,6 +1,7 @@
 import { createArray, createRef } from '@solid-hooks/core'
 import { cls, useCssVar, usePaste } from '@solid-hooks/core/web'
 import { createMemo, For, Show } from 'solid-js'
+
 import { useAction } from '../state/action'
 import { useConfig } from '../state/editorSettings'
 import { vscode } from '../utils/vscode'

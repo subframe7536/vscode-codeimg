@@ -1,5 +1,7 @@
 import type { ExtensionContext } from 'vscode'
+
 import { commands } from 'vscode'
+
 import { contributes } from '../package.json'
 import { render } from './panel'
 

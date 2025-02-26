@@ -1,6 +1,8 @@
 import type { AppConfig } from '../../types/msg'
+
 import { createContextProvider } from '@solid-hooks/core'
 import { createStore, reconcile } from 'solid-js/store'
+
 import { vscode } from '../utils/vscode'
 
 export const [ConfigProvider, useConfig] = createContextProvider(() => {

@@ -1,5 +1,6 @@
 import { createContextProvider, createRef } from '@solid-hooks/core'
 import { generateClipboardItem, useCopy } from '@solid-hooks/core/web'
+
 import { debounce } from '../../extension/debounce'
 
 export const [ActionProvider, useAction] = createContextProvider(() => {

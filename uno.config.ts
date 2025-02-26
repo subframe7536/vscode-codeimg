@@ -1,4 +1,5 @@
 import type { Theme } from 'unocss/preset-mini'
+
 import { presetIcons, presetUno, transformerVariantGroup } from 'unocss'
 import { defineConfig } from 'unocss/vite'
 

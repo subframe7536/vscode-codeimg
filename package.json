@@ -3,7 +3,7 @@
   "name": "codeimg",
   "displayName": "CodeImg",
   "version": "0.2.3",
-  "description": "Generate beautiful image for you code with your favorite font and theme",
+  "description": "Generate beautiful image for you code and terminal with your favorite font and theme",
   "author": "subframe7536",
   "repository": {
     "type": "git",

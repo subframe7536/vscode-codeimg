@@ -3,14 +3,9 @@
   <h1 align="center">CodeImg</h1>
 </p>
 
-VSCode plugin that generate beautiful image for you code with your favorite font and theme
+VSCode extension that generate beautiful image for you code and terminal with your favorite font and theme.
 
-Powered by `Solid.js`
-
-![](./resources/showcase.png)
-
-- Font: [Maple Mono](https://github.com/subframe7536/maple-font/tree/variable)
-- Theme: [Maple](https://github.com/subframe7536/vscode-theme-maple)
+Powered by `Solid.js`.
 
 ## Why another one?
 
@@ -18,22 +13,34 @@ The popular existing extensions lack maintenance and have limited customization 
 
 ## How it works?
 
-Call built-in command `editor.action.clipboardCopyWithSyntaxHighlightingAction` and parse the clipboard content to HTML.
+Call VSCode's built-in command to copy generated HTML text and render the parsed clipboard content.
+- For code, use `editor.action.clipboardCopyWithSyntaxHighlightingAction`
+- For terminal, use `workbench.action.terminal.copySelectionAsHtml`
 
 ## Features
 
-- Generate beautiful image
+- Generate beautiful image of code and terminal
 - Copy or save image in `PNG` / `JPG` / `WEBP` format
 - **Click line number to highlight lines in 3 styles**
 
+## Showcase
+
+Code:
+![code](./resources/showcase-code.webp)
+
+Terminal:
+![terminal](./resources/showcase-terminal.webp)
+
+- Font: [Maple Mono](https://github.com/subframe7536/maple-font/tree/variable)
+- Theme: [Maple](https://github.com/subframe7536/vscode-theme-maple)
+
 ## Limitation
 
-- no effect about `editor.bracketPairColorization`
+- No effect about `editor.bracketPairColorization`
 - "pollute" your clipboard
+- Snap on terminal cannot be updated if selection in terminal changed
 
 ## Configurations
-
-The CodeImg extension allows you to customize various aspects of the code snippet's appearance and behavior. Here are the available settings:
 
 <!-- configs -->
 

@@ -2,7 +2,7 @@
   "publisher": "subframe7536",
   "name": "codeimg",
   "displayName": "CodeImg",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "description": "Generate beautiful image for you code and terminal with your favorite font and theme",
   "author": "subframe7536",
   "repository": {
@@ -133,14 +133,14 @@
   "scripts": {
     "dev": "vite",
     "dev:ui": "vite serve dev",
-    "build": "pnpm run typecheck && vite build",
+    "build": "vite build",
     "prepare": "pnpm run update",
     "update": "vscode-ext-gen --output config/generated/meta.ts",
     "vscode:prepublish": "pnpm run build",
     "publish": "vsce publish --no-dependencies",
     "pack": "vsce package --no-dependencies",
     "typecheck": "tsc --noEmit",
-    "release": "pnpm run format && pnpm run build && bumpp --all",
+    "release": "pnpm run typecheck && pnpm run format && bumpp --all && pnpm run publish",
     "format": "eslint --fix"
   },
   "devDependencies": {

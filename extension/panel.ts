@@ -3,7 +3,7 @@ import type { Disposable, ExtensionContext, Selection, WebviewPanel } from 'vsco
 
 import { ColorThemeKind, commands, ViewColumn, window, workspace } from 'vscode'
 
-import { displayName, extensionId } from '../config/generated/meta'
+import { displayName, extensionId, name } from '../config/generated/meta'
 import { debounce } from './debounce'
 import { getConfig, getEditorTitle, saveImage, setupHtml, updateSettings } from './utils'
 
@@ -148,7 +148,7 @@ async function bindSelectionEvents(useDebounce = true) {
 
 function bindConfigurationEvents() {
   return workspace.onDidChangeConfiguration(async (e) => {
-    if (e.affectsConfiguration(displayName) || e.affectsConfiguration('editor')) {
+    if (e.affectsConfiguration(name) || e.affectsConfiguration('editor')) {
       await sendToWebview({ type: 'get-config', data: getConfig() })
     }
   })

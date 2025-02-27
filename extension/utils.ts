@@ -1,5 +1,5 @@
 import type { ConfigShorthandTypeMap } from '../config/generated/meta'
-import type { AppConfig, EditorSettings, SaveImgMsgData } from '../config/msg'
+import type { AppConfig, EditorSettings, SaveImgMsgData, TerminalSettings } from '../config/msg'
 import type { ExtensionContext, Webview } from 'vscode'
 
 import { env, Uri, window, workspace } from 'vscode'
@@ -51,6 +51,7 @@ export async function saveImage(data: SaveImgMsgData) {
 
 export function getConfig(): AppConfig {
   const editorSettings = getSettings('editor', ['fontLigatures', 'tabSize']) as EditorSettings
+  const terminalSettings = getSettings('terminal.integrated', ['fontSize', 'fontFamily']) as TerminalSettings
   const editor = window.activeTextEditor
 
   const tabSize = editor?.options.tabSize
@@ -60,20 +61,14 @@ export function getConfig(): AppConfig {
 
   const extensionSettings = getSettings(scopedConfigs.scope, Object.keys(scopedConfigs.defaults))
 
-  let windowTitle = ''
-  if (editor && extensionSettings.showWindowTitle) {
-    const activeFileName = editor.document.uri.path.split('/').pop()
-    windowTitle = `${workspace.name} - ${activeFileName}`
-  }
-
   return {
-    ...getSettings('terminal.integrated', ['fontSize']),
+    terminalFontFamily: terminalSettings.fontFamily || 'var(--vscode-editor-font-family)',
+    terminalFontSize: terminalSettings.fontSize,
     ...editorSettings,
     ...extensionSettings,
-    windowTitle,
   }
 }
 
-export function getEditorTitle(): string {
-  return window.activeTextEditor?.document.uri.path.split('/').pop() ?? ''
+export function getEditorTitle(editor = window.activeTextEditor): string {
+  return editor?.document.uri.path.split('/').pop() ?? ''
 }

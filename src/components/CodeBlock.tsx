@@ -53,7 +53,12 @@ export default function CodeBlock() {
         if (root) {
           let cssText = root.style.cssText.replace(/background-color:[^;]*;/g, '')
           if (isTerminal()) {
-            cssText = `${cssText.replace('rgb(0, 0, 0)', 'var(--vscode-terminal-foreground)')}; font-size: ${config.terminalFontSize}; font-weight: var(--vscode-editor-font-weight); white-space: pre; line-height: ${config.terminalLineHeight}`
+            cssText = cssText.replace('rgb(0, 0, 0)', 'var(--vscode-terminal-foreground)') + [
+              `font-family: ${config.terminalFontFamily}`,
+              `font-size: ${config.terminalFontSize}`,
+              `font-weight: var(--vscode-editor-font-weight)`,
+              `white-space: pre; line-height: ${config.terminalLineHeight}`,
+            ].join(';')
           }
           style(cssText)
           const els = Array.from(root.querySelectorAll(':scope > *'))
@@ -147,15 +152,15 @@ export default function CodeBlock() {
     )
   }
 
+  const hasLines = createMemo(() => lines().length > 0)
   return (
     <div class={cls('config-style-(bg padding liga tab) w-fit', isFlashing() && 'flash')}>
       <div class={`shadow-${boxShadow()} shadow-(gray-600 op-50) config-style-radius`}>
         <div
           style={style()}
           class={cls(
-            'w-fit min-w-80 p-(t-2 b-4 inline-3) bg-$vscode-editor-background relative config-style-radius',
+            'w-fit min-w-80 p-(t-2 b-5 inline-3) bg-$vscode-editor-background relative config-style-radius',
             config.border && 'glass-border',
-            isTerminal() && 'font-$vscode-editor-font-family',
           )}
         >
           <Show when={config.showWindowControls}>
@@ -169,11 +174,11 @@ export default function CodeBlock() {
             />
           </Show>
           <Show when={config.showWindowTitle || config.showWindowControls}>
-            <div class="w-full text-center title-size select-none">
+            <div class={cls('w-full text-center title-size select-none', hasLines() && 'h-5 leading-loose')}>
               {config.showWindowTitle ? title() : ' '}
             </div>
           </Show>
-          <div class={cls('mt-2', (isTerminal() || lines().length === 0) && 'mt-5')}>
+          <div class={cls('mt-2', hasLines() && 'mt-5')}>
             <For each={lines()}>
               {(line, idx) => <CodeLine index={idx() + 1} line={line} />}
             </For>

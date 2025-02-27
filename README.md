@@ -3,8 +3,6 @@
   <h1 align="center">CodeImg</h1>
 </p>
 
-
-
 VSCode plugin that generate beautiful image for you code with your favorite font and theme
 
 Powered by `Solid.js`

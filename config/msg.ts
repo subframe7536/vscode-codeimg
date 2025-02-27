@@ -6,10 +6,13 @@ export interface EditorSettings {
 }
 
 export interface TerminalSettings {
-  terminalFontSize: string
+  fontSize: string
+  fontFamily: string
 }
 
-export type AppConfig = ScopedConfigKeyTypeMap & EditorSettings & TerminalSettings
+export type AppConfig = ScopedConfigKeyTypeMap & EditorSettings & {
+  [K in keyof TerminalSettings as `terminal${Capitalize<K>}`]: TerminalSettings[K]
+}
 
 export type MsgMain2Renderer = {
   type: 'update-code'

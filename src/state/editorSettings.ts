@@ -11,8 +11,9 @@ export const [ConfigProvider, useConfig] = createContextProvider(() => {
     fontLigatures: '"calt"',
     tabSize: 2,
     terminalFontSize: '14px',
+    terminalFontFamily: 'var(--vscode-editor-font-family)',
     ...scopedConfigs.defaults,
   })
-  vscode.listen('get-config', data => (console.log(data), setConfig(reconcile(data))))
+  vscode.listen('get-config', data => setConfig(reconcile(data)))
   return config
 })

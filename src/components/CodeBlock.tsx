@@ -1,5 +1,6 @@
 import { createArray, createRef } from '@solid-hooks/core'
-import { cls, useCssVar, usePaste } from '@solid-hooks/core/web'
+import { useCssVar, usePaste } from '@solid-hooks/core/web'
+import { cls } from 'cls-variant'
 import { createMemo, For, Show } from 'solid-js'
 
 import { useAction } from '../state/action'
@@ -12,9 +13,21 @@ function parseHTML(html: string) {
   return template.content
 }
 
+function normalizeLastChildWhitespace<E extends Element>(el: E): E {
+  const lastChild = el.lastElementChild
+  if (lastChild) {
+    const textContent = lastChild.textContent
+    if (textContent) {
+      lastChild.textContent = textContent.trimEnd()
+    }
+  }
+  return el
+}
+
 export default function CodeBlock() {
   const lines = createRef<Element[]>([])
   const style = createRef('')
+  const isTerminal = createRef(false)
   const highlightArray = createRef(createArray([] as (0 | 1 | 2 | 3)[]))
 
   const config = useConfig()
@@ -38,10 +51,19 @@ export default function CodeBlock() {
       if (mime === 'text/html') {
         const root = parseHTML(data as string)?.querySelector('div')
         if (root) {
-          style(root.style.cssText.replace(/background-color:[^;]*;/g, ''))
+          let cssText = root.style.cssText.replace(/background-color:[^;]*;/g, '')
+          if (isTerminal()) {
+            cssText = cssText.replace('rgb(0, 0, 0)', 'var(--vscode-terminal-foreground)') + [
+              `font-family: ${config.terminalFontFamily}`,
+              `font-size: ${config.terminalFontSize}`,
+              `font-weight: var(--vscode-editor-font-weight)`,
+              `white-space: pre; line-height: ${config.terminalLineHeight}`,
+            ].join(';')
+          }
+          style(cssText)
           const els = Array.from(root.querySelectorAll(':scope > *'))
           if (els.length) {
-            lines(els)
+            lines(els.map(e => normalizeLastChildWhitespace(e)))
           }
         }
       }
@@ -49,8 +71,9 @@ export default function CodeBlock() {
     legacy: true,
   })
 
-  vscode.listen('update-code', async (t) => {
+  vscode.listen('update-code', async ({ title: t, isTerminal: is }) => {
     title(t || ' ')
+    isTerminal(is)
     await paste()
     highlightArray([])
   })
@@ -99,17 +122,18 @@ export default function CodeBlock() {
       : 'color-$vscode-editorLineNumber-foreground hover:color-$vscode-editorLineNumber-activeForeground',
     )
 
+    const showLineNumbers = createMemo(() => config.showLineNumbers && !isTerminal())
     return (
       <div
         class={cls(
           `flex-(~ row) p-r-3`,
-          !config.showLineNumbers && 'm-l-2.5',
+          !showLineNumbers() && 'm-l-2.5',
           bg(),
           roundTop(),
           roundBottom(),
         )}
       >
-        <Show when={config.showLineNumbers}>
+        <Show when={showLineNumbers()}>
           <div
             class={cls(
               'text-right p-r-4 m-r-1 w-6 cursor-pointer whitespace-nowrap select-none',
@@ -128,13 +152,14 @@ export default function CodeBlock() {
     )
   }
 
+  const hasLines = createMemo(() => lines().length > 0)
   return (
     <div class={cls('config-style-(bg padding liga tab) w-fit', isFlashing() && 'flash')}>
       <div class={`shadow-${boxShadow()} shadow-(gray-600 op-50) config-style-radius`}>
         <div
           style={style()}
           class={cls(
-            'w-fit min-w-80 p-(t-2 b-4 inline-3) bg-$vscode-editor-background relative config-style-radius',
+            'w-fit min-w-80 p-(t-2 b-5 inline-3) bg-$vscode-editor-background relative config-style-radius',
             config.border && 'glass-border',
           )}
         >
@@ -149,11 +174,11 @@ export default function CodeBlock() {
             />
           </Show>
           <Show when={config.showWindowTitle || config.showWindowControls}>
-            <div class="w-full text-center title-size select-none">
+            <div class={cls('w-full text-center title-size select-none', hasLines() && 'h-5 leading-loose')}>
               {config.showWindowTitle ? title() : ' '}
             </div>
           </Show>
-          <div class={cls('mt-2', lines().length === 0 && 'mt-5')}>
+          <div class={cls('mt-2', hasLines() && 'mt-5')}>
             <For each={lines()}>
               {(line, idx) => <CodeLine index={idx() + 1} line={line} />}
             </For>

@@ -1,15 +1,25 @@
 import type { ScopedConfigKeyTypeMap } from './generated/meta'
 
-export type BasicSettings = {
+export interface EditorSettings {
   fontLigatures: boolean | string
   tabSize: number | string
 }
 
-export type AppConfig = ScopedConfigKeyTypeMap & BasicSettings
+export interface TerminalSettings {
+  fontSize: string
+  fontFamily: string
+}
+
+export type AppConfig = ScopedConfigKeyTypeMap & EditorSettings & {
+  [K in keyof TerminalSettings as `terminal${Capitalize<K>}`]: TerminalSettings[K]
+}
 
 export type MsgMain2Renderer = {
   type: 'update-code'
-  data: string
+  data: {
+    title: string
+    isTerminal: boolean
+  }
 } | {
   type: 'get-config'
   data: AppConfig

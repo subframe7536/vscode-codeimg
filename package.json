@@ -19,14 +19,18 @@
   "contributes": {
     "commands": [
       {
-        "command": "codeimg.generate",
-        "title": "CodeImg: generate📷"
+        "command": "codeimg.generate.code",
+        "title": "CodeImg: generate code 📷"
+      },
+      {
+        "command": "codeimg.generate.terminal",
+        "title": "CodeImg: generate terminal 🛠️"
       }
     ],
     "menus": {
       "editor/context": [
         {
-          "command": "codeimg.generate"
+          "command": "codeimg.generate.code"
         }
       ]
     },
@@ -78,7 +82,7 @@
         },
         "codeimg.scale": {
           "scope": "resource",
-          "type": "integer",
+          "type": "number",
           "default": 2,
           "description": "The scale of the screenshot"
         },
@@ -92,6 +96,12 @@
             "webp"
           ],
           "description": "The format of the screenshot"
+        },
+        "codeimg.terminalLineHeight": {
+          "scope": "resource",
+          "type": "number",
+          "default": 1.3,
+          "description": "Line height of terminal when generating terminal image"
         },
         "codeimg.showWindowControls": {
           "scope": "resource",
@@ -123,10 +133,14 @@
   "scripts": {
     "dev": "vite",
     "dev:ui": "vite serve dev",
-    "build": "tsc && vite build",
+    "build": "pnpm run typecheck && vite build",
+    "prepare": "pnpm run update",
     "update": "vscode-ext-gen --output config/generated/meta.ts",
-    "preview": "pnpm run build && vsce package --no-dependencies",
-    "release": "pnpm run build && bumpp --all && vsce publish --no-dependencies",
+    "vscode:prepublish": "pnpm run build",
+    "publish": "vsce publish --no-dependencies",
+    "pack": "vsce package --no-dependencies",
+    "typecheck": "tsc --noEmit",
+    "release": "pnpm run format && pnpm run build && bumpp --all",
     "format": "eslint --fix"
   },
   "devDependencies": {
@@ -142,6 +156,7 @@
     "@unocss/reset": "^65.5.0",
     "@vscode/vsce": "^3.2.2",
     "bumpp": "^10.0.3",
+    "cls-variant": "^0.2.1",
     "eslint": "^9.21.0",
     "eslint-plugin-solid": "^0.14.5",
     "modern-screenshot": "^4.6.0",

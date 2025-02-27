@@ -1,7 +1,7 @@
 import type { Accessor } from 'solid-js'
 
 import { createRef } from '@solid-hooks/core'
-import { cls } from '@solid-hooks/core/web'
+import { cls } from 'cls-variant'
 import { Show } from 'solid-js'
 
 import { debounce } from '../../extension/debounce'

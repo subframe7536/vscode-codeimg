@@ -45,8 +45,9 @@ The CodeImg extension allows you to customize various aspects of the code snippe
 | `codeimg.border`              | Border for the snippet's container. Only in dark theme                                      | `boolean` | `true`                                                                  |
 | `codeimg.debounce`            | Whether to update the code snippet with debounce when selection changes                     | `boolean` | `true`                                                                  |
 | `codeimg.roundedCorners`      | The CSS rounded corners for the snippet's container. If you don't want to it, set it `none` | `string`  | `"1rem"`                                                                |
-| `codeimg.scale`               | The scale of the screenshot                                                                 | `integer` | `2`                                                                     |
+| `codeimg.scale`               | The scale of the screenshot                                                                 | `number`  | `2`                                                                     |
 | `codeimg.format`              | The format of the screenshot                                                                | `string`  | `"png"`                                                                 |
+| `codeimg.terminalLineHeight`  | Line height of terminal when generating terminal image                                      | `number`  | `1.3`                                                                   |
 | `codeimg.showWindowControls`  | Display OS X style window controls                                                          | `boolean` | `true`                                                                  |
 | `codeimg.windowControlsColor` | Add color in window controls                                                                | `boolean` | `true`                                                                  |
 | `codeimg.showWindowTitle`     | Display window title with open folder / file name                                           | `boolean` | `true`                                                                  |
@@ -58,9 +59,10 @@ The CodeImg extension allows you to customize various aspects of the code snippe
 
 <!-- commands -->
 
-| Command            | Title               |
-| ------------------ | ------------------- |
-| `codeimg.generate` | CodeImg: generate📷 |
+| Command                     | Title                          |
+| --------------------------- | ------------------------------ |
+| `codeimg.generate.code`     | CodeImg: generate code 📷      |
+| `codeimg.generate.terminal` | CodeImg: generate terminal 🛠️ |
 
 <!-- commands -->
 

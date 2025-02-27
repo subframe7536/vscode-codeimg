@@ -10,6 +10,8 @@ export const [ConfigProvider, useConfig] = createContextProvider(() => {
   const [config, setConfig] = createStore<AppConfig>({
     fontLigatures: '"calt"',
     tabSize: 2,
+    terminalFontSize: '14px',
+    terminalFontFamily: 'var(--vscode-editor-font-family)',
     ...scopedConfigs.defaults,
   })
   vscode.listen('get-config', data => setConfig(reconcile(data)))

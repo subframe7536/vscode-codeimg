@@ -1,5 +1,5 @@
 import type { ConfigShorthandTypeMap } from '../config/generated/meta'
-import type { BasicSettings, SaveImgMsgData } from '../config/msg'
+import type { AppConfig, EditorSettings, SaveImgMsgData } from '../config/msg'
 import type { ExtensionContext, Webview } from 'vscode'
 
 import { env, Uri, window, workspace } from 'vscode'
@@ -49,8 +49,8 @@ export async function saveImage(data: SaveImgMsgData) {
   }
 }
 
-export function getConfig() {
-  const editorSettings = getSettings('editor', ['fontLigatures', 'tabSize']) as BasicSettings
+export function getConfig(): AppConfig {
+  const editorSettings = getSettings('editor', ['fontLigatures', 'tabSize']) as EditorSettings
   const editor = window.activeTextEditor
 
   const tabSize = editor?.options.tabSize
@@ -67,6 +67,7 @@ export function getConfig() {
   }
 
   return {
+    ...getSettings('terminal.integrated', ['fontSize']),
     ...editorSettings,
     ...extensionSettings,
     windowTitle,

@@ -53,7 +53,7 @@ export default function CodeBlock() {
         if (root) {
           let cssText = root.style.cssText.replace(/background-color:[^;]*;/g, '')
           if (isTerminal()) {
-            cssText = `${cssText.replace('rgb(0, 0, 0)', 'var(--vscode-terminal-foreground)')}; font-size: var(--vscode-editor-font-size); font-weight: var(--vscode-editor-font-weight); white-space: pre; line-height: 1.2`
+            cssText = `${cssText.replace('rgb(0, 0, 0)', 'var(--vscode-terminal-foreground)')}; font-size: ${config.terminalFontSize}; font-weight: var(--vscode-editor-font-weight); white-space: pre; line-height: ${config.terminalLineHeight}`
           }
           style(cssText)
           const els = Array.from(root.querySelectorAll(':scope > *'))

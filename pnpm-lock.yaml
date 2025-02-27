@@ -44,6 +44,9 @@ importers:
       bumpp:
         specifier: ^10.0.3
         version: 10.0.3
+      cls-variant:
+        specifier: ^0.2.1
+        version: 0.2.1
       eslint:
         specifier: ^9.21.0
         version: 9.21.0(jiti@2.4.2)
@@ -1308,6 +1311,9 @@ packages:
   clean-regexp@1.0.0:
     resolution: {integrity: sha512-GfisEZEJvzKrmGWkvfhgzcz/BllN1USeqD2V6tg14OAOgaCD2Z/PUEuxnAZ/nPvmaHRG7a8y77p1T/IRQ4D1Hw==}
     engines: {node: '>=4'}
+
+  cls-variant@0.2.1:
+    resolution: {integrity: sha512-pbOW3AyveyWFDjGAUIyhdpPM076voa/n0CIROODsyfJG4bjNP7xhrttVxAwUFwQGwGfEoTQpdCn5yWk9lqPBnA==}
 
   cockatiel@3.2.1:
     resolution: {integrity: sha512-gfrHV6ZPkquExvMh9IOkKsBzNDk6sDuZ6DdBGUBkvFnTCqCxzpuq48RySgP0AnaqQkw2zynOFj9yly6T1Q2G5Q==}
@@ -4562,6 +4568,8 @@ snapshots:
   clean-regexp@1.0.0:
     dependencies:
       escape-string-regexp: 1.0.5
+
+  cls-variant@0.2.1: {}
 
   cockatiel@3.2.1: {}
 

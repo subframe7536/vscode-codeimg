@@ -9,7 +9,10 @@ export type AppConfig = ScopedConfigKeyTypeMap & BasicSettings
 
 export type MsgMain2Renderer = {
   type: 'update-code'
-  data: string
+  data: {
+    title: string
+    isTerminal: boolean
+  }
 } | {
   type: 'get-config'
   data: AppConfig

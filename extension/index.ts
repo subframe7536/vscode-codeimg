@@ -9,11 +9,10 @@ let dispose: VoidFunction | undefined
 export function activate(context: ExtensionContext) {
   context.subscriptions.push(
     commands.registerCommand(cmds.generateCode, async () => {
-      dispose = await render(context)
+      dispose = await render(context, 'editor')
     }),
-    commands.registerCommand(cmds.generateCode, async () => {
-      // todo))
-      dispose = await render(context)
+    commands.registerCommand(cmds.generateTerminal, async () => {
+      dispose = await render(context, 'terminal')
     }),
   )
 }

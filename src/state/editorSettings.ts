@@ -12,6 +12,6 @@ export const [ConfigProvider, useConfig] = createContextProvider(() => {
     tabSize: 2,
     ...scopedConfigs.defaults,
   })
-  vscode.listen('get-config', data => setConfig(reconcile(data)))
+  vscode.listen('get-config', data => (console.log(data), setConfig(reconcile(data))))
   return config
 })

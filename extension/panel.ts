@@ -20,7 +20,10 @@ export async function copyTerminalSelectionCode() {
     await commands.executeCommand('workbench.action.terminal.copySelectionAsHtml')
     await sendToWebview({
       type: 'update-code',
-      data: terminal.name,
+      data: {
+        title: terminal.name,
+        isTerminal: true,
+      },
     })
   }
 }
@@ -30,12 +33,15 @@ async function copyEditorSelectionCode(selections: readonly Selection[] | undefi
     await commands.executeCommand('editor.action.clipboardCopyWithSyntaxHighlightingAction')
     await sendToWebview({
       type: 'update-code',
-      data: getEditorTitle(),
+      data: {
+        title: getEditorTitle(),
+        isTerminal: false,
+      },
     })
   }
 }
 
-export async function render(context: ExtensionContext): Promise<VoidFunction> {
+export async function render(context: ExtensionContext, type: 'editor' | 'terminal'): Promise<VoidFunction> {
   let selectionDispose: Disposable
 
   if (webviewPanel) {
@@ -93,6 +99,16 @@ export async function render(context: ExtensionContext): Promise<VoidFunction> {
   }
 
   await sendToWebview({ type: 'get-config', data: getConfig() })
+
+  switch (type) {
+    case 'editor':
+      await copyEditorSelectionCode()
+      break
+    case 'terminal':
+      await copyTerminalSelectionCode()
+      break
+  }
+
   selectionDispose = await bindSelectionEvents()
 
   _disposables.push(
@@ -123,9 +139,6 @@ function bindThemeChange() {
 }
 
 async function bindSelectionEvents(useDebounce = true) {
-  if (!arguments.length) {
-    await copyEditorSelectionCode()
-  }
   return window.onDidChangeTextEditorSelection(
     useDebounce
       ? debounce(async e => await copyEditorSelectionCode(e.selections), 250)

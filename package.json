@@ -15,16 +15,20 @@
     "node": ">=18",
     "vscode": "^1.75.0"
   },
-  "activationEvents": [],
+  "activationEvents": ["onStartupFinished"],
   "contributes": {
     "commands": [
       {
+        "command": "codeimg.open",
+        "title": "CodeImg: open preview panel"
+      },
+      {
         "command": "codeimg.generate.code",
-        "title": "CodeImg: generate code 📷"
+        "title": "CodeImg: generate image for code 📷"
       },
       {
         "command": "codeimg.generate.terminal",
-        "title": "CodeImg: generate terminal 🛠️"
+        "title": "CodeImg: generate image for terminal 🛠️"
       }
     ],
     "menus": {

@@ -41,7 +41,7 @@ async function copyEditorSelectionCode(selections: readonly Selection[] | undefi
   }
 }
 
-export async function render(context: ExtensionContext, type: 'editor' | 'terminal'): Promise<VoidFunction> {
+export async function render(context: ExtensionContext, type: 'editor' | 'terminal' | 'empty'): Promise<VoidFunction> {
   let selectionDispose: Disposable
 
   if (webviewPanel) {
@@ -106,6 +106,8 @@ export async function render(context: ExtensionContext, type: 'editor' | 'termin
       break
     case 'terminal':
       await copyTerminalSelectionCode()
+      break
+    case 'empty':
       break
   }
 

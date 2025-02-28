@@ -66,10 +66,11 @@ Terminal:
 
 <!-- commands -->
 
-| Command                     | Title                          |
-| --------------------------- | ------------------------------ |
-| `codeimg.generate.code`     | CodeImg: generate code 📷      |
-| `codeimg.generate.terminal` | CodeImg: generate terminal 🛠️ |
+| Command                     | Title                                    |
+| --------------------------- | ---------------------------------------- |
+| `codeimg.open`              | CodeImg: open preview panel              |
+| `codeimg.generate.code`     | CodeImg: generate image for code 📷      |
+| `codeimg.generate.terminal` | CodeImg: generate image for terminal 🛠️ |
 
 <!-- commands -->
 

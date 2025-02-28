@@ -5,7 +5,7 @@ import { ColorThemeKind, commands, ViewColumn, window, workspace } from 'vscode'
 
 import { displayName, extensionId, name } from '../config/generated/meta'
 import { debounce } from './debounce'
-import { getConfig, getEditorTitle, saveImage, setupHtml, updateSettings } from './utils'
+import { getConfig, saveImage, setupHtml, updateSettings } from './utils'
 
 let webviewPanel: WebviewPanel | undefined
 const _disposables: Disposable[] = []
@@ -34,7 +34,7 @@ async function copyEditorSelectionCode(selections: readonly Selection[] | undefi
     await sendToWebview({
       type: 'update-code',
       data: {
-        title: getEditorTitle(),
+        title: window.activeTextEditor?.document.uri.path.split('/').pop() ?? '',
         isTerminal: false,
       },
     })

@@ -68,7 +68,3 @@ export function getConfig(): AppConfig {
     ...extensionSettings,
   }
 }
-
-export function getEditorTitle(editor = window.activeTextEditor): string {
-  return editor?.document.uri.path.split('/').pop() ?? ''
-}

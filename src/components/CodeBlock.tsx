@@ -24,11 +24,14 @@ function normalizeLastChildWhitespace<E extends Element>(el: E): E {
   return el
 }
 
+type RowType = 0 | 1 | 2 | 3
+
 export default function CodeBlock() {
   const lines = createRef<Element[]>([])
   const style = createRef('')
   const isTerminal = createRef(false)
-  const highlightArray = createRef(createArray([] as (0 | 1 | 2 | 3)[]))
+
+  const highlightArray = createRef(createArray([] as RowType[]))
 
   const config = useConfig()
   const { title, isFlashing } = useAction()
@@ -141,7 +144,7 @@ export default function CodeBlock() {
             )}
             // eslint-disable-next-line solid/reactivity
             onClick={() => highlightArray((arr) => {
-              arr[props.index] = ((arr[props.index] ?? 0) + 1) % 4 as 0 | 1 | 2 | 3
+              arr[props.index] = ((arr[props.index] ?? 0) + 1) % 4 as RowType
             })}
           >
             {lineNumber()}

@@ -176,13 +176,13 @@ export default function CodeBlock() {
               )}
             />
           </Show>
-          <Show when={config.showWindowTitle || config.showWindowControls}>
-            <div class={cls('w-full text-center title-size select-none', hasLines() && 'h-5 leading-loose')}>
+          <Show when={hasLines() && (config.showWindowTitle || config.showWindowControls)}>
+            <div class={cls('w-full text-center title-size select-none h-5 leading-loose')}>
               {config.showWindowTitle ? title() : ' '}
             </div>
           </Show>
           <Show
-            when={lines().length > 0}
+            when={hasLines()}
             fallback={(
               <div class="p-8 mt-6 flex flex-col items-center gap-4 *:font-$vscode-editor-font-family">
                 <div class="leading-loose">
@@ -190,7 +190,7 @@ export default function CodeBlock() {
                 </div>
                 <div class="leading-none">or</div>
                 <button
-                  class="bg-transparent b-0 c-$vscode-foreground text-lg hover:underline"
+                  class="rounded-lg p-(x-4 y-2) b-0 bg-$vscode-foreground hover:op-80"
                   onClick={() => vscode.sendToMain({ type: 'capture-terminal' })}
                 >
                   Capture Terminal

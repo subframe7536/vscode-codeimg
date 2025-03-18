@@ -181,11 +181,29 @@ export default function CodeBlock() {
               {config.showWindowTitle ? title() : ' '}
             </div>
           </Show>
-          <div class={cls('mt-2', hasLines() && 'mt-5')}>
-            <For each={lines()}>
-              {(line, idx) => <CodeLine index={idx() + 1} line={line} />}
-            </For>
-          </div>
+          <Show
+            when={lines().length > 0}
+            fallback={(
+              <div class="p-8 mt-6 flex flex-col items-center gap-4 *:font-$vscode-editor-font-family">
+                <div class="leading-loose">
+                  Change your selection in editor
+                </div>
+                <div class="leading-none">or</div>
+                <button
+                  class="bg-transparent b-0 c-$vscode-foreground text-lg hover:underline"
+                  onClick={() => vscode.sendToMain({ type: 'capture-terminal' })}
+                >
+                  Capture Terminal
+                </button>
+              </div>
+            )}
+          >
+            <div class={cls('mt-2', hasLines() && 'mt-5')}>
+              <For each={lines()}>
+                {(line, idx) => <CodeLine index={idx() + 1} line={line} />}
+              </For>
+            </div>
+          </Show>
         </div>
       </div>
     </div>

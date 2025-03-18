@@ -38,13 +38,20 @@ export type SaveImgMsgData = {
   base64: string
 }
 
-export type MsgRenderer2Main = {
-  type: 'save-img'
-  data: SaveImgMsgData
-} | {
-  type: 'set-config'
-  data: Partial<ScopedConfigKeyTypeMap>
-} | {
-  type: 'show-settings'
-  data?: undefined
-}
+export type MsgRenderer2Main =
+  | {
+    type: 'save-img'
+    data: SaveImgMsgData
+  }
+  | {
+    type: 'set-config'
+    data: Partial<ScopedConfigKeyTypeMap>
+  }
+  | {
+    type: 'show-settings'
+    data?: undefined
+  }
+  | {
+    type: 'capture-terminal'
+    data?: undefined
+  }

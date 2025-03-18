@@ -90,6 +90,10 @@ export async function render(context: ExtensionContext, type: 'editor' | 'termin
               break
             case 'show-settings':
               await commands.executeCommand('workbench.action.openSettings', `@ext:${extensionId}`)
+              break
+            case 'capture-terminal':
+              await copyTerminalSelectionCode()
+              break
           }
         },
         undefined,

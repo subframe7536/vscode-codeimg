@@ -4,7 +4,7 @@ import { cls } from 'cls-variant'
 import { createMemo, For, Show } from 'solid-js'
 
 import { useAction } from '../state/action'
-import { useConfig } from '../state/editorSettings'
+import { useSettings } from '../state/editorSettings'
 import { vscode } from '../utils/vscode'
 
 function parseHTML(html: string) {
@@ -33,21 +33,21 @@ export default function CodeBlock() {
 
   const highlightArray = createRef(createArray([] as RowType[]))
 
-  const config = useConfig()
+  const [settings] = useSettings()
   const { title, isFlashing } = useAction()
 
-  useCssVar('bg', () => config.background)
-  useCssVar('padding', () => config.containerPadding)
-  useCssVar('radius', () => config.roundedCorners)
+  useCssVar('bg', () => settings.background)
+  useCssVar('padding', () => settings.targetContainerPadding)
+  useCssVar('radius', () => settings.targetRoundedCorners)
   useCssVar(
     'liga',
-    () => typeof config.fontLigatures === 'string'
-      ? config.fontLigatures
-      : config.fontLigatures
+    () => typeof settings.fontLigatures === 'string'
+      ? settings.fontLigatures
+      : settings.fontLigatures
         ? '"calt", "liga"'
         : 'none',
   )
-  useCssVar('tab', () => `${config.tabSize}`)
+  useCssVar('tab', () => `${settings.tabSize}`)
 
   const paste = usePaste({
     onPaste: (data, mime) => {
@@ -57,10 +57,10 @@ export default function CodeBlock() {
           let cssText = root.style.cssText.replace(/background-color:[^;]*;/g, '')
           if (isTerminal()) {
             cssText = cssText.replace('rgb(0, 0, 0)', 'var(--vscode-terminal-foreground)') + [
-              `font-family: ${config.terminalFontFamily}`,
-              `font-size: ${config.terminalFontSize}`,
+              `font-family: ${settings.terminalFontFamily}`,
+              `font-size: ${settings.terminalFontSize}`,
               `font-weight: var(--vscode-editor-font-weight)`,
-              `white-space: pre; line-height: ${config.terminalLineHeight}`,
+              `white-space: pre; line-height: ${settings.terminalLineHeight}`,
             ].join(';')
           }
           style(cssText)
@@ -82,7 +82,7 @@ export default function CodeBlock() {
   })
 
   const boxShadow = createMemo(() => {
-    switch (config.boxShadow) {
+    switch (settings.boxShadow) {
       case 'none':
         return 'none'
       case 'small':
@@ -125,7 +125,7 @@ export default function CodeBlock() {
       : 'color-$vscode-editorLineNumber-foreground hover:color-$vscode-editorLineNumber-activeForeground',
     )
 
-    const showLineNumbers = createMemo(() => config.showLineNumbers && !isTerminal())
+    const showLineNumbers = createMemo(() => settings.showLineNumbers && !isTerminal())
     return (
       <div
         class={cls(
@@ -163,22 +163,28 @@ export default function CodeBlock() {
           style={style()}
           class={cls(
             'w-fit min-w-80 p-(t-2 b-5 inline-3) bg-$vscode-editor-background relative config-style-radius',
-            config.border && 'glass-border',
+            settings.targetBorder && 'glass-border',
           )}
         >
-          <Show when={config.showWindowControls}>
+          <Show when={settings.targetShowWindowControls}>
             <div
               class={cls(
                 'size-3.5 m-(l-8 block-2) absolute rounded-full before:(content-empty size-3.5 right-6 pos-absolute rounded-full) after:(content-empty size-3.5 left-6 pos-absolute rounded-full)',
-                config.windowControlsColor
+                settings.windowControlsColor
                   ? 'bg-#ffbd2e before:bg-#ff544d after:bg-#28c93f'
                   : 'bg-$vscode-editor-inactiveSelectionBackground before:bg-$vscode-editor-inactiveSelectionBackground after:bg-$vscode-editor-inactiveSelectionBackground',
               )}
             />
           </Show>
-          <Show when={hasLines() && (config.showWindowTitle || config.showWindowControls)}>
+          <Show
+            when={
+              hasLines() && (
+                settings.targetShowWindowTitle || settings.targetShowWindowControls
+              )
+            }
+          >
             <div class={cls('w-full text-center title-size select-none h-5 leading-loose')}>
-              {config.showWindowTitle ? title() : ' '}
+              {settings.targetShowWindowTitle ? title() : ' '}
             </div>
           </Show>
           <Show

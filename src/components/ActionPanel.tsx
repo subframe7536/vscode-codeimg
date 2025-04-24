@@ -6,7 +6,7 @@ import { Show } from 'solid-js'
 
 import { debounce } from '../../extension/debounce'
 import { useAction } from '../state/action'
-import { useConfig } from '../state/editorSettings'
+import { useSettings } from '../state/editorSettings'
 import { generateBlob, saveToLocal } from '../utils/image'
 import { vscode } from '../utils/vscode'
 
@@ -20,7 +20,7 @@ function TextWithPrefixIcon(props: { icon: string, text: string }) {
 }
 
 export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivElement | undefined> }) {
-  const config = useConfig()
+  const [settings, plain] = useSettings()
   const isCopying = createRef(false)
   const isSaving = createRef(false)
   const { copy, isCopied, title, showFlashing } = useAction()
@@ -28,7 +28,7 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
   const saveFn = async () => {
     isSaving(true)
     showFlashing()
-    await saveToLocal(config.format, props.codeblockRef()!, title(), config.scale)
+    await saveToLocal(settings.format, props.codeblockRef()!, title(), settings.scale)
     debounceOffSaving()
   }
 
@@ -37,7 +37,7 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
     // eslint-disable-next-line solid/reactivity
     await copy(() => {
       showFlashing()
-      return generateBlob(config.format, props.codeblockRef()!, config.scale)
+      return generateBlob(settings.format, props.codeblockRef()!, settings.scale)
     })
     isCopying(false)
   }
@@ -71,6 +71,12 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
         onClick={showSettingsFn}
       >
         <TextWithPrefixIcon icon="i-lucide-settings" text="Settings" />
+      </button>
+      <button
+        class="bg-gray-2 b-(2 solid gray-3) p-(x-3 y-2) m-(x-2 y-4) c-gray-8 rounded-2 hover:bg-gray-3 dark:(bg-gray-9 c-gray-2 hover:bg-gray-7 b-gray-6) hidden mini:inline-block"
+        onClick={() => plain(prev => !prev)}
+      >
+        {plain() ? 'Normal Style' : 'Plain Style'}
       </button>
     </div>
   )

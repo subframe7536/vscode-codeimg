@@ -14,6 +14,18 @@ export type AppConfig = ScopedConfigKeyTypeMap & EditorSettings & {
   [K in keyof TerminalSettings as `terminal${Capitalize<K>}`]: TerminalSettings[K]
 }
 
+type UIKeys =
+  | 'containerPadding'
+  | 'border'
+  | 'roundedCorners'
+  | 'showWindowControls'
+  | 'showWindowTitle'
+  | 'boxShadow'
+
+export type UIConfig = AppConfig & {
+  [K in UIKeys as `target${Capitalize<K>}`]: AppConfig[K]
+}
+
 export type MsgMain2Renderer = {
   type: 'update-code'
   data: {

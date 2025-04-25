@@ -1,13 +1,11 @@
 import { createApp } from '@solid-hooks/core'
+import { GlobalStateProvider } from '@solid-hooks/state'
 
 import { App } from './App'
-import { ActionProvider } from './state/action'
-import { SettingsProvider } from './state/editorSettings'
 
 import '@unocss/reset/normalize.css'
 import 'uno.css'
 
 createApp(App)
-  .use(SettingsProvider)
-  .use(ActionProvider)
+  .use(GlobalStateProvider)
   .mount('#app')

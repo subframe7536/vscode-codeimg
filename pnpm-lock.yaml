@@ -14,6 +14,9 @@ importers:
       '@solid-hooks/core':
         specifier: ^0.4.4
         version: 0.4.4(solid-js@1.9.5)
+      '@solid-hooks/state':
+        specifier: ^0.1.9
+        version: 0.1.9(@solid-hooks/persist@0.1.2(idb-keyval@6.2.1)(solid-js@1.9.5))(solid-js@1.9.5)
       '@subframe7536/eslint-config':
         specifier: ^1.2.4
         version: 1.2.4(@vitest/eslint-plugin@1.1.38(@typescript-eslint/utils@8.31.0(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint-plugin-solid@0.14.5(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3))(eslint@9.25.1(jiti@2.4.2))(typescript@5.8.3)
@@ -762,6 +765,18 @@ packages:
   '@solid-hooks/core@0.4.4':
     resolution: {integrity: sha512-/w9lQYTwSNIiSw6GqvKNMzW0Kp98d4/IbcwUBuiLfKsuRy8jc/Z61NHssnrF97gBlwq8c0mOjSP1kWvFCjoLOw==}
     peerDependencies:
+      solid-js: ^1.6
+
+  '@solid-hooks/persist@0.1.2':
+    resolution: {integrity: sha512-6x1xIRXJXQdZ0mubN5lHlWf+9fSznIWTxgY4rxsgDSwc6LH4/7qdNpfjFGP4nNhT8sH0bc+oDdbwwmGj8/0k+Q==}
+    peerDependencies:
+      idb-keyval: ^6.2.1
+      solid-js: ^1.6
+
+  '@solid-hooks/state@0.1.9':
+    resolution: {integrity: sha512-82Quo7H11nFDGMlOZHmifGLeVhKLxweiWPYh+3e/xs29+cpRRCuYYQmWjqoFaF5wbsM/mcVl6L9hqPtVE+rfPw==}
+    peerDependencies:
+      '@solid-hooks/persist': ^0.1.1
       solid-js: ^1.6
 
   '@solid-primitives/event-listener@2.4.0':
@@ -2081,6 +2096,9 @@ packages:
     resolution: {integrity: sha512-4fCk79wshMdzMp2rH06qWrJE4iolqLhCUH+OiuIgU++RB0+94NlDL81atO7GX55uUKueo0txHNtvEyI6D7WdMw==}
     engines: {node: '>=0.10.0'}
 
+  idb-keyval@6.2.1:
+    resolution: {integrity: sha512-8Sb3veuYCyrZL+VBt9LJfZjLUPWVvqn8tG28VqYNFCo43KHcKuq+b4EiXGeuaLAQWL2YmyDgMp2aSpH9JHsEQg==}
+
   ieee754@1.2.1:
     resolution: {integrity: sha512-dcyqhDvX1C46lXZcVqCpK+FtMRQVdIMN6/Df5js2zouUsqG7I6sFxitIC+7KYK29KdXOLHdu9zL4sFnoVQnqaA==}
 
@@ -2245,6 +2263,10 @@ packages:
 
   keyv@4.5.4:
     resolution: {integrity: sha512-oxVHkHR/EJf2CNXnWxRLW6mg7JyCCUcG0DtEGmL2ctUo1PNTin1PUil+r/+4r5MpVgC/fn1kjsx7mjSujKqIpw==}
+
+  klona@2.0.6:
+    resolution: {integrity: sha512-dhG34DXATL5hSxJbIexCft8FChFXtmskoZYnoPWjXQuebWYCNkVeV3KkGegCK9CP1oswI/vQibS2GY7Em/sJJA==}
+    engines: {node: '>= 8'}
 
   known-css-properties@0.30.0:
     resolution: {integrity: sha512-VSWXYUnsPu9+WYKkfmJyLKtIvaRJi1kXUqVmBACORXZQxT5oZDsoZ2vQP+bQFDnWtpI/4eq3MLoRMjI2fnLzTQ==}
@@ -2618,6 +2640,9 @@ packages:
   object-inspect@1.13.4:
     resolution: {integrity: sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==}
     engines: {node: '>= 0.4'}
+
+  object-path-access@4.0.0:
+    resolution: {integrity: sha512-oS3eNyCL+8gmCsGkXCwn4eHy0K+4AseVyvL00fjyVwHfFVpbGWanv1ECJUQ7llBeVO0+0KyrP9ewXumtG7zRSQ==}
 
   ofetch@1.4.1:
     resolution: {integrity: sha512-QZj2DfGplQAr2oj9KzceK9Hwz6Whxazmn85yYeVuS3u9XTMOGMRx0kO95MQ+vLsj/S/NwBDMMLU5hpxvI6Tklw==}
@@ -3968,6 +3993,19 @@ snapshots:
       '@solid-primitives/event-listener': 2.4.0(solid-js@1.9.5)
       '@solid-primitives/utils': 6.3.0(solid-js@1.9.5)
       '@subframe7536/type-utils': 0.1.6
+      solid-js: 1.9.5
+
+  '@solid-hooks/persist@0.1.2(idb-keyval@6.2.1)(solid-js@1.9.5)':
+    dependencies:
+      idb-keyval: 6.2.1
+      object-path-access: 4.0.0
+      solid-js: 1.9.5
+
+  '@solid-hooks/state@0.1.9(@solid-hooks/persist@0.1.2(idb-keyval@6.2.1)(solid-js@1.9.5))(solid-js@1.9.5)':
+    dependencies:
+      '@solid-hooks/persist': 0.1.2(idb-keyval@6.2.1)(solid-js@1.9.5)
+      klona: 2.0.6
+      object-path-access: 4.0.0
       solid-js: 1.9.5
 
   '@solid-primitives/event-listener@2.4.0(solid-js@1.9.5)':
@@ -5527,6 +5565,8 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
+  idb-keyval@6.2.1: {}
+
   ieee754@1.2.1:
     optional: true
 
@@ -5671,6 +5711,8 @@ snapshots:
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
+
+  klona@2.0.6: {}
 
   known-css-properties@0.30.0: {}
 
@@ -6195,6 +6237,8 @@ snapshots:
   object-assign@4.1.1: {}
 
   object-inspect@1.13.4: {}
+
+  object-path-access@4.0.0: {}
 
   ofetch@1.4.1:
     dependencies:

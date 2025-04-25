@@ -5,7 +5,7 @@ import { cls } from 'cls-variant'
 import { Show } from 'solid-js'
 
 import { debounce } from '../../extension/debounce'
-import { useAction } from '../state/action'
+import { useOperate } from '../state/action'
 import { useSettings } from '../state/editorSettings'
 import { generateBlob, saveToLocal } from '../utils/image'
 import { vscode } from '../utils/vscode'
@@ -20,15 +20,15 @@ function TextWithPrefixIcon(props: { icon: string, text: string }) {
 }
 
 export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivElement | undefined> }) {
-  const [settings, plain] = useSettings()
+  const [settings, { togglePlain }] = useSettings()
   const isCopying = createRef(false)
   const isSaving = createRef(false)
-  const { copy, isCopied, title, showFlashing } = useAction()
+  const [operate, { copy, showFlashing }] = useOperate()
   const debounceOffSaving = debounce(() => isSaving(false), 750)
   const saveFn = async () => {
     isSaving(true)
     showFlashing()
-    await saveToLocal(settings.format, props.codeblockRef()!, title(), settings.scale)
+    await saveToLocal(settings().format, props.codeblockRef()!, operate().title, settings().scale)
     debounceOffSaving()
   }
 
@@ -37,7 +37,7 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
     // eslint-disable-next-line solid/reactivity
     await copy(() => {
       showFlashing()
-      return generateBlob(settings.format, props.codeblockRef()!, settings.scale)
+      return generateBlob(settings().format, props.codeblockRef()!, settings().scale)
     })
     isCopying(false)
   }
@@ -46,14 +46,14 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
 
   return (
     <div
-      class="rounded-2 w-fit m-(x-auto y-0) relative font-$vscode-editor-font-family select-none hover:border-$vscode-focusBorder *:transition"
+      class="flex w-fit m-(x-auto y-0) relative font-$vscode-editor-font-family select-none hover:border-$vscode-focusBorder *:transition"
     >
       <button
         class="bg-gray-1 b-(2 solid gray-3) p-(x-3 y-2) m-(x-2 y-4) c-gray-7 rounded-2 hover:bg-gray-2 dark:(bg-gray-8 c-gray-1 hover:bg-gray-6 b-gray-5)"
         onClick={copyFn}
       >
         <Show when={!isCopying()} fallback={<TextWithPrefixIcon icon="i-lucide-loader" text="Copying" />}>
-          <Show when={!isCopied()} fallback={<TextWithPrefixIcon icon="i-lucide-check" text="Copied" />}>
+          <Show when={!operate.isCopied()} fallback={<TextWithPrefixIcon icon="i-lucide-check" text="Copied" />}>
             <TextWithPrefixIcon icon="i-lucide-copy" text="Copy" />
           </Show>
         </Show>
@@ -74,9 +74,9 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
       </button>
       <button
         class="bg-gray-2 b-(2 solid gray-3) p-(x-3 y-2) m-(x-2 y-4) c-gray-8 rounded-2 hover:bg-gray-3 dark:(bg-gray-9 c-gray-2 hover:bg-gray-7 b-gray-6) hidden mini:inline-block"
-        onClick={() => plain(prev => !prev)}
+        onClick={() => togglePlain()}
       >
-        {plain() ? 'Normal Style' : 'Plain Style'}
+        {settings().plain ? 'Normal Style' : 'Plain Style'}
       </button>
     </div>
   )

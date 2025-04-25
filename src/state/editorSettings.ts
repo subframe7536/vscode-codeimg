@@ -1,38 +1,42 @@
-import type { UIConfig } from '../../config/msg'
+import type { AppConfig } from '../../config/msg'
 
-import { createContextProvider, createRef } from '@solid-hooks/core'
-import { createStore } from 'solid-js/store'
+import { defineState } from '@solid-hooks/state'
 
 import { scopedConfigs } from '../../config/generated/meta'
-import { vscode } from '../utils/vscode'
 
-export const [SettingsProvider, useSettings] = createContextProvider(() => {
-  const plain = createRef(false)
-  const [config, setConfig] = createStore<UIConfig>({
-    fontLigatures: '"calt"',
-    tabSize: 2,
-    terminalFontSize: '14px',
-    terminalFontFamily: 'var(--vscode-editor-font-family)',
-    ...scopedConfigs.defaults,
-    get targetBoxShadow() {
-      return plain() ? 'none' : this.boxShadow
+const init: AppConfig & { plain: boolean } = {
+  plain: false,
+  fontLigatures: '"calt"',
+  tabSize: 2,
+  terminalFontSize: '14px',
+  terminalFontFamily: 'var(--vscode-editor-font-family)',
+  ...scopedConfigs.defaults,
+}
+export const useSettings = defineState('settings', {
+  init,
+  getters: state => ({
+    targetBoxShadow() {
+      return state.plain ? 'none' : state.boxShadow
     },
-    get targetBorder() {
-      return plain() ? false : this.border
+    targetBorder() {
+      return state.plain ? false : state.border
     },
-    get targetContainerPadding() {
-      return plain() ? '0' : this.containerPadding
+    targetContainerPadding() {
+      return state.plain ? '0' : state.containerPadding
     },
-    get targetRoundedCorners() {
-      return plain() ? '0' : this.roundedCorners
+    targetRoundedCorners() {
+      return state.plain ? '0' : state.roundedCorners
     },
-    get targetShowWindowControls() {
-      return plain() ? false : this.showWindowControls
+    targetShowWindowControls() {
+      return state.plain ? false : state.showWindowControls
     },
-    get targetShowWindowTitle() {
-      return plain() ? false : this.showWindowTitle
+    targetShowWindowTitle() {
+      return state.plain ? false : state.showWindowTitle
     },
-  })
-  vscode.listen('get-config', data => setConfig(ori => ({ ...ori, ...data })))
-  return [config, plain] as const
+  }),
+  actions: setState => ({
+    togglePlain: () => {
+      setState('plain', prev => !prev)
+    },
+  }),
 })

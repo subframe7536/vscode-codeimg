@@ -1,3 +1,4 @@
+import type json from '@iconify-json/lucide/icons.json'
 import type { Accessor } from 'solid-js'
 
 import { createRef } from '@solid-hooks/core'
@@ -10,11 +11,11 @@ import { useSettings } from '../state/editorSettings'
 import { generateBlob, saveToLocal } from '../utils/image'
 import { vscode } from '../utils/vscode'
 
-function TextWithPrefixIcon(props: { icon: string, text: string }) {
+function TextWithPrefixIcon(props: { icon: `i-lucide-${keyof typeof json['icons']}`, text: string }) {
   return (
-    <div class="flex-(~ row content-center)">
+    <div class="flex flex-row leading-normal">
       <i class={cls(props.icon, 'mr-1.2')} />
-      <span class="leading-4.8 inline-block">{props.text}</span>
+      {props.text}
     </div>
   )
 }
@@ -76,7 +77,10 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
         class="bg-gray-2 b-(2 solid gray-3) p-(x-3 y-2) m-(x-2 y-4) c-gray-8 rounded-2 hover:bg-gray-3 dark:(bg-gray-9 c-gray-2 hover:bg-gray-7 b-gray-6) hidden mini:inline-block"
         onClick={() => togglePlain()}
       >
-        {settings().plain ? 'Normal Style' : 'Plain Style'}
+        <TextWithPrefixIcon
+          icon={settings().plain ? 'i-lucide-square-check-big' : 'i-lucide-square'}
+          text="Plain Style"
+        />
       </button>
     </div>
   )

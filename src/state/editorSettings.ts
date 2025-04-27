@@ -1,19 +1,42 @@
 import type { AppConfig } from '../../config/msg'
 
-import { createContextProvider } from '@solid-hooks/core'
-import { createStore, reconcile } from 'solid-js/store'
+import { defineState } from '@solid-hooks/state'
 
 import { scopedConfigs } from '../../config/generated/meta'
-import { vscode } from '../utils/vscode'
 
-export const [ConfigProvider, useConfig] = createContextProvider(() => {
-  const [config, setConfig] = createStore<AppConfig>({
-    fontLigatures: '"calt"',
-    tabSize: 2,
-    terminalFontSize: '14px',
-    terminalFontFamily: 'var(--vscode-editor-font-family)',
-    ...scopedConfigs.defaults,
-  })
-  vscode.listen('get-config', data => setConfig(reconcile(data)))
-  return config
+const init: AppConfig & { plain: boolean } = {
+  plain: false,
+  fontLigatures: '"calt"',
+  tabSize: 2,
+  terminalFontSize: '14px',
+  terminalFontFamily: 'var(--vscode-editor-font-family)',
+  ...scopedConfigs.defaults,
+}
+export const useSettings = defineState('settings', {
+  init,
+  getters: state => ({
+    targetBoxShadow() {
+      return state.plain ? 'none' : state.boxShadow
+    },
+    targetBorder() {
+      return state.plain ? false : state.border
+    },
+    targetContainerPadding() {
+      return state.plain ? '0' : state.containerPadding
+    },
+    targetRoundedCorners() {
+      return state.plain ? '0' : state.roundedCorners
+    },
+    targetShowWindowControls() {
+      return state.plain ? false : state.showWindowControls
+    },
+    targetShowWindowTitle() {
+      return state.plain ? false : state.showWindowTitle
+    },
+  }),
+  actions: setState => ({
+    togglePlain: () => {
+      setState('plain', prev => !prev)
+    },
+  }),
 })

@@ -3,6 +3,7 @@
   "name": "codeimg",
   "displayName": "CodeImg",
   "version": "0.3.1",
+  "packageManager": "pnpm@10.9.0",
   "description": "Generate beautiful image for you code and terminal with your favorite font and theme",
   "author": "subframe7536",
   "repository": {
@@ -143,10 +144,9 @@
     "prepare": "pnpm run update",
     "update": "vscode-ext-gen --output config/generated/meta.ts",
     "vscode:prepublish": "pnpm run build",
-    "publish": "vsce publish --no-dependencies",
     "pack": "vsce package --no-dependencies",
     "typecheck": "tsc --noEmit",
-    "release": "pnpm run typecheck && pnpm run format && bumpp --all && pnpm run publish",
+    "release": "pnpm run typecheck && pnpm run format && bumpp --all",
     "format": "eslint --fix"
   },
   "devDependencies": {

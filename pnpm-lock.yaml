@@ -12,8 +12,8 @@ importers:
         specifier: ^1.2.39
         version: 1.2.39
       '@solid-hooks/core':
-        specifier: ^0.4.4
-        version: 0.4.4(solid-js@1.9.6)
+        specifier: ^0.4.5
+        version: 0.4.5(solid-js@1.9.6)
       '@solid-hooks/state':
         specifier: ^0.1.9
         version: 0.1.9(@solid-hooks/persist@0.1.2(idb-keyval@6.2.1)(solid-js@1.9.6))(solid-js@1.9.6)
@@ -762,8 +762,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@solid-hooks/core@0.4.4':
-    resolution: {integrity: sha512-/w9lQYTwSNIiSw6GqvKNMzW0Kp98d4/IbcwUBuiLfKsuRy8jc/Z61NHssnrF97gBlwq8c0mOjSP1kWvFCjoLOw==}
+  '@solid-hooks/core@0.4.5':
+    resolution: {integrity: sha512-DfCL/EWnWfvwr0GcIHivIvbY9o6Wxz5tncEz+HRiDrNbhRd/vkswrk8oX1Mx5xd0rB36Ibf7+DbYmB3rg49nzQ==}
     peerDependencies:
       solid-js: ^1.6
 
@@ -779,13 +779,13 @@ packages:
       '@solid-hooks/persist': ^0.1.1
       solid-js: ^1.6
 
-  '@solid-primitives/event-listener@2.4.0':
-    resolution: {integrity: sha512-TSfR1PNTfojFEYGSxSMCnUhXsaYWBo4p+cm73QmWODa9YnaQAk6PB7VjzG2bOT2D817VlvuOqTj0Qdq+MZrdGg==}
+  '@solid-primitives/event-listener@2.4.1':
+    resolution: {integrity: sha512-Xc/lBCeuh9LwzR4lYbMDtopwWK7N9b4o+FmI4uoI8DOtVGYi0Ip20DG8PtwHk+g31lHgvwtFFVKfnUx2UaqZJg==}
     peerDependencies:
       solid-js: ^1.6.12
 
-  '@solid-primitives/utils@6.3.0':
-    resolution: {integrity: sha512-e7hTlJ1Ywh2+g/Qug+n4L1mpfxsikoIS4/sHE2EK9WatQt8UJqop/vE6bsLnXlU1xuhb/jo94Ah5Y27rd4wP7A==}
+  '@solid-primitives/utils@6.3.1':
+    resolution: {integrity: sha512-4/Z59nnwu4MPR//zWZmZm2yftx24jMqQ8CSd/JobL26TPfbn4Ph8GKNVJfGJWShg1QB98qObJSskqizbTvcLLA==}
     peerDependencies:
       solid-js: ^1.6.12
 
@@ -3988,10 +3988,10 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.40.0':
     optional: true
 
-  '@solid-hooks/core@0.4.4(solid-js@1.9.6)':
+  '@solid-hooks/core@0.4.5(solid-js@1.9.6)':
     dependencies:
-      '@solid-primitives/event-listener': 2.4.0(solid-js@1.9.6)
-      '@solid-primitives/utils': 6.3.0(solid-js@1.9.6)
+      '@solid-primitives/event-listener': 2.4.1(solid-js@1.9.6)
+      '@solid-primitives/utils': 6.3.1(solid-js@1.9.6)
       '@subframe7536/type-utils': 0.1.6
       solid-js: 1.9.6
 
@@ -4008,12 +4008,12 @@ snapshots:
       object-path-access: 4.0.0
       solid-js: 1.9.6
 
-  '@solid-primitives/event-listener@2.4.0(solid-js@1.9.6)':
+  '@solid-primitives/event-listener@2.4.1(solid-js@1.9.6)':
     dependencies:
-      '@solid-primitives/utils': 6.3.0(solid-js@1.9.6)
+      '@solid-primitives/utils': 6.3.1(solid-js@1.9.6)
       solid-js: 1.9.6
 
-  '@solid-primitives/utils@6.3.0(solid-js@1.9.6)':
+  '@solid-primitives/utils@6.3.1(solid-js@1.9.6)':
     dependencies:
       solid-js: 1.9.6
 

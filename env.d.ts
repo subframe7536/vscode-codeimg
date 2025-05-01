@@ -48,6 +48,11 @@ declare global {
   }
 
   /**
+   * Patched in extension
+   */
+  const __isDesktop__: boolean
+
+  /**
    * Gets the html of webview
    */
   function __getWebviewHtml__(options?: WebviewHtmlOptions): string

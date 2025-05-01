@@ -5,7 +5,7 @@ import { ColorThemeKind, commands, ViewColumn, window, workspace } from 'vscode'
 
 import { displayName, extensionId, name } from '../config/generated/meta'
 import { debounce } from './debounce'
-import { getConfig, saveImage, setupHtml, updateSettings } from './utils'
+import { getConfig, isDesktop, saveImage, setupHtml, updateSettings } from './utils'
 
 let webviewPanel: WebviewPanel | undefined
 const _disposables: Disposable[] = []
@@ -28,8 +28,12 @@ export async function copyTerminalSelectionCode() {
   }
 }
 
+function hasSelection(selections?: readonly Selection[]): boolean {
+  return selections?.length === 1 && !selections[0].isEmpty
+}
+
 async function copyEditorSelectionCode(selections: readonly Selection[] | undefined = window.activeTextEditor?.selections) {
-  if (selections?.length === 1 && !selections[0].isEmpty) {
+  if (hasSelection(selections)) {
     await commands.executeCommand('editor.action.clipboardCopyWithSyntaxHighlightingAction')
     await sendToWebview({
       type: 'update-code',
@@ -41,81 +45,87 @@ async function copyEditorSelectionCode(selections: readonly Selection[] | undefi
   }
 }
 
-export async function render(context: ExtensionContext, type: 'editor' | 'terminal' | 'empty'): Promise<VoidFunction> {
-  let selectionDispose: Disposable
-
+export async function render(
+  context: ExtensionContext,
+  type: 'editor' | 'terminal' | 'empty',
+): Promise<VoidFunction | undefined> {
   if (webviewPanel) {
     webviewPanel.reveal(ViewColumn.Beside, true)
-  } else {
-    webviewPanel = window.createWebviewPanel(
-      displayName,
-      displayName,
-      { viewColumn: ViewColumn.Beside, preserveFocus: true },
-      { enableScripts: true },
-    )
-
-    webviewPanel.onDidDispose(() => {
-      webviewPanel?.dispose()
-      webviewPanel = undefined
-
-      selectionDispose.dispose()
-      // Dispose of all disposables (i.e. commands) for the current webview panel
-      while (_disposables.length) {
-        const disposable = _disposables.pop()
-        if (disposable) {
-          disposable.dispose()
-        }
-      }
-    }, null, _disposables)
-
-    webviewPanel.webview.html = setupHtml(webviewPanel.webview, context)
-    _disposables.push(
-      webviewPanel.onDidChangeViewState(async () => {
-        if (webviewPanel?.visible) {
-          await sendToWebview({ type: 'get-config', data: getConfig() })
-        }
-      }),
-      webviewPanel.webview.onDidReceiveMessage(
-        async (message: MsgRenderer2Main) => {
-          switch (message.type) {
-            case 'save-img':
-              await saveImage(message.data)
-              break
-            case 'set-config':
-              await updateSettings(message.data)
-              if (message.data.debounce !== undefined) {
-                selectionDispose.dispose()
-                selectionDispose = await bindSelectionEvents(message.data.debounce)
-              }
-              break
-            case 'show-settings':
-              await commands.executeCommand('workbench.action.openSettings', `@ext:${extensionId}`)
-              break
-            case 'capture-terminal':
-              await copyTerminalSelectionCode()
-              break
-          }
-        },
-        undefined,
-        _disposables,
-      ),
-    )
+    return webviewPanel.dispose
   }
+
+  let selectionDispose: Disposable
+  webviewPanel = window.createWebviewPanel(
+    displayName,
+    displayName,
+    { viewColumn: ViewColumn.Beside, preserveFocus: true },
+    { enableScripts: true },
+  )
+
+  webviewPanel.onDidDispose(() => {
+    webviewPanel?.dispose()
+    webviewPanel = undefined
+
+    selectionDispose.dispose()
+    // Dispose of all disposables (i.e. commands) for the current webview panel
+    while (_disposables.length) {
+      const disposable = _disposables.pop()
+      if (disposable) {
+        disposable.dispose()
+      }
+    }
+  }, null, _disposables)
+
+  webviewPanel.webview.html = setupHtml(webviewPanel.webview, context)
+  _disposables.push(
+    webviewPanel.onDidChangeViewState(async () => {
+      if (webviewPanel?.visible) {
+        await sendToWebview({ type: 'get-config', data: getConfig() })
+      }
+    }),
+    webviewPanel.webview.onDidReceiveMessage(
+      async (message: MsgRenderer2Main) => {
+        switch (message.type) {
+          case 'save-img':
+            await saveImage(message.data)
+            break
+          case 'set-config':
+            await updateSettings(message.data)
+            if (message.data.debounce !== undefined) {
+              selectionDispose.dispose()
+              selectionDispose = await bindSelectionEvents(message.data.debounce)
+            }
+            break
+          case 'show-settings':
+            await commands.executeCommand('workbench.action.openSettings', `@ext:${extensionId}`)
+            break
+          case 'capture-terminal':
+            await copyTerminalSelectionCode()
+            break
+        }
+      },
+      undefined,
+      _disposables,
+    ),
+  )
 
   await sendToWebview({ type: 'get-config', data: getConfig() })
 
-  switch (type) {
-    case 'editor':
-      await copyEditorSelectionCode()
-      break
-    case 'terminal':
-      await copyTerminalSelectionCode()
-      break
-    case 'empty':
-      break
+  if (isDesktop) {
+    // type === 'empty' will do nothing, so no need to handle
+    switch (type) {
+      case 'editor':
+        await copyEditorSelectionCode()
+        break
+      case 'terminal':
+        await copyTerminalSelectionCode()
+        break
+    }
+    selectionDispose = await bindSelectionEvents()
+  } else {
+    // Webview must be focused while pasting (Limitation of `navigator.clipboard.read()`)
+    window.showWarningMessage('[Limit] generate command and selection listener is not supported in browser environment')
   }
-
-  selectionDispose = await bindSelectionEvents()
 
   _disposables.push(
     bindThemeChange(),

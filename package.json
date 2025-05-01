@@ -151,7 +151,7 @@
   },
   "devDependencies": {
     "@iconify-json/lucide": "^1.2.39",
-    "@solid-hooks/core": "^0.4.4",
+    "@solid-hooks/core": "^0.4.5",
     "@solid-hooks/state": "^0.1.9",
     "@subframe7536/eslint-config": "^1.2.4",
     "@subframe7536/type-utils": "^0.1.6",

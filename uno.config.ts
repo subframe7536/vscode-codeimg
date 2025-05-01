@@ -29,12 +29,29 @@ export default defineConfig<Theme>({
     [/^config-style-radius$/, () => ({ 'border-radius': 'var(--radius)' })],
     [/^config-style-liga$/, () => ({ 'font-feature-settings': 'var(--liga)' })],
     [/^config-style-tab$/, () => ({ 'tab-size': 'var(--tab,2)' })],
-    [/^bg-pattern$/, () => ({ 'background-image': 'linear-gradient(45deg, #6663 25%, transparent 0), linear-gradient(-45deg, #6663 25%, transparent 0), linear-gradient(45deg, transparent 75%, #6663 0), linear-gradient(-45deg, transparent 75%, #6663 0)', 'background-position': '0 0, 0 10px, 10px -10px, -10px 0', 'background-size': '20px 20px' })],
+    [/^bg-pattern$/, () => ({
+      'background-image': 'linear-gradient(45deg, #6663 25%, transparent 0), linear-gradient(-45deg, #6663 25%, transparent 0), linear-gradient(45deg, transparent 75%, #6663 0), linear-gradient(-45deg, transparent 75%, #6663 0)',
+      'background-position': '0 0, 0 10px, 10px -10px, -10px 0',
+      'background-size': '20px 20px',
+    })],
     [/^shadow-none$/, () => ({ 'box-shadow': 'none' })],
-    [/^title-size$/, () => ({ 'font-size': 'calc(var(--vscode-editor-font-size) * 0.8)' })],
-    [/^glass-border-dark$/, () => ({ 'box-shadow': '0 0 0 1px rgba(0 0 0 / 0.1), 0 0 0 1px rgba(0 0 0 / 0.9), inset 0 0 0 1.5px rgba(255 255 255 / 0.4), 0 30px 55px 0 rgba(0 0 0 / 0.4)' })],
-    [/^glass-border-light$/, () => ({ 'box-shadow': '0 0 15px rgba(0 0 0 / .2), 0 0 0 1px rgba(0 0 0 / .1), 0 0 0 1px rgb(0 0 0 / .05), inset 0 0 0 1px rgba(255 255 255 / .15), rgba(0 0 0 / 0.45) 0 25px 20px -20px' }),
-    ],
+    [/^title-size$/, () => ({
+      'font-size': 'calc(var(--vscode-editor-font-size) * 0.8)',
+    })],
+    [/^glass-border-dark$/, () => ({
+      'box-shadow': '0 0 0 1px rgba(0 0 0 / 0.1), 0 0 0 1px rgba(0 0 0 / 0.9), inset 0 0 0 1.5px rgba(255 255 255 / 0.4), 0 30px 55px 0 rgba(0 0 0 / 0.4)',
+    })],
+    [/^glass-border-light$/, () => ({
+      'box-shadow': '0 0 15px rgba(0 0 0 / .2), 0 0 0 1px rgba(0 0 0 / .1), 0 0 0 1px rgb(0 0 0 / .05), inset 0 0 0 1px rgba(255 255 255 / .15), rgba(0 0 0 / 0.45) 0 25px 20px -20px',
+    })],
+    [/^traffic-light-color$/, () => ({
+      'background-color': '#ff544d',
+      'box-shadow': '1.5rem 0 0 0 #ffbd2e, 3rem 0 0 0 #28c93f',
+    })],
+    [/^traffic-light-plain$/, () => ({
+      'background-color': 'var(--vscode-editor-inactiveSelectionBackground)',
+      'box-shadow': '1.4rem 0 0 0 var(--vscode-editor-inactiveSelectionBackground), 2.8rem 0 0 0 var(--vscode-editor-inactiveSelectionBackground)',
+    })],
   ],
   transformers: [
     transformerVariantGroup(),

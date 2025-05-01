@@ -26,6 +26,7 @@ function normalizeLastChildWhitespace<E extends Element>(el: E): E {
 
 type RowType = 0 | 1 | 2 | 3
 
+const isDesktop = typeof __isDesktop__ !== 'undefined' ? __isDesktop__ : true
 export default function CodeBlock() {
   const lines = createRef<Element[]>([])
   const style = createRef('')
@@ -34,7 +35,7 @@ export default function CodeBlock() {
   const highlightArray = createRef(createArray([] as RowType[]))
 
   const [settings] = useSettings()
-  const [operate] = useOperate()
+  const [operate, { copy }] = useOperate()
 
   useCssVar('bg', () => settings().background)
   useCssVar('padding', () => settings.targetContainerPadding())
@@ -53,6 +54,8 @@ export default function CodeBlock() {
   useCssVar('tab', () => `${settings().tabSize}`)
 
   const paste = usePaste({
+    legacy: isDesktop,
+    listen: !isDesktop,
     onPaste: (data, mime) => {
       if (mime === 'text/html') {
         const root = parseHTML(data as string)?.querySelector('div')
@@ -74,7 +77,6 @@ export default function CodeBlock() {
         }
       }
     },
-    legacy: true,
   })
 
   vscode.listen('get-config', data => settings.$patch(data))
@@ -162,7 +164,7 @@ export default function CodeBlock() {
   const hasLines = createMemo(() => lines().length > 0)
   return (
     <div class={cls('config-style-(bg padding liga tab) w-fit', operate().flashing && 'flash')}>
-      <div class={`shadow-${boxShadow()} shadow-(gray-600 op-50) config-style-radius`}>
+      <div class={`shadow-${boxShadow()} shadow-(gray-4 op-50) config-style-radius`}>
         <div
           style={style()}
           class={cls(
@@ -173,11 +175,12 @@ export default function CodeBlock() {
           <Show when={settings.targetShowWindowControls()}>
             <div
               class={cls(
-                'size-3.5 m-(l-8 block-2) absolute rounded-full before:(content-empty size-3.5 right-6 pos-absolute rounded-full) after:(content-empty size-3.5 left-6 pos-absolute rounded-full)',
+                'size-3.5 m-(l-1 block-2) absolute rounded-full cursor-pointer',
                 settings().windowControlsColor
-                  ? 'bg-#ffbd2e before:bg-#ff544d after:bg-#28c93f'
-                  : 'bg-$vscode-editor-inactiveSelectionBackground before:bg-$vscode-editor-inactiveSelectionBackground after:bg-$vscode-editor-inactiveSelectionBackground',
+                  ? 'traffic-light-color'
+                  : 'traffic-light-plain',
               )}
+              onClick={() => lines([])}
             />
           </Show>
           <Show
@@ -196,13 +199,21 @@ export default function CodeBlock() {
             fallback={(
               <div class="p-8 mt-6 flex flex-col items-center gap-4 *:font-$vscode-editor-font-family">
                 <div class="leading-loose">
-                  Change your selection in editor
+                  <Show
+                    when={isDesktop}
+                    fallback={<span>Copy Code and Paste Here</span>}
+                  >
+                    Change Selection in Text Editor
+                  </Show>
                 </div>
                 <div class="leading-none">or</div>
                 <button
                   title="Make sure you have selected some text in active terminal"
-                  class="rounded-lg p-(x-4 y-2) b-0 bg-$vscode-foreground transition hover:op-80"
-                  onClick={() => vscode.sendToMain({ type: 'capture-terminal' })}
+                  class="rounded-lg p-(x-4 y-2) b-0 bg-$vscode-button-background c-$vscode-button-foreground transition hover:op-80"
+                  onClick={async () => {
+                    await copy('')
+                    vscode.sendToMain({ type: 'capture-terminal' })
+                  }}
                 >
                   Capture Terminal
                 </button>

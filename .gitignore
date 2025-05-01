@@ -2,3 +2,4 @@ node_modules
 dist
 *.vsix
 config/generated
+.DS_store

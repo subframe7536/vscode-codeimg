@@ -2,13 +2,20 @@ import type { ConfigShorthandTypeMap } from '../config/generated/meta'
 import type { AppConfig, EditorSettings, SaveImgMsgData, TerminalSettings } from '../config/msg'
 import type { ExtensionContext, Webview } from 'vscode'
 
-import { env, Uri, window, workspace } from 'vscode'
+import { env, UIKind, Uri, window, workspace } from 'vscode'
 
 import { scopedConfigs } from '../config/generated/meta'
 
+export const isDesktop = env.uiKind === UIKind.Desktop
+
 export const DEV_SERVER = process.env.VITE_DEV_SERVER_URL
 export function setupHtml(webview: Webview, context: ExtensionContext) {
-  return __getWebviewHtml__({ serverUrl: DEV_SERVER, webview, context })
+  return __getWebviewHtml__({
+    serverUrl: DEV_SERVER,
+    webview,
+    context,
+    injectCode: `<script>window.__isDesktop__=${isDesktop}</script>`,
+  })
 }
 
 function getSettings(scope: string, keys: string[]) {

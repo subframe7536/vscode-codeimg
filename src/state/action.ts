@@ -20,11 +20,14 @@ export const useOperate = defineState('action', {
         setState('flashing', true)
         debounceOffFlashing()
       },
-      copy: async (action: () => Promise<Blob>): Promise<void> => {
+      copy: async (data: string | (() => Promise<Blob>)): Promise<void> => {
         if (isCopied() || state.flashing) {
           return
         }
-        const blob = await action()
+        if (typeof data === 'string') {
+          return await copy(data)
+        }
+        const blob = await data()
         await copy(generateClipboardItem(blob, blob.type))
       },
     }

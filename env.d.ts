@@ -1,12 +1,5 @@
 import type { ExtensionContext, Webview } from 'vscode'
-// import type { PseudoPrefix } from 'unocss/preset-attributify'
 
-// declare module 'solid-js' {
-//   namespace JSX {
-//     interface HTMLAttributes<T> extends Partial<Record<`${PseudoPrefix}`, string | boolean>> { }
-//   }
-// }
-// Make this a module
 export { }
 declare global {
   /**
@@ -31,21 +24,31 @@ declare global {
     }
   }
 
-  /**
-   *  `[vite serve]` Gets the html of webview in development mode.
-   * @param options serverUrl: The url of the vite dev server.
-   */
-  function __getWebviewHtml__(options?: string | { serverUrl: string }): string
+  interface WebviewHtmlOptions {
+    /**
+     * `[vite serve]` The url of the vite dev server. Please use `process.env.VITE_DEV_SERVER_URL`
+     */
+    serverUrl?: string
+    /**
+     * `[vite build]` The Webview instance of the extension.
+     */
+    webview: Webview
+    /**
+     * `[vite build]` The ExtensionContext instance of the extension.
+     */
+    context: ExtensionContext
+    /**
+     * `[vite build]` vite build.rollupOptions.input name. Default is `index`.
+     */
+    inputName?: string
+    /**
+     * `[vite build]` Inject code into the afterbegin of the head element.
+     */
+    injectCode?: string
+  }
 
   /**
-   *  `[vite build]` Gets the html of webview in production mode.
-   * @param webview The Webview instance of the extension.
-   * @param context The ExtensionContext instance of the extension.
-   * @param inputName vite build.rollupOptions.input name. Default is `index`.
+   * Gets the html of webview
    */
-  function __getWebviewHtml__(
-    webview: Webview,
-    context: ExtensionContext,
-    inputName?: string,
-  ): string
+  function __getWebviewHtml__(options?: WebviewHtmlOptions): string
 }

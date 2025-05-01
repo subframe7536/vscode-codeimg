@@ -8,9 +8,7 @@ import { scopedConfigs } from '../config/generated/meta'
 
 export const DEV_SERVER = process.env.VITE_DEV_SERVER_URL
 export function setupHtml(webview: Webview, context: ExtensionContext) {
-  return DEV_SERVER
-    ? __getWebviewHtml__(DEV_SERVER)
-    : __getWebviewHtml__(webview, context)
+  return __getWebviewHtml__({ serverUrl: DEV_SERVER, webview, context })
 }
 
 function getSettings(scope: string, keys: string[]) {

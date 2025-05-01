@@ -40,6 +40,7 @@ async function copyEditorSelectionCode(selections: readonly Selection[] | undefi
       data: {
         title: window.activeTextEditor?.document.uri.path.split('/').pop() ?? '',
         isTerminal: false,
+        startNumber: selections![0].start.line,
       },
     })
   }

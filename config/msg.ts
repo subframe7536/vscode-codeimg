@@ -19,6 +19,7 @@ export type MsgMain2Renderer = {
   data: {
     title: string
     isTerminal: boolean
+    startNumber?: number
   }
 } | {
   type: 'get-config'

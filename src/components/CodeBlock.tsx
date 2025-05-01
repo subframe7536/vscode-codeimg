@@ -31,6 +31,7 @@ export default function CodeBlock() {
   const lines = createRef<Element[]>([])
   const style = createRef('')
   const isTerminal = createRef(false)
+  const startNumber = createRef(0)
 
   const highlightArray = createRef(createArray([] as RowType[]))
 
@@ -57,6 +58,7 @@ export default function CodeBlock() {
     legacy: isDesktop,
     listen: !isDesktop,
     onPaste: (data, mime) => {
+      // todo)) support text/plain
       if (mime === 'text/html') {
         const root = parseHTML(data as string)?.querySelector('div')
         if (root) {
@@ -89,11 +91,12 @@ export default function CodeBlock() {
   }
 
   vscode.listen('get-config', data => settings.$patch(data))
-  vscode.listen('update-code', async ({ title: t, isTerminal: is }) => {
+  vscode.listen('update-code', async ({ title: t, isTerminal: is, startNumber: n }) => {
     operate.$patch({ title: t || ' ' })
     isTerminal(is)
-    await paste()
+    startNumber(settings().realLineNumber ? (n ?? 1) : 0)
     highlightArray([])
+    await paste()
   })
 
   const boxShadow = createMemo(() => {
@@ -154,9 +157,12 @@ export default function CodeBlock() {
         <Show when={showLineNumbers()}>
           <div
             class={cls(
-              'text-right p-r-4 m-r-1 w-6 cursor-pointer whitespace-nowrap select-none',
+              'text-right pr-4 mr-1 w-6 cursor-pointer whitespace-nowrap select-none ml-$left-num',
               lineNumberColor(),
             )}
+            style={{
+              '--left-num': `${startNumber()}`.length,
+            }}
             // eslint-disable-next-line solid/reactivity
             onClick={() => highlightArray((arr) => {
               arr[props.index] = ((arr[props.index] ?? 0) + 1) % 4 as RowType
@@ -231,7 +237,7 @@ export default function CodeBlock() {
           >
             <div class={cls('mt-2', hasLines() && 'mt-5')}>
               <For each={lines()}>
-                {(line, idx) => <CodeLine index={idx() + 1} line={line} />}
+                {(line, idx) => <CodeLine index={startNumber() + idx() + 1} line={line} />}
               </For>
             </div>
           </Show>

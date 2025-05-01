@@ -44,22 +44,23 @@ Terminal:
 
 <!-- configs -->
 
-| Key                           | Description                                                                                 | Type      | Default                                                                 |
-| ----------------------------- | ------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------- |
-| `codeimg.background`          | The CSS background of the snippet's container. If you don't want to it, set it `none`       | `string`  | `"linear-gradient(345deg, rgb(180 218 255) 0%, rgb(232 209 255) 100%)"` |
-| `codeimg.boxShadow`           | The CSS box-shadow for the snippet's container. If you don't want to it, set it `none`      | `string`  | `"medium"`                                                              |
-| `codeimg.containerPadding`    | The CSS padding for the snippet's container. If you don't want to it, set it `none`         | `string`  | `"3rem"`                                                                |
-| `codeimg.border`              | Border for the snippet's container. Only in dark theme                                      | `boolean` | `true`                                                                  |
-| `codeimg.debounce`            | Whether to update the code snippet with debounce when selection changes                     | `boolean` | `true`                                                                  |
-| `codeimg.roundedCorners`      | The CSS rounded corners for the snippet's container. If you don't want to it, set it `none` | `string`  | `"1rem"`                                                                |
-| `codeimg.scale`               | The scale of the screenshot                                                                 | `number`  | `2`                                                                     |
-| `codeimg.format`              | The format of the screenshot                                                                | `string`  | `"png"`                                                                 |
-| `codeimg.terminalLineHeight`  | Line height of terminal when generating terminal image                                      | `number`  | `1.3`                                                                   |
-| `codeimg.showWindowControls`  | Display OS X style window controls                                                          | `boolean` | `true`                                                                  |
-| `codeimg.windowControlsColor` | Add color in window controls                                                                | `boolean` | `true`                                                                  |
-| `codeimg.showWindowTitle`     | Display window title with open folder / file name                                           | `boolean` | `true`                                                                  |
-| `codeimg.showLineNumbers`     | Display line numbers                                                                        | `boolean` | `true`                                                                  |
-| `codeimg.realLineNumber`      | The line number begins with the actual line number instead of starting at 1                 | `boolean` | `false`                                                                 |
+| Key                             | Description                                                                                 | Type      | Default                                                                 |
+| ------------------------------- | ------------------------------------------------------------------------------------------- | --------- | ----------------------------------------------------------------------- |
+| `codeimg.background`            | The CSS background of the snippet's container. If you don't want to it, set it `none`       | `string`  | `"linear-gradient(345deg, rgb(180 218 255) 0%, rgb(232 209 255) 100%)"` |
+| `codeimg.boxShadow`             | The CSS box-shadow for the snippet's container. If you don't want to it, set it `none`      | `string`  | `"medium"`                                                              |
+| `codeimg.containerPadding`      | The CSS padding for the snippet's container. If you don't want to it, set it `none`         | `string`  | `"3rem"`                                                                |
+| `codeimg.border`                | Border for the snippet's container. Only in dark theme                                      | `boolean` | `true`                                                                  |
+| `codeimg.debounce`              | Whether to update the code snippet with debounce when selection changes                     | `boolean` | `true`                                                                  |
+| `codeimg.roundedCorners`        | The CSS rounded corners for the snippet's container. If you don't want to it, set it `none` | `string`  | `"1rem"`                                                                |
+| `codeimg.scale`                 | The scale of the screenshot                                                                 | `number`  | `2`                                                                     |
+| `codeimg.format`                | The format of the screenshot                                                                | `string`  | `"png"`                                                                 |
+| `codeimg.terminalLineHeight`    | Line height of terminal when generating terminal image                                      | `number`  | `1.3`                                                                   |
+| `codeimg.showWindowControls`    | Display OS X style window controls                                                          | `boolean` | `true`                                                                  |
+| `codeimg.windowControlsColor`   | Add color in window controls                                                                | `boolean` | `true`                                                                  |
+| `codeimg.showWindowTitle`       | Display window title with open folder / file name                                           | `boolean` | `true`                                                                  |
+| `codeimg.showLineNumbers`       | Display line numbers                                                                        | `boolean` | `true`                                                                  |
+| `codeimg.realLineNumber`        | The line number begins with the actual line number instead of starting at 1                 | `boolean` | `false`                                                                 |
+| `codeimg.trimPrefixWhitespaces` | Trim the prefix whitespaces in every line and keep indent                                   | `boolean` | `true`                                                                  |
 
 <!-- configs -->
 

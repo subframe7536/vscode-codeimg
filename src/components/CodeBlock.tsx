@@ -13,15 +13,45 @@ function parseHTML(html: string) {
   return template.content
 }
 
-function normalizeLastChildWhitespace<E extends Element>(el: E): E {
-  const lastChild = el.lastElementChild
-  if (lastChild) {
-    const textContent = lastChild.textContent
-    if (textContent) {
-      lastChild.textContent = textContent.trimEnd()
+// function normalizeLastChildWhitespace<E extends Element>(el: E): E {
+//   const lastChild = el.lastElementChild
+//   if (lastChild) {
+//     const textContent = lastChild.textContent
+//     if (textContent) {
+//       lastChild.textContent = textContent.trimEnd()
+//     }
+//   }
+//   return el
+// }
+
+function trimWhiteSpace<E extends Element>(elList: E[], prefix: boolean): E[] {
+  let num = 0
+  const result = []
+  for (let i = 0; i < elList.length; i++) {
+    const el = elList[i]
+    // trim prefix whitespace
+    if (prefix) {
+      const first = el.firstElementChild
+      if (i === 0) {
+        if (first?.textContent?.trim() === '') {
+          num = first.textContent.length
+          first.textContent = ''
+        }
+      } else if (first?.textContent) {
+        first.textContent = first.textContent.substring(num)
+      }
     }
+    // trim suffix whitespace
+    const lastChild = el.lastElementChild
+    if (lastChild) {
+      const textContent = lastChild.textContent
+      if (textContent) {
+        lastChild.textContent = textContent.trimEnd()
+      }
+    }
+    result.push(el)
   }
-  return el
+  return result
 }
 
 type RowType = 0 | 1 | 2 | 3
@@ -41,6 +71,14 @@ export default function CodeBlock() {
   useCssVar('bg', () => settings().background)
   useCssVar('padding', () => settings.targetContainerPadding())
   useCssVar('radius', () => settings.targetRoundedCorners())
+  useCssVar('left-num', () => {
+    const num = `${startNumber() + lines().length}`.length
+    console.log(num)
+    if (num < 2) {
+      return '0'
+    }
+    return `${(num - 2) * 0.25}rem`
+  })
   useCssVar(
     'liga',
     () => {
@@ -65,7 +103,7 @@ export default function CodeBlock() {
           style(getStyleText(root))
           const els = Array.from(root.querySelectorAll(':scope > *'))
           if (els.length) {
-            lines(els.map(e => normalizeLastChildWhitespace(e)))
+            lines(trimWhiteSpace(els, settings().trimPrefixWhitespaces))
           }
         }
       }
@@ -160,9 +198,6 @@ export default function CodeBlock() {
               'text-right pr-4 mr-1 w-6 cursor-pointer whitespace-nowrap select-none ml-$left-num',
               lineNumberColor(),
             )}
-            style={{
-              '--left-num': `${startNumber()}`.length,
-            }}
             // eslint-disable-next-line solid/reactivity
             onClick={() => highlightArray((arr) => {
               arr[props.index] = ((arr[props.index] ?? 0) + 1) % 4 as RowType

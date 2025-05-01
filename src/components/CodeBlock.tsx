@@ -60,16 +60,7 @@ export default function CodeBlock() {
       if (mime === 'text/html') {
         const root = parseHTML(data as string)?.querySelector('div')
         if (root) {
-          let cssText = root.style.cssText.replace(/background-color:[^;]*;/g, '')
-          if (isTerminal()) {
-            cssText = cssText.replace('rgb(0, 0, 0)', 'var(--vscode-terminal-foreground)') + [
-              `font-family: ${settings().terminalFontFamily}`,
-              `font-size: ${settings().terminalFontSize}`,
-              `font-weight: var(--vscode-editor-font-weight)`,
-              `white-space: pre; line-height: ${settings().terminalLineHeight}`,
-            ].join(';')
-          }
-          style(cssText)
+          style(getStyleText(root))
           const els = Array.from(root.querySelectorAll(':scope > *'))
           if (els.length) {
             lines(els.map(e => normalizeLastChildWhitespace(e)))
@@ -78,6 +69,24 @@ export default function CodeBlock() {
       }
     },
   })
+
+  function getStyleText(root: HTMLDivElement) {
+    const styleObj = root.style
+    styleObj.removeProperty('background-color')
+    if (isTerminal()) {
+      styleObj.setProperty('color', 'var(--vscode-terminal-foreground)')
+      const styleMap = [
+        ['color', 'var(--vscode-terminal-foreground)'],
+        ['font-family', `${settings().terminalFontFamily}`],
+        ['font-size', `${settings().terminalFontSize}`],
+        ['font-weight', 'var(--vscode-editor-font-weight)'],
+        ['white-space', 'pre'],
+        ['line-height', `${settings().terminalLineHeight}`],
+      ] as const
+      styleMap.map(([k, v]) => styleObj.setProperty(k, v))
+    }
+    return styleObj.cssText
+  }
 
   vscode.listen('get-config', data => settings.$patch(data))
   vscode.listen('update-code', async ({ title: t, isTerminal: is }) => {

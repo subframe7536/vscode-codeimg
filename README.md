@@ -13,15 +13,20 @@ The popular existing extensions lack maintenance and have limited customization 
 
 ## How it works?
 
-Call VSCode's built-in command to copy generated HTML text and render the parsed clipboard content.
+Call VSCode's built-in command to copy generated HTML text and render the parsed clipboard text content.
 - For code, use `editor.action.clipboardCopyWithSyntaxHighlightingAction`
 - For terminal, use `workbench.action.terminal.copySelectionAsHtml`
+
+### Browser Environment Limitation
+
+Due to the limitation of `navigator.clipboard.read()` and lack of `document.execCommand("paste")` support in modern browsers, the generate image command and selection listener are not supported.
 
 ## Features
 
 - Generate beautiful image of code and terminal
 - Copy or save image in `PNG` / `JPG` / `WEBP` format
 - **Click line number to highlight lines in 3 styles**
+- Click red circle on top left to clear all codes
 
 ## Showcase
 

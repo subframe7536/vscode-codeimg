@@ -125,7 +125,7 @@ export async function render(
     selectionDispose = await bindSelectionEvents()
   } else {
     // Webview must be focused while pasting (Limitation of `navigator.clipboard.read()`)
-    window.showWarningMessage('[Limit] generate command and selection listener is not supported in browser environment')
+    window.showWarningMessage('[Limit] generate command and selection listener are not supported in browser environment')
   }
 
   _disposables.push(

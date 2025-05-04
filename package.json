@@ -144,7 +144,7 @@
           "scope": "resource",
           "type": "boolean",
           "default": true,
-          "description": "Trim the prefix whitespaces in every line and keep indent"
+          "description": "Trim the prefix whitespaces in every line and keep indent. Also trim empty lines around"
         }
       }
     }

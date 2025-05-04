@@ -65,7 +65,7 @@ Terminal:
 | `codeimg.showWindowTitle`       | Display window title with open folder / file name                                           | `boolean` | `true`                                                                  |
 | `codeimg.showLineNumbers`       | Display line numbers                                                                        | `boolean` | `true`                                                                  |
 | `codeimg.realLineNumber`        | The line number begins with the actual line number instead of starting at 1                 | `boolean` | `false`                                                                 |
-| `codeimg.trimPrefixWhitespaces` | Trim the prefix whitespaces in every line and keep indent                                   | `boolean` | `true`                                                                  |
+| `codeimg.trimPrefixWhitespaces` | Trim the prefix whitespaces in every line and keep indent. Also trim empty lines around     | `boolean` | `true`                                                                  |
 
 <!-- configs -->
 

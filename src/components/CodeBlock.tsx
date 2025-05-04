@@ -25,20 +25,26 @@ function parseHTML(html: string) {
 // }
 
 function trimWhiteSpace<E extends Element>(elList: E[], prefix: boolean): E[] {
-  let num = 0
+  let indentSize = 0
+  let startIndex = 0
   const result = []
   for (let i = 0; i < elList.length; i++) {
     const el = elList[i]
     // trim prefix whitespace
     if (prefix) {
       const first = el.firstElementChild
-      if (i === 0) {
-        if (first?.textContent?.trim() === '') {
-          num = first.textContent.length
-          first.textContent = ''
+      if (first) {
+        if (i === startIndex) {
+          if (first?.textContent?.trim() === '') {
+            indentSize = first.textContent.length
+            first.textContent = ''
+          }
+        } else if (first?.textContent) {
+          first.textContent = first.textContent.substring(indentSize)
         }
-      } else if (first?.textContent) {
-        first.textContent = first.textContent.substring(num)
+      } else if (i === startIndex) {
+        startIndex++
+        continue
       }
     }
     // trim suffix whitespace
@@ -73,7 +79,6 @@ export default function CodeBlock() {
   useCssVar('radius', () => settings.targetRoundedCorners())
   useCssVar('left-num', () => {
     const num = `${startNumber() + lines().length}`.length
-    console.log(num)
     if (num < 2) {
       return '0'
     }

@@ -2,7 +2,7 @@
   "publisher": "subframe7536",
   "name": "codeimg",
   "displayName": "CodeImg",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "packageManager": "pnpm@10.11.0",
   "description": "Generate beautiful image for you code and terminal with your favorite font and theme",
   "author": "subframe7536",

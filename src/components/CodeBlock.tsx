@@ -240,7 +240,7 @@ export default function CodeBlock() {
           <Show when={settings.targetShowWindowControls()}>
             <div
               class={cls(
-                'size-3.5 m-(l-1 block-2) absolute rounded-full cursor-pointer',
+                'size-3.2 top-3.6 left-3.6 absolute rounded-full cursor-pointer',
                 settings().windowControlsColor
                   ? 'traffic-light-color'
                   : 'traffic-light-plain',

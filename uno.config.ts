@@ -46,7 +46,7 @@ export default defineConfig<Theme>({
     })],
     [/^traffic-light-color$/, () => ({
       'background-color': '#ff544d',
-      'box-shadow': '1.5rem 0 0 0 #ffbd2e, 3rem 0 0 0 #28c93f',
+      'box-shadow': '1.3rem 0 0 0 #ffbd2e, 2.6rem 0 0 0 #28c93f',
     })],
     [/^traffic-light-plain$/, () => ({
       'background-color': 'var(--vscode-editor-inactiveSelectionBackground)',

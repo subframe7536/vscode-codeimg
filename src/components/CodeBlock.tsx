@@ -13,25 +13,35 @@ function parseHTML(html: string) {
   return template.content
 }
 
-// function normalizeLastChildWhitespace<E extends Element>(el: E): E {
-//   const lastChild = el.lastElementChild
-//   if (lastChild) {
-//     const textContent = lastChild.textContent
-//     if (textContent) {
-//       lastChild.textContent = textContent.trimEnd()
-//     }
-//   }
-//   return el
-// }
+function trimWhiteSpace<E extends Element>(elList: E[], trim: boolean): E[] {
+  const result: E[] = []
 
-function trimWhiteSpace<E extends Element>(elList: E[], prefix: boolean): E[] {
-  let indentSize = 0
+  // Find first non-empty element
   let startIndex = 0
-  const result = []
-  for (let i = 0; i < elList.length; i++) {
+  if (trim) {
+    while (startIndex < elList.length && elList[startIndex].textContent?.trim() === '') {
+      startIndex++
+    }
+  }
+
+  // Find last non-empty element
+  let endIndex = elList.length - 1
+  if (trim) {
+    while (endIndex >= startIndex && elList[endIndex].textContent?.trim() === '') {
+      endIndex--
+    }
+  }
+
+  // Process elements between start and end
+  let indentSize = 0
+  for (let i = startIndex; i <= endIndex; i++) {
     const el = elList[i]
-    // trim prefix whitespace
-    if (prefix) {
+    // Convert elements with empty trimmed text to <br/>
+    if (el.textContent?.trim() === '') {
+      result.push(document.createElement('br') as unknown as E)
+      continue
+    }
+    if (trim) {
       const first = el.firstElementChild
       if (first) {
         if (i === startIndex) {
@@ -266,7 +276,7 @@ export default function CodeBlock() {
                   title="Make sure you have selected some text in active terminal"
                   class="rounded-lg p-(x-4 y-2) b-0 bg-$vscode-button-background c-$vscode-button-foreground transition hover:op-80"
                   onClick={async () => {
-                    await copy('')
+                    await copy('').catch(() => {})
                     vscode.sendToMain({ type: 'capture-terminal' })
                   }}
                 >

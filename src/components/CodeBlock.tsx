@@ -258,7 +258,18 @@ export default function CodeBlock() {
             }
           >
             <div class={cls('w-full text-center title-size select-none h-5 leading-loose')}>
-              {settings.targetShowWindowTitle() ? operate().title : ' '}
+              {
+                settings.targetShowWindowTitle()
+                  ? isTerminal()
+                    ? (
+                        <>
+                          <span class="i-lucide-terminal mr-1" />
+                          <span>{operate().title}</span>
+                        </>
+                      )
+                    : operate().title
+                  : ' '
+              }
             </div>
           </Show>
           <Show

@@ -228,7 +228,7 @@ export default function CodeBlock() {
 
   const hasLines = createMemo(() => lines().length > 0)
   return (
-    <div class={cls('config-style-(bg padding liga tab) w-fit', operate().flashing && 'flash')}>
+    <div class={cls('config-style-(bg padding liga tab) w-fit group', operate().flashing && 'flash')}>
       <div class={`shadow-${boxShadow()} shadow-(gray-4 op-50) config-style-radius`}>
         <div
           style={style()}
@@ -240,13 +240,15 @@ export default function CodeBlock() {
           <Show when={settings.targetShowWindowControls()}>
             <div
               class={cls(
-                'size-3.2 top-3.6 left-3.6 absolute rounded-full cursor-pointer',
+                'size-3.2 top-3.6 left-3.6 absolute rounded-full cursor-pointer text-#0000',
                 settings().windowControlsColor
                   ? 'traffic-light-color'
                   : 'traffic-light-plain',
               )}
               onClick={() => lines([])}
-            />
+            >
+              <div class="i-lucide-x size-3.2 leading-none mt--1.1 group-hover:text-black" />
+            </div>
           </Show>
           <Show
             when={

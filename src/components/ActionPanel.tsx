@@ -1,8 +1,9 @@
 import type json from '@iconify-json/lucide/icons.json'
-import type { Accessor } from 'solid-js'
+import type { VariantProps } from 'cls-variant'
+import type { Accessor, FlowProps } from 'solid-js'
 
 import { createRef } from '@solid-hooks/core'
-import { cls } from 'cls-variant'
+import { clsv, clsvDefault } from 'cls-variant'
 import { Show } from 'solid-js'
 
 import { debounce } from '../../extension/debounce'
@@ -11,10 +12,41 @@ import { useSettings } from '../state/editorSettings'
 import { generateBlob, saveToLocal } from '../utils/image'
 import { vscode } from '../utils/vscode'
 
+const buttonClass = clsvDefault(
+  clsv(
+    'b-none p-(x-3 y-2) m-(x-2 y-4) rounded-2 transition',
+    {
+      variant: {
+        primary: 'bg-$vscode-button-background c-$vscode-button-foreground hover:bg-$vscode-button-hoverBackground',
+        secondary: 'bg-$vscode-button-secondaryBackground c-$vscode-button-secondaryForeground hover:bg-$vscode-button-secondaryHoverBackground',
+      },
+    },
+  ),
+  { variant: 'primary' },
+)
+
+interface ButtonProps {
+  onClick?: () => any
+  class?: string
+  title?: string
+}
+
+function Button(props: VariantProps<typeof buttonClass> & FlowProps<ButtonProps>) {
+  return (
+    <button
+      class={buttonClass({ variant: props.variant })}
+      onClick={() => props.onClick?.()}
+      title={props.title}
+    >
+      {props.children}
+    </button>
+  )
+}
+
 function TextWithPrefixIcon(props: { icon: `i-lucide-${keyof typeof json['icons']}`, text: string }) {
   return (
     <div class="flex flex-row leading-normal">
-      <i class={cls(props.icon, 'mr-1.2')} />
+      <i class={`${props.icon} mr-1.2`} />
       {props.text}
     </div>
   )
@@ -46,42 +78,31 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
   const showSettingsFn = () => vscode.sendToMain({ type: 'show-settings' })
 
   return (
-    <div
-      class="flex w-fit m-(x-auto y-0) relative font-$vscode-editor-font-family select-none hover:border-$vscode-focusBorder *:transition"
-    >
-      <button
-        class="bg-gray-1 b-(2 solid gray-3) p-(x-3 y-2) m-(x-2 y-4) c-gray-7 rounded-2 hover:bg-gray-2 dark:(bg-gray-8 c-gray-1 hover:bg-gray-6 b-gray-5)"
-        onClick={copyFn}
-      >
+    <div class="flex w-fit m-(x-auto y-0) relative font-$vscode-editor-font-family select-none hover:b-$vscode-focusBorder *:transition">
+      <Button onClick={copyFn} title={`Copy as ${settings().format}`}>
         <Show when={!isCopying()} fallback={<TextWithPrefixIcon icon="i-lucide-loader" text="Copying" />}>
           <Show when={!operate.isCopied()} fallback={<TextWithPrefixIcon icon="i-lucide-check" text="Copied" />}>
             <TextWithPrefixIcon icon="i-lucide-copy" text="Copy" />
           </Show>
         </Show>
-      </button>
-      <button
-        class="bg-gray-2 b-(2 solid gray-3) p-(x-3 y-2) m-(x-2 y-4) c-gray-8 rounded-2 hover:bg-gray-3 dark:(bg-gray-9 c-gray-2 hover:bg-gray-7 b-gray-6)"
-        onClick={saveFn}
-      >
+      </Button>
+
+      <Button onClick={saveFn} title={`Save as ${settings().format}`}>
         <Show when={!isSaving()} fallback={<TextWithPrefixIcon icon="i-lucide-ellipsis" text="Saving" />}>
           <TextWithPrefixIcon icon="i-lucide-download" text="Save" />
         </Show>
-      </button>
-      <button
-        class="bg-gray-2 b-(2 solid gray-3) p-(x-3 y-2) m-(x-2 y-4) c-gray-8 rounded-2 hover:bg-gray-3 dark:(bg-gray-9 c-gray-2 hover:bg-gray-7 b-gray-6) hidden mini:inline-block"
-        onClick={showSettingsFn}
-      >
+      </Button>
+
+      <Button variant="secondary" class="hidden mini:inline-block" onClick={showSettingsFn}>
         <TextWithPrefixIcon icon="i-lucide-settings" text="Settings" />
-      </button>
-      <button
-        class="bg-gray-2 b-(2 solid gray-3) p-(x-3 y-2) m-(x-2 y-4) c-gray-8 rounded-2 hover:bg-gray-3 dark:(bg-gray-9 c-gray-2 hover:bg-gray-7 b-gray-6) hidden mini:inline-block"
-        onClick={() => togglePlain()}
-      >
+      </Button>
+
+      <Button variant="secondary" class="hidden mini:inline-block" onClick={() => togglePlain()}>
         <TextWithPrefixIcon
           icon={settings().plain ? 'i-lucide-square-check-big' : 'i-lucide-square'}
           text="Plain Style"
         />
-      </button>
+      </Button>
     </div>
   )
 }

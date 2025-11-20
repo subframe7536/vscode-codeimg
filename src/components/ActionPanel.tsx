@@ -1,9 +1,7 @@
 import type json from '@iconify-json/lucide/icons.json'
-import type { VariantProps } from 'cls-variant'
-import type { Accessor, FlowProps } from 'solid-js'
+import type { Accessor } from 'solid-js'
 
 import { createRef } from '@solid-hooks/core'
-import { clsv, clsvDefault } from 'cls-variant'
 import { Show } from 'solid-js'
 
 import { debounce } from '../../extension/debounce'
@@ -11,37 +9,8 @@ import { useOperate } from '../state/action'
 import { useSettings } from '../state/editorSettings'
 import { generateBlob, saveToLocal } from '../utils/image'
 import { vscode } from '../utils/vscode'
-
-const buttonClass = clsvDefault(
-  clsv(
-    'b-none p-(x-3 y-2) m-(x-2 y-4) rounded-2 transition',
-    {
-      variant: {
-        primary: 'bg-$vscode-button-background c-$vscode-button-foreground hover:bg-$vscode-button-hoverBackground',
-        secondary: 'bg-$vscode-button-secondaryBackground c-$vscode-button-secondaryForeground hover:bg-$vscode-button-secondaryHoverBackground',
-      },
-    },
-  ),
-  { variant: 'primary' },
-)
-
-interface ButtonProps {
-  onClick?: () => any
-  class?: string
-  title?: string
-}
-
-function Button(props: VariantProps<typeof buttonClass> & FlowProps<ButtonProps>) {
-  return (
-    <button
-      class={buttonClass({ variant: props.variant })}
-      onClick={() => props.onClick?.()}
-      title={props.title}
-    >
-      {props.children}
-    </button>
-  )
-}
+import { Button } from './ui/button'
+import { ToggleSwitch } from './ui/toggle'
 
 function TextWithPrefixIcon(props: { icon: `i-lucide-${keyof typeof json['icons']}`, text: string }) {
   return (
@@ -78,7 +47,7 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
   const showSettingsFn = () => vscode.sendToMain({ type: 'show-settings' })
 
   return (
-    <div class="flex w-fit m-(x-auto y-0) relative font-$vscode-editor-font-family select-none hover:b-$vscode-focusBorder *:transition">
+    <div class="flex w-fit m-(x-auto y-0) relative font-$vscode-editor-font-family select-none hover:b-$vscode-focusBorder gap-4">
       <Button onClick={copyFn} title={`Copy as ${settings().format}`}>
         <Show when={!isCopying()} fallback={<TextWithPrefixIcon icon="i-lucide-loader" text="Copying" />}>
           <Show when={!operate.isCopied()} fallback={<TextWithPrefixIcon icon="i-lucide-check" text="Copied" />}>
@@ -97,12 +66,12 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
         <TextWithPrefixIcon icon="i-lucide-settings" text="Settings" />
       </Button>
 
-      <Button variant="secondary" class="hidden mini:inline-block" onClick={() => togglePlain()}>
-        <TextWithPrefixIcon
-          icon={settings().plain ? 'i-lucide-square-check-big' : 'i-lucide-square'}
-          text="Plain Style"
-        />
-      </Button>
+      <ToggleSwitch
+        class="hidden mini:inline-block"
+        checked={settings().plain}
+        onChange={togglePlain}
+        text="Plain Style"
+      />
     </div>
   )
 }

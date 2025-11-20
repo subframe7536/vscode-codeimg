@@ -35,8 +35,8 @@ export const useSettings = defineState('settings', {
     },
   }),
   actions: setState => ({
-    togglePlain: () => {
-      setState('plain', prev => !prev)
+    togglePlain: (checked: boolean) => {
+      setState('plain', checked)
     },
   }),
 })

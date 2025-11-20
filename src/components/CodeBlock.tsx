@@ -205,12 +205,13 @@ export default function CodeBlock() {
           bg(),
           roundTop(),
           roundBottom(),
+          settings().wrapLine && '[&>div]:(whitespace-pre-wrap break-words)',
         )}
       >
         <Show when={showLineNumbers()}>
-          <div
+          <span
             class={cls(
-              'text-right pr-4 mr-1 w-6 cursor-pointer whitespace-nowrap select-none ml-$left-num',
+              'text-right pr-4 mr-1 min-w-6 cursor-pointer whitespace-nowrap select-none ml-$left-num',
               lineNumberColor(),
             )}
             // eslint-disable-next-line solid/reactivity
@@ -219,7 +220,7 @@ export default function CodeBlock() {
             })}
           >
             {lineNumber()}
-          </div>
+          </span>
         </Show>
         {props.line}
       </div>

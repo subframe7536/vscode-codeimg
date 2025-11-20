@@ -140,6 +140,12 @@
           "default": false,
           "description": "The line number begins with the actual line number instead of starting at 1"
         },
+        "codeimg.wrapLine": {
+          "scope": "resource",
+          "type": "boolean",
+          "default": false,
+          "description": "Wrap long lines to fit the container width"
+        },
         "codeimg.trimPrefixWhitespaces": {
           "scope": "resource",
           "type": "boolean",

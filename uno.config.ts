@@ -1,11 +1,12 @@
 import type { Theme } from 'unocss/preset-mini'
 
-import { presetIcons, presetUno, transformerVariantGroup } from 'unocss'
+import { presetIcons, presetWind3, transformerVariantGroup } from 'unocss'
+import { presetClassCompletion } from 'unocss-preset-completion'
 import { defineConfig } from 'unocss/vite'
 
 export default defineConfig<Theme>({
   presets: [
-    presetUno(),
+    presetWind3(),
     presetIcons({
       scale: 1.2,
       unit: 'rem',
@@ -14,6 +15,7 @@ export default defineConfig<Theme>({
         'vertical-align': 'middle',
       },
     }),
+    presetClassCompletion(),
   ],
   shortcuts: [
     {

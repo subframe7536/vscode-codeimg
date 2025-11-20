@@ -245,10 +245,11 @@ export default function CodeBlock() {
                   ? 'traffic-light-color'
                   : 'traffic-light-plain',
               )}
+            />
+            <div
+              class="i-lucide-x cursor-pointer absolute size-3.2 top-3.6 left-3.6 leading-none text-transparent group-hover:text-black"
               onClick={() => lines([])}
-            >
-              <div class="i-lucide-x size-3.2 leading-none mt--1.1 group-hover:text-black" />
-            </div>
+            />
           </Show>
           <Show
             when={

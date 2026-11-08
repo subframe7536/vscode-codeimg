@@ -1,8 +1,16 @@
 import { domToBlob, domToJpeg, domToPng, domToWebp } from 'modern-screenshot'
 
+import { getStyleProperties } from './styleProperties'
 import { vscode } from './vscode'
 
 export type PicFormat = 'png' | 'jpg' | 'webp'
+
+/**
+ * The canvas refuses to draw beyond these limits and silently produces an
+ * empty image, so clamp the scale instead of letting the capture fail
+ */
+const MAX_CANVAS_SIDE = 8192
+const MAX_CANVAS_AREA = 24_000_000
 
 function getFunctionByFormat(format: PicFormat) {
   switch (format) {
@@ -15,8 +23,24 @@ function getFunctionByFormat(format: PicFormat) {
   }
 }
 
+function getCaptureOptions(el: HTMLElement, scale: number) {
+  const width = Math.max(el.offsetWidth, 1)
+  const height = Math.max(el.offsetHeight, 1)
+  const fitScale = Math.min(
+    MAX_CANVAS_SIDE / width,
+    MAX_CANVAS_SIDE / height,
+    Math.sqrt(MAX_CANVAS_AREA / (width * height)),
+  )
+  return {
+    scale: Math.min(scale, fitScale),
+    maximumCanvasSize: MAX_CANVAS_SIDE,
+    // see `utils/styleProperties.ts`
+    includeStyleProperties: getStyleProperties(),
+  }
+}
+
 export async function saveToLocal(format: PicFormat, el: HTMLElement, title: string, scale: number) {
-  const data = await getFunctionByFormat(format)(el, { scale })
+  const data = await getFunctionByFormat(format)(el, getCaptureOptions(el, scale))
   vscode.sendToMain({
     type: 'save-img',
     data: {
@@ -28,5 +52,5 @@ export async function saveToLocal(format: PicFormat, el: HTMLElement, title: str
 }
 
 export async function generateBlob(format: PicFormat, el: HTMLElement, scale: number) {
-  return await domToBlob(el, { scale, type: format })
+  return await domToBlob(el, getCaptureOptions(el, scale))
 }

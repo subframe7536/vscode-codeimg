@@ -25,7 +25,9 @@ export function App() {
           ref={codeblock}
           class={cls(
             'w-fit m-(x-auto b-6)',
-            !operate().flashing && 'bg-pattern',
+            // hide the transparent background pattern while capturing,
+            // otherwise it will be a part of the generated image
+            !operate().flashing && !operate().capturing && 'bg-pattern',
             settings().plain ? 'my-0' : 'my-4',
           )}
         >

@@ -1,9 +1,9 @@
-import type { MsgMain2Renderer, MsgRenderer2Main } from '../config/msg'
 import type { Disposable, ExtensionContext, Selection, WebviewPanel } from 'vscode'
-
 import { ColorThemeKind, commands, ViewColumn, window, workspace } from 'vscode'
 
 import { displayName, extensionId, name } from '../config/generated/meta'
+import type { MsgMain2Renderer, MsgRenderer2Main } from '../config/msg'
+
 import { debounce } from './debounce'
 import { getConfig, isDesktop, saveImage, setupHtml, updateSettings } from './utils'
 
@@ -32,7 +32,9 @@ function hasSelection(selections?: readonly Selection[]): boolean {
   return selections?.length === 1 && !selections[0].isEmpty
 }
 
-async function copyEditorSelectionCode(selections: readonly Selection[] | undefined = window.activeTextEditor?.selections) {
+async function copyEditorSelectionCode(
+  selections: readonly Selection[] | undefined = window.activeTextEditor?.selections,
+) {
   if (hasSelection(selections)) {
     await commands.executeCommand('editor.action.clipboardCopyWithSyntaxHighlightingAction')
     await sendToWebview({
@@ -52,7 +54,7 @@ export async function render(
 ): Promise<VoidFunction | undefined> {
   if (webviewPanel) {
     webviewPanel.reveal(ViewColumn.Beside, true)
-    return webviewPanel.dispose
+    return () => webviewPanel?.dispose()
   }
 
   let selectionDispose: Disposable
@@ -63,19 +65,23 @@ export async function render(
     { enableScripts: true },
   )
 
-  webviewPanel.onDidDispose(() => {
-    webviewPanel?.dispose()
-    webviewPanel = undefined
+  webviewPanel.onDidDispose(
+    () => {
+      webviewPanel?.dispose()
+      webviewPanel = undefined
 
-    selectionDispose.dispose()
-    // Dispose of all disposables (i.e. commands) for the current webview panel
-    while (_disposables.length) {
-      const disposable = _disposables.pop()
-      if (disposable) {
-        disposable.dispose()
+      selectionDispose.dispose()
+      // Dispose of all disposables (i.e. commands) for the current webview panel
+      while (_disposables.length) {
+        const disposable = _disposables.pop()
+        if (disposable) {
+          disposable.dispose()
+        }
       }
-    }
-  }, null, _disposables)
+    },
+    null,
+    _disposables,
+  )
 
   webviewPanel.webview.html = setupHtml(webviewPanel.webview, context)
   _disposables.push(
@@ -121,45 +127,44 @@ export async function render(
       case 'terminal':
         await copyTerminalSelectionCode()
         break
+      case 'empty':
+        break
     }
     selectionDispose = await bindSelectionEvents()
   } else {
     // Webview must be focused while pasting (Limitation of `navigator.clipboard.read()`)
-    window.showWarningMessage('[Limit] generate command and selection listener are not supported in browser environment')
+    window.showWarningMessage(
+      '[Limit] generate command and selection listener are not supported in browser environment',
+    )
   }
 
-  _disposables.push(
-    bindThemeChange(),
-    bindConfigurationEvents(),
-  )
+  _disposables.push(bindThemeChange(), bindConfigurationEvents())
 
-  return webviewPanel.dispose
+  return () => webviewPanel?.dispose()
 }
 
 function bindThemeChange() {
-  return window.onDidChangeActiveColorTheme(
-    async ({ kind }) => {
-      let data: 'dark' | 'light'
-      switch (kind) {
-        case ColorThemeKind.HighContrast:
-        case ColorThemeKind.Dark:
-          data = 'dark'
-          break
-        case ColorThemeKind.HighContrastLight:
-        case ColorThemeKind.Light:
-          data = 'light'
-          break
-      }
-      await sendToWebview({ type: 'change-theme', data })
-    },
-  )
+  return window.onDidChangeActiveColorTheme(async ({ kind }) => {
+    let data: 'dark' | 'light'
+    switch (kind) {
+      case ColorThemeKind.HighContrast:
+      case ColorThemeKind.Dark:
+        data = 'dark'
+        break
+      case ColorThemeKind.HighContrastLight:
+      case ColorThemeKind.Light:
+        data = 'light'
+        break
+    }
+    await sendToWebview({ type: 'change-theme', data })
+  })
 }
 
 async function bindSelectionEvents(useDebounce = true) {
   return window.onDidChangeTextEditorSelection(
     useDebounce
-      ? debounce(async e => await copyEditorSelectionCode(e.selections), 250)
-      : e => copyEditorSelectionCode(e.selections),
+      ? debounce(async (e) => await copyEditorSelectionCode(e.selections), 250)
+      : (e) => copyEditorSelectionCode(e.selections),
   )
 }
 

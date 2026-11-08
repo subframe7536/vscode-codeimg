@@ -94,17 +94,10 @@ export default function CodeBlock() {
     }
     return `${(num - 2) * 0.25}rem`
   })
-  useCssVar(
-    'liga',
-    () => {
-      const liga = settings().fontLigatures
-      return typeof liga === 'string'
-        ? liga
-        : liga
-          ? '"calt", "liga"'
-          : 'none'
-    },
-  )
+  useCssVar('liga', () => {
+    const liga = settings().fontLigatures
+    return typeof liga === 'string' ? liga : liga ? '"calt", "liga"' : 'none'
+  })
   useCssVar('tab', () => `${settings().tabSize}`)
 
   const paste = usePaste({
@@ -143,7 +136,7 @@ export default function CodeBlock() {
     return styleObj.cssText
   }
 
-  vscode.listen('get-config', data => settings.$patch(data))
+  vscode.listen('get-config', (data) => settings.$patch(data))
   vscode.listen('update-code', async ({ title: t, isTerminal: is, startNumber: n }) => {
     operate.$patch({ title: t || ' ' })
     isTerminal(is)
@@ -165,7 +158,7 @@ export default function CodeBlock() {
     }
   })
 
-  function CodeLine(props: { index: number, line: Element }) {
+  function CodeLine(props: { index: number; line: Element }) {
     const bgStatus = createMemo(() => highlightArray()[props.index])
     const bg = createMemo(() => {
       switch (bgStatus()) {
@@ -189,18 +182,23 @@ export default function CodeBlock() {
           return props.index
       }
     })
-    const roundBottom = createMemo(() => bgStatus() && highlightArray()[props.index + 1] ? 'rounded-b-0' : 'rounded-b-2')
-    const roundTop = createMemo(() => bgStatus() && highlightArray()[props.index - 1] ? 'rounded-t-0' : 'rounded-t-2')
-    const lineNumberColor = createMemo(() => bgStatus() && highlightArray()[props.index]
-      ? 'color-$vscode-editorLineNumber-activeForeground'
-      : 'color-$vscode-editorLineNumber-foreground hover:color-$vscode-editorLineNumber-activeForeground',
+    const roundBottom = createMemo(() =>
+      bgStatus() && highlightArray()[props.index + 1] ? 'rounded-b-0' : 'rounded-b-2',
+    )
+    const roundTop = createMemo(() =>
+      bgStatus() && highlightArray()[props.index - 1] ? 'rounded-t-0' : 'rounded-t-2',
+    )
+    const lineNumberColor = createMemo(() =>
+      bgStatus() && highlightArray()[props.index]
+        ? 'color-$vscode-editorLineNumber-activeForeground'
+        : 'color-$vscode-editorLineNumber-foreground hover:color-$vscode-editorLineNumber-activeForeground',
     )
 
     const showLineNumbers = createMemo(() => settings().showLineNumbers && !isTerminal())
     return (
       <div
         class={cls(
-          `flex-(~ row) p-r-3`,
+          `flex flex-(row) p-r-3`,
           !showLineNumbers() && 'm-l-2.5',
           bg(),
           roundTop(),
@@ -211,13 +209,15 @@ export default function CodeBlock() {
         <Show when={showLineNumbers()}>
           <span
             class={cls(
-              'text-right pr-4 mr-1 min-w-6 cursor-pointer whitespace-nowrap select-none ml-$left-num',
+              'ml-$left-num mr-1 min-w-6 cursor-pointer select-none whitespace-nowrap pr-4 text-right',
               lineNumberColor(),
             )}
-            // eslint-disable-next-line solid/reactivity
-            onClick={() => highlightArray((arr) => {
-              arr[props.index] = ((arr[props.index] ?? 0) + 1) % 4 as RowType
-            })}
+            onClick={() =>
+              // oxlint-disable-next-line subf/solid-reactivity
+              highlightArray((arr) => {
+                arr[props.index] = (((arr[props.index] ?? 0) + 1) % 4) as RowType
+              })
+            }
           >
             {lineNumber()}
           </span>
@@ -229,67 +229,63 @@ export default function CodeBlock() {
 
   const hasLines = createMemo(() => lines().length > 0)
   return (
-    <div class={cls('config-style-(bg padding liga tab) w-fit group', operate().flashing && 'flash')}>
+    <div
+      class={cls('group w-fit config-style-(padding bg liga tab)', operate().flashing && 'flash')}
+    >
       <div class={`shadow-${boxShadow()} shadow-(gray-4 op-50) config-style-radius`}>
         <div
           style={style()}
           class={cls(
-            'w-fit min-w-80 p-(t-2 b-5 inline-3) bg-$vscode-editor-background relative config-style-radius',
+            'relative min-w-80 w-fit bg-$vscode-editor-background p-(b-5 t-2 inline-3) config-style-radius',
             settings.targetBorder() && 'glass-border',
           )}
         >
           <Show when={settings.targetShowWindowControls()}>
             <div
               class={cls(
-                'size-3.2 top-3.6 left-3.6 absolute rounded-full cursor-pointer text-#0000',
-                settings().windowControlsColor
-                  ? 'traffic-light-color'
-                  : 'traffic-light-plain',
+                'absolute left-3.6 top-3.6 size-3.2 cursor-pointer rounded-full text-#0000',
+                settings().windowControlsColor ? 'traffic-light-color' : 'traffic-light-plain',
               )}
             />
             <div
-              class="i-lucide-x cursor-pointer absolute size-3.2 top-3.6 left-3.6 leading-none text-transparent group-hover:text-black"
+              class="i-lucide-x absolute left-3.6 top-3.6 size-3.2 cursor-pointer text-transparent leading-none group-hover:text-black"
               onClick={() => lines([])}
             />
           </Show>
           <Show
             when={
-              hasLines() && (
-                settings.targetShowWindowTitle() || settings.targetShowWindowControls()
-              )
+              hasLines() &&
+              (settings.targetShowWindowTitle() || settings.targetShowWindowControls())
             }
           >
-            <div class={cls('w-full text-center title-size select-none h-5 leading-loose')}>
-              {
-                settings.targetShowWindowTitle()
-                  ? isTerminal()
-                    ? (
-                        <>
-                          <span class="i-lucide-terminal mr-1" />
-                          <span>{operate().title}</span>
-                        </>
-                      )
-                    : operate().title
-                  : ' '
-              }
+            <div class={cls('h-5 w-full select-none text-center leading-loose title-size')}>
+              {settings.targetShowWindowTitle() ? (
+                isTerminal() ? (
+                  <>
+                    <span class="i-lucide-terminal mr-1" />
+                    <span>{operate().title}</span>
+                  </>
+                ) : (
+                  operate().title
+                )
+              ) : (
+                ' '
+              )}
             </div>
           </Show>
           <Show
             when={hasLines()}
-            fallback={(
-              <div class="p-8 mt-6 flex flex-col items-center gap-4 *:font-$vscode-editor-font-family">
+            fallback={
+              <div class="mt-6 flex flex-col items-center gap-4 p-8 *:font-$vscode-editor-font-family">
                 <div class="leading-loose">
-                  <Show
-                    when={isDesktop}
-                    fallback={<span>Copy Code and Paste Here</span>}
-                  >
+                  <Show when={isDesktop} fallback={<span>Copy Code and Paste Here</span>}>
                     Change Selection in Text Editor
                   </Show>
                 </div>
                 <div class="leading-none">or</div>
                 <button
                   title="Make sure you have selected some text in active terminal"
-                  class="rounded-lg p-(x-4 y-2) b-0 bg-$vscode-button-background c-$vscode-button-foreground transition cursor-pointer hover:op-80"
+                  class="cursor-pointer b-0 rounded-lg bg-$vscode-button-background p-(x-4 y-2) c-$vscode-button-foreground transition hover:op-80"
                   onClick={async () => {
                     await copy('').catch(() => {})
                     vscode.sendToMain({ type: 'capture-terminal' })
@@ -298,7 +294,7 @@ export default function CodeBlock() {
                   Capture Terminal
                 </button>
               </div>
-            )}
+            }
           >
             <div class={cls('mt-2', hasLines() && 'mt-5')}>
               <For each={lines()}>

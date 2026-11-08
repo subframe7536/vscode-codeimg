@@ -1,6 +1,6 @@
 import type { ExtensionContext, Webview } from 'vscode'
 
-export { }
+export {}
 declare global {
   /**
    * fix code hint

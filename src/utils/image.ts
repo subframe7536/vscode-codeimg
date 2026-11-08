@@ -39,7 +39,12 @@ function getCaptureOptions(el: HTMLElement, scale: number) {
   }
 }
 
-export async function saveToLocal(format: PicFormat, el: HTMLElement, title: string, scale: number) {
+export async function saveToLocal(
+  format: PicFormat,
+  el: HTMLElement,
+  title: string,
+  scale: number,
+) {
   const data = await getFunctionByFormat(format)(el, getCaptureOptions(el, scale))
   vscode.sendToMain({
     type: 'save-img',

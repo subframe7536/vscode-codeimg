@@ -10,24 +10,28 @@ export interface TerminalSettings {
   fontFamily: string
 }
 
-export type AppConfig = ScopedConfigKeyTypeMap & EditorSettings & {
-  [K in keyof TerminalSettings as `terminal${Capitalize<K>}`]: TerminalSettings[K]
-}
-
-export type MsgMain2Renderer = {
-  type: 'update-code'
-  data: {
-    title: string
-    isTerminal: boolean
-    startNumber?: number
+export type AppConfig = ScopedConfigKeyTypeMap &
+  EditorSettings & {
+    [K in keyof TerminalSettings as `terminal${Capitalize<K>}`]: TerminalSettings[K]
   }
-} | {
-  type: 'get-config'
-  data: AppConfig
-} | {
-  type: 'change-theme'
-  data: 'dark' | 'light'
-}
+
+export type MsgMain2Renderer =
+  | {
+      type: 'update-code'
+      data: {
+        title: string
+        isTerminal: boolean
+        startNumber?: number
+      }
+    }
+  | {
+      type: 'get-config'
+      data: AppConfig
+    }
+  | {
+      type: 'change-theme'
+      data: 'dark' | 'light'
+    }
 
 export type Recordify<T extends Record<'type' | 'data', any>> = {
   [K in T['type']]: Extract<T, { type: K }>['data']
@@ -41,18 +45,18 @@ export type SaveImgMsgData = {
 
 export type MsgRenderer2Main =
   | {
-    type: 'save-img'
-    data: SaveImgMsgData
-  }
+      type: 'save-img'
+      data: SaveImgMsgData
+    }
   | {
-    type: 'set-config'
-    data: Partial<ScopedConfigKeyTypeMap>
-  }
+      type: 'set-config'
+      data: Partial<ScopedConfigKeyTypeMap>
+    }
   | {
-    type: 'show-settings'
-    data?: undefined
-  }
+      type: 'show-settings'
+      data?: undefined
+    }
   | {
-    type: 'capture-terminal'
-    data?: undefined
-  }
+      type: 'capture-terminal'
+      data?: undefined
+    }

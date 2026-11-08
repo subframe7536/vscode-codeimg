@@ -1,10 +1,9 @@
-import type { ConfigShorthandTypeMap } from '../config/generated/meta'
-import type { AppConfig, EditorSettings, SaveImgMsgData, TerminalSettings } from '../config/msg'
 import type { ExtensionContext, Webview } from 'vscode'
-
 import { env, UIKind, Uri, window, workspace } from 'vscode'
 
+import type { ConfigShorthandTypeMap } from '../config/generated/meta'
 import { scopedConfigs } from '../config/generated/meta'
+import type { AppConfig, EditorSettings, SaveImgMsgData, TerminalSettings } from '../config/msg'
 
 export const isDesktop = env.uiKind === UIKind.Desktop
 
@@ -46,17 +45,21 @@ export async function saveImage(data: SaveImgMsgData) {
   if (uri) {
     await workspace.fs.writeFile(
       uri,
-      Uint8Array.from(atob(data.base64), c => c.charCodeAt(0)),
+      Uint8Array.from(atob(data.base64), (c) => c.codePointAt(0) ?? 0),
     )
     lastDir = uri.fsPath.split('/').slice(0, -1).join('/')
-    window.showInformationMessage('Image saved successfully 🚀', 'Open')
-      .then(value => value === 'Open' && env.openExternal(uri))
+    window
+      .showInformationMessage('Image saved successfully 🚀', 'Open')
+      .then((value) => value === 'Open' && env.openExternal(uri))
   }
 }
 
 export function getConfig(): AppConfig {
   const editorSettings = getSettings('editor', ['fontLigatures', 'tabSize']) as EditorSettings
-  const terminalSettings = getSettings('terminal.integrated', ['fontSize', 'fontFamily']) as TerminalSettings
+  const terminalSettings = getSettings('terminal.integrated', [
+    'fontSize',
+    'fontFamily',
+  ]) as TerminalSettings
   const editor = window.activeTextEditor
 
   const tabSize = editor?.options.tabSize

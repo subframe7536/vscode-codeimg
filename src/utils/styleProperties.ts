@@ -17,11 +17,11 @@
  * they do not start with `<shorthand>-`
  */
 const EXTRA_LONGHANDS: Record<string, string[]> = {
-  'gap': ['row-gap', 'column-gap'],
-  'inset': ['top', 'right', 'bottom', 'left'],
+  gap: ['row-gap', 'column-gap'],
+  inset: ['top', 'right', 'bottom', 'left'],
   'inset-block': ['inset-block-start', 'inset-block-end'],
   'inset-inline': ['inset-inline-start', 'inset-inline-end'],
-  'columns': ['column-width', 'column-count'],
+  columns: ['column-width', 'column-count'],
   'place-items': ['align-items', 'justify-items'],
   'place-content': ['align-content', 'justify-content'],
   'place-self': ['align-self', 'justify-self'],
@@ -131,8 +131,7 @@ export function getStyleProperties() {
   const longhandSet = new Set(longhands)
   const properties = new Set<string>()
   for (const name of declared) {
-    const target =
-      name.startsWith('--') || longhandSet.has(name) ? name : (ALIASES[name] ?? name)
+    const target = name.startsWith('--') || longhandSet.has(name) ? name : (ALIASES[name] ?? name)
     properties.add(target)
     for (const longhand of longhands) {
       if (longhand === target || longhand.startsWith(`${target}-`)) {

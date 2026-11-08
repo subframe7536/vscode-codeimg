@@ -4,6 +4,12 @@ import { vscode } from './vscode'
 
 export type PicFormat = 'png' | 'jpg' | 'webp'
 
+const FORMAT_MIME: Record<PicFormat, string> = {
+  jpg: 'image/jpeg',
+  png: 'image/png',
+  webp: 'image/webp',
+}
+
 function getFunctionByFormat(format: PicFormat) {
   switch (format) {
     case 'png':
@@ -28,5 +34,7 @@ export async function saveToLocal(format: PicFormat, el: HTMLElement, title: str
 }
 
 export async function generateBlob(format: PicFormat, el: HTMLElement, scale: number) {
-  return await domToBlob(el, { scale, type: format })
+  // `domToBlob` hands `type` straight to `canvas.toBlob`, which encodes as png
+  // for anything it does not recognize — so `'jpg'` / `'webp'` must be mime types
+  return await domToBlob(el, { scale, type: FORMAT_MIME[format] })
 }

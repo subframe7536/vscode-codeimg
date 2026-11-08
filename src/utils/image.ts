@@ -52,5 +52,9 @@ export async function saveToLocal(format: PicFormat, el: HTMLElement, title: str
 }
 
 export async function generateBlob(format: PicFormat, el: HTMLElement, scale: number) {
+  // the blob keeps the default png type on purpose. Chromium's clipboard only
+  // accepts `image/png` (`ClipboardItem.supports('image/jpeg' | 'image/webp')`
+  // are both false), so handing it the configured format makes
+  // `navigator.clipboard.write` reject. `format` only applies to saving
   return await domToBlob(el, getCaptureOptions(el, scale))
 }

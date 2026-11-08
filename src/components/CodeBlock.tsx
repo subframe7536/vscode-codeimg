@@ -289,7 +289,7 @@ export default function CodeBlock() {
                 <div class="leading-none">or</div>
                 <button
                   title="Make sure you have selected some text in active terminal"
-                  class="rounded-lg p-(x-4 y-2) b-0 bg-$vscode-button-background c-$vscode-button-foreground transition hover:op-80"
+                  class="rounded-lg p-(x-4 y-2) b-0 bg-$vscode-button-background c-$vscode-button-foreground transition cursor-pointer hover:op-80"
                   onClick={async () => {
                     await copy('').catch(() => {})
                     vscode.sendToMain({ type: 'capture-terminal' })

@@ -1,5 +1,6 @@
-import type { MsgMain2Renderer, MsgRenderer2Main, Recordify } from '../../config/msg'
 import type { WebviewApi } from 'vscode-webview'
+
+import type { MsgMain2Renderer, MsgRenderer2Main, Recordify } from '../../config/msg'
 
 class VSCodeAPIWrapper {
   private readonly vsCodeApi: WebviewApi<unknown> | undefined
@@ -18,10 +19,7 @@ class VSCodeAPIWrapper {
     this.vsCodeApi?.postMessage(message)
   }
 
-  public listen<
-    R extends Recordify<MsgMain2Renderer>,
-    K extends keyof R & string,
-  >(
+  public listen<R extends Recordify<MsgMain2Renderer>, K extends keyof R & string>(
     msg: K,
     callback: (message: R[K]) => void,
   ) {

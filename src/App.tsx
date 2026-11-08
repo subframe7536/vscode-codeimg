@@ -11,7 +11,8 @@ import { vscode } from './utils/vscode'
 export function App() {
   const codeblock = createRef<HTMLDivElement>()
   const [, setMode] = useColorMode({
-    initialMode: document.body.getAttribute('data-vscode-theme-kind') === 'vscode-dark' ? 'dark' : 'light',
+    initialMode:
+      document.body.getAttribute('data-vscode-theme-kind') === 'vscode-dark' ? 'dark' : 'light',
   })
   vscode.listen('change-theme', setMode)
   const [settings] = useSettings()
@@ -24,7 +25,7 @@ export function App() {
         <div
           ref={codeblock}
           class={cls(
-            'w-fit m-(x-auto b-6)',
+            'm-(x-auto b-6) w-fit',
             // hide the transparent background pattern while capturing,
             // otherwise it will be a part of the generated image
             !operate().flashing && !operate().capturing && 'bg-pattern',

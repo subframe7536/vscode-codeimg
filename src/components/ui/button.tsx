@@ -1,18 +1,16 @@
 import type { VariantProps } from 'cls-variant'
+import { cls, clsv, clsvDefault } from 'cls-variant'
 import type { FlowProps } from 'solid-js'
 
-import { cls, clsv, clsvDefault } from 'cls-variant'
-
 const buttonClass = clsvDefault(
-  clsv(
-    'b-none p-(x-3 y-2) rounded-2 transition cursor-pointer',
-    {
-      variant: {
-        primary: 'bg-$vscode-button-background c-$vscode-button-foreground hover:bg-$vscode-button-hoverBackground',
-        secondary: 'bg-$vscode-button-secondaryBackground c-$vscode-button-secondaryForeground hover:bg-$vscode-button-secondaryHoverBackground',
-      },
+  clsv('b-none p-(x-3 y-2) rounded-2 transition cursor-pointer', {
+    variant: {
+      primary:
+        'bg-$vscode-button-background c-$vscode-button-foreground hover:bg-$vscode-button-hoverBackground',
+      secondary:
+        'bg-$vscode-button-secondaryBackground c-$vscode-button-secondaryForeground hover:bg-$vscode-button-secondaryHoverBackground',
     },
-  ),
+  }),
   { variant: 'primary' },
 )
 

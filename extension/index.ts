@@ -1,8 +1,8 @@
 import type { ExtensionContext } from 'vscode'
-
 import { commands, StatusBarAlignment, window } from 'vscode'
 
 import { commands as cmds, displayName } from '../config/generated/meta'
+
 import { render } from './panel'
 
 let dispose: VoidFunction | undefined

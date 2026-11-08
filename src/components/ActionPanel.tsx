@@ -1,8 +1,7 @@
 import type json from '@iconify-json/lucide/icons.json'
-import type { Accessor } from 'solid-js'
-
 import { createRef } from '@solid-hooks/core'
 import { cls } from 'cls-variant'
+import type { Accessor } from 'solid-js'
 import { Show } from 'solid-js'
 
 import { debounce } from '../../extension/debounce'
@@ -10,10 +9,15 @@ import { useOperate } from '../state/action'
 import { useSettings } from '../state/editorSettings'
 import { generateBlob, saveToLocal } from '../utils/image'
 import { vscode } from '../utils/vscode'
+
 import { Button } from './ui/button'
 import { ToggleSwitch } from './ui/toggle'
 
-function TextWithPrefixIcon(props: { class?: string, icon: `i-lucide-${keyof typeof json['icons']}`, text: string }) {
+function TextWithPrefixIcon(props: {
+  class?: string
+  icon: `i-lucide-${keyof (typeof json)['icons']}`
+  text: string
+}) {
   return (
     <div class="flex flex-row leading-normal">
       <i class={cls(props.icon, 'mr-1.2', props.class)} />
@@ -66,7 +70,7 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
     stopFlashing()
     setCapturing(true)
     try {
-      // eslint-disable-next-line solid/reactivity
+      // oxlint-disable-next-line subf/solid-reactivity
       await copy(() => generateBlob(settings().format, props.codeblockRef()!, settings().scale))
       showFlashing()
     } catch (error) {
@@ -82,20 +86,51 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
   const showSettingsFn = () => vscode.sendToMain({ type: 'show-settings' })
 
   return (
-    <div class="flex w-fit m-(x-auto y-0) relative font-$vscode-editor-font-family select-none hover:b-$vscode-focusBorder gap-4">
-      <Button onClick={copyFn} title={`Copy as ${settings().format}`} disabled={isCopying() || operate().capturing}>
-        <Show when={!isCopying()} fallback={<TextWithPrefixIcon class="animate-spin" icon="i-lucide-loader" text="Copying" />}>
-          <Show when={!copyFailed()} fallback={<TextWithPrefixIcon icon="i-lucide-triangle-alert" text="Copy failed" />}>
-            <Show when={!operate.isCopied()} fallback={<TextWithPrefixIcon icon="i-lucide-check" text="Copied" />}>
+    <div class="relative m-(x-auto y-0) w-fit flex select-none gap-4 font-$vscode-editor-font-family hover:b-$vscode-focusBorder">
+      <Button
+        onClick={copyFn}
+        title={`Copy as ${settings().format}`}
+        disabled={isCopying() || operate().capturing}
+      >
+        <Show
+          when={!isCopying()}
+          fallback={
+            <TextWithPrefixIcon class="animate-spin" icon="i-lucide-loader" text="Copying" />
+          }
+        >
+          <Show
+            when={!copyFailed()}
+            fallback={
+              <TextWithPrefixIcon icon="i-lucide-triangle-exclamation-point" text="Copy failed" />
+            }
+          >
+            <Show
+              when={!operate.isCopied()}
+              fallback={<TextWithPrefixIcon icon="i-lucide-check" text="Copied" />}
+            >
               <TextWithPrefixIcon icon="i-lucide-copy" text="Copy" />
             </Show>
           </Show>
         </Show>
       </Button>
 
-      <Button onClick={saveFn} title={`Save as ${settings().format}`} disabled={isSaving() || operate().capturing}>
-        <Show when={!saveFailed()} fallback={<TextWithPrefixIcon icon="i-lucide-triangle-alert" text="Save failed" />}>
-          <Show when={!isSaving()} fallback={<TextWithPrefixIcon class="animate-spin" icon="i-lucide-loader" text="Saving" />}>
+      <Button
+        onClick={saveFn}
+        title={`Save as ${settings().format}`}
+        disabled={isSaving() || operate().capturing}
+      >
+        <Show
+          when={!saveFailed()}
+          fallback={
+            <TextWithPrefixIcon icon="i-lucide-triangle-exclamation-point" text="Save failed" />
+          }
+        >
+          <Show
+            when={!isSaving()}
+            fallback={
+              <TextWithPrefixIcon class="animate-spin" icon="i-lucide-loader" text="Saving" />
+            }
+          >
             <TextWithPrefixIcon icon="i-lucide-download" text="Save" />
           </Show>
         </Show>

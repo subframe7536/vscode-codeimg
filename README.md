@@ -14,6 +14,7 @@ The popular existing extensions lack maintenance and have limited customization 
 ## How it works?
 
 Call VSCode's built-in command to copy generated HTML text and render the parsed clipboard text content.
+
 - For code, use `editor.action.clipboardCopyWithSyntaxHighlightingAction`
 - For terminal, use `workbench.action.terminal.copySelectionAsHtml`
 
@@ -74,10 +75,10 @@ Terminal:
 
 <!-- commands -->
 
-| Command                     | Title                                    |
-| --------------------------- | ---------------------------------------- |
-| `codeimg.open`              | CodeImg: open preview panel              |
-| `codeimg.generate.code`     | CodeImg: generate image for code 📷      |
+| Command                     | Title                                   |
+| --------------------------- | --------------------------------------- |
+| `codeimg.open`              | CodeImg: open preview panel             |
+| `codeimg.generate.code`     | CodeImg: generate image for code 📷     |
 | `codeimg.generate.terminal` | CodeImg: generate image for terminal 🛠️ |
 
 <!-- commands -->

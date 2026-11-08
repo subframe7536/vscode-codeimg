@@ -1,10 +1,20 @@
 {
-  "extends": "@subframe7536/type-utils/tsconfig.json",
   "compilerOptions": {
+    "target": "ES2023",
+    "module": "esnext",
+    "moduleResolution": "Bundler",
+    "moduleDetection": "force",
+    "strict": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "verbatimModuleSyntax": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "lib": ["ESNext", "DOM", "DOM.Iterable"],
+    "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "types": [
-      "vite/client",
-      "@types/vscode-webview"
-    ]
-  }
+    "types": ["node", "vite/client", "@types/vscode-webview", "@tomjs/vite-plugin-vscode/env"]
+  },
+  "exclude": ["**/dist", "**/node_modules"]
 }

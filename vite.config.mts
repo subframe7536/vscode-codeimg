@@ -1,5 +1,5 @@
+import uno from '@subf/unocss/vite'
 import vscode from '@tomjs/vite-plugin-vscode'
-import uno from 'unocss/vite'
 import { defineConfig } from 'vite'
 import solid from 'vite-plugin-solid'
 

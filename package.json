@@ -29,7 +29,7 @@
     "@solid-hooks/core": "^0.6.0",
     "@subf/config": "^0.5.0",
     "@subf/unocss": "^0.4.0",
-    "@tomjs/vite-plugin-vscode": "^4.2.1",
+    "@tomjs/vite-plugin-vscode": "^8.0.0",
     "@tomjs/vscode-extension-webview": "^2.0.0",
     "@types/node": "^24.19.0",
     "@types/vscode": "1.75.0",

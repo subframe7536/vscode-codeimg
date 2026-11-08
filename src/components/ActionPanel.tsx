@@ -28,17 +28,20 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
   const isSaving = createRef(false)
   const copyFailed = createRef(false)
   const saveFailed = createRef(false)
-  const [operate, { copy, setCapturing, showFlashing }] = useOperate()
+  const [operate, { copy, setCapturing, showFlashing, stopFlashing }] = useOperate()
   const debounceOffSaving = debounce(() => isSaving(false), 750)
   const debounceOffCopyFailed = debounce(() => copyFailed(false), 3000)
   const debounceOffSaveFailed = debounce(() => saveFailed(false), 3000)
 
   const saveFn = async () => {
-    if (isSaving()) {
+    // a capture in flight would be handed over the shared `capturing` flag by
+    // whichever handler finishes first, so exports have to be serialized
+    if (isSaving() || operate().capturing) {
       return
     }
     isSaving(true)
     saveFailed(false)
+    stopFlashing()
     setCapturing(true)
     try {
       await saveToLocal(settings().format, props.codeblockRef()!, operate().title, settings().scale)
@@ -55,11 +58,12 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
   }
 
   const copyFn = async () => {
-    if (isCopying()) {
+    if (isCopying() || operate().capturing) {
       return
     }
     isCopying(true)
     copyFailed(false)
+    stopFlashing()
     setCapturing(true)
     try {
       // eslint-disable-next-line solid/reactivity
@@ -79,7 +83,7 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
 
   return (
     <div class="flex w-fit m-(x-auto y-0) relative font-$vscode-editor-font-family select-none hover:b-$vscode-focusBorder gap-4">
-      <Button onClick={copyFn} title={`Copy as ${settings().format}`}>
+      <Button onClick={copyFn} title={`Copy as ${settings().format}`} disabled={isCopying() || operate().capturing}>
         <Show when={!isCopying()} fallback={<TextWithPrefixIcon class="animate-spin" icon="i-lucide-loader" text="Copying" />}>
           <Show when={!copyFailed()} fallback={<TextWithPrefixIcon icon="i-lucide-triangle-alert" text="Copy failed" />}>
             <Show when={!operate.isCopied()} fallback={<TextWithPrefixIcon icon="i-lucide-check" text="Copied" />}>
@@ -89,7 +93,7 @@ export default function ActionPanel(props: { codeblockRef: Accessor<HTMLDivEleme
         </Show>
       </Button>
 
-      <Button onClick={saveFn} title={`Save as ${settings().format}`}>
+      <Button onClick={saveFn} title={`Save as ${settings().format}`} disabled={isSaving() || operate().capturing}>
         <Show when={!saveFailed()} fallback={<TextWithPrefixIcon icon="i-lucide-triangle-alert" text="Save failed" />}>
           <Show when={!isSaving()} fallback={<TextWithPrefixIcon class="animate-spin" icon="i-lucide-loader" text="Saving" />}>
             <TextWithPrefixIcon icon="i-lucide-download" text="Save" />

@@ -23,6 +23,9 @@ export const useOperate = defineState('action', {
         setState('flashing', true)
         debounceOffFlashing()
       },
+      // the flash is an `::after` overlay on the captured element, so a capture
+      // started while it is still showing would bake it into the image
+      stopFlashing: () => setState('flashing', false),
       copy: async (data: string | (() => Promise<Blob>)): Promise<void> => {
         // do not skip the operation silently, the caller is responsible for
         // avoiding re-entry, otherwise the user gets no feedback at all

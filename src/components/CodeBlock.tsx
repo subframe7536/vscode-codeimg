@@ -71,7 +71,7 @@ function trimWhiteSpace<E extends Element>(elList: E[], trim: boolean): E[] {
 }
 
 type RowType = 0 | 1 | 2 | 3
-
+declare const __isDesktop__: boolean
 const isDesktop = typeof __isDesktop__ !== 'undefined' ? __isDesktop__ : true
 export default function CodeBlock() {
   const lines = createRef<Element[]>([])

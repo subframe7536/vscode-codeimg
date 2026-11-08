@@ -1,3 +1,4 @@
+import { getWebviewHtml } from 'virtual:vscode'
 import type { ExtensionContext, Webview } from 'vscode'
 import { env, UIKind, Uri, window, workspace } from 'vscode'
 
@@ -9,7 +10,7 @@ export const isDesktop = env.uiKind === UIKind.Desktop
 
 export const DEV_SERVER = process.env.VITE_DEV_SERVER_URL
 export function setupHtml(webview: Webview, context: ExtensionContext) {
-  return __getWebviewHtml__({
+  return getWebviewHtml({
     serverUrl: DEV_SERVER,
     webview,
     context,

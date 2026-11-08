@@ -14,7 +14,7 @@
     "lib": ["ESNext", "DOM", "DOM.Iterable"],
     "jsx": "preserve",
     "jsxImportSource": "solid-js",
-    "types": ["node", "vite/client", "@types/vscode-webview"]
+    "types": ["node", "vite/client", "@types/vscode-webview", "@tomjs/vite-plugin-vscode/env"]
   },
   "exclude": ["**/dist", "**/node_modules"]
 }
